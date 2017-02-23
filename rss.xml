@@ -13,6 +13,9 @@
         <item>
             <title>新轮子：Planet.js</title>
             <link>https://blog.phoenixlzx.com/2017/02/18/dont-ask-me-why-invent-another-planet-river-of-news/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2017/02/18/dont-ask-me-why-invent-another-planet-river-of-news/</guid>
             <pubDate>Sat, 18 Feb 2017 10:19:05 +0100</pubDate>
             <description>
@@ -67,6 +70,9 @@
         <item>
             <title>玩了一下 NGINX RealIP 模块</title>
             <link>https://blog.phoenixlzx.com/2017/02/08/play-with-nginx-realip-module/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2017/02/08/play-with-nginx-realip-module/</guid>
             <pubDate>Wed, 08 Feb 2017 12:37:08 +0100</pubDate>
             <description>
@@ -103,6 +109,9 @@
         <item>
             <title>树莓派(raspberrypi)、saltstack 在线下自助机运维上的应用</title>
             <link>http://jaseywang.me/2017/02/08/%e6%a0%91%e8%8e%93%e6%b4%beraspberrypi%e3%80%81saltstack-%e5%9c%a8%e7%ba%bf%e4%b8%8b%e8%87%aa%e5%8a%a9%e6%9c%ba%e8%bf%90%e7%bb%b4%e4%b8%8a%e7%9a%84%e5%ba%94%e7%94%a8/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2017/02/08/%e6%a0%91%e8%8e%93%e6%b4%beraspberrypi%e3%80%81saltstack-%e5%9c%a8%e7%ba%bf%e4%b8%8b%e8%87%aa%e5%8a%a9%e6%9c%ba%e8%bf%90%e7%bb%b4%e4%b8%8a%e7%9a%84%e5%ba%94%e7%94%a8/</guid>
             <pubDate>Wed, 08 Feb 2017 06:05:51 +0100</pubDate>
             <description>
@@ -215,6 +224,9 @@
         <item>
             <title>👁️ 预测未来？</title>
             <link>https://blog.alswl.com/2017/01/prophecy/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2017/01/prophecy/</guid>
             <pubDate>Tue, 31 Jan 2017 04:12:43 +0100</pubDate>
             <description>
@@ -302,6 +314,9 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
         <item>
             <title>通过 noVNC 实现数千台自助机的实时可视化</title>
             <link>http://jaseywang.me/2017/01/06/%e9%80%9a%e8%bf%87-novnc-%e5%ae%9e%e7%8e%b0%e6%95%b0%e5%8d%83%e5%8f%b0%e8%87%aa%e5%8a%a9%e6%9c%ba%e7%9a%84%e5%ae%9e%e6%97%b6%e5%8f%af%e8%a7%86%e5%8c%96/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2017/01/06/%e9%80%9a%e8%bf%87-novnc-%e5%ae%9e%e7%8e%b0%e6%95%b0%e5%8d%83%e5%8f%b0%e8%87%aa%e5%8a%a9%e6%9c%ba%e7%9a%84%e5%ae%9e%e6%97%b6%e5%8f%af%e8%a7%86%e5%8c%96/</guid>
             <pubDate>Fri, 06 Jan 2017 13:17:46 +0100</pubDate>
             <description>
@@ -349,6 +364,9 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
         <item>
             <title>👷如何做年前大扫除</title>
             <link>https://blog.alswl.com/2017/01/spring-cleaning/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2017/01/spring-cleaning/</guid>
             <pubDate>Tue, 03 Jan 2017 16:20:50 +0100</pubDate>
             <description>
@@ -444,6 +462,9 @@ TPS 、Latency 和 Capacity。
         <item>
             <title>2017新年好</title>
             <link>https://www.freemindworld.com/blog/2017/170101_2017_happy_new_year.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2017/170101_2017_happy_new_year.shtml</guid>
             <pubDate>Sun, 01 Jan 2017 16:13:04 +0100</pubDate>
             <description>
@@ -478,6 +499,9 @@ TPS 、Latency 和 Capacity。
         <item>
             <title>重新迁移回 GCP</title>
             <link>https://blog.phoenixlzx.com/2016/12/12/infinite-zheteng-switch-to-gcp/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2016/12/12/infinite-zheteng-switch-to-gcp/</guid>
             <pubDate>Mon, 12 Dec 2016 14:54:28 +0100</pubDate>
             <description>
@@ -557,6 +581,9 @@ TPS 、Latency 和 Capacity。
         <item>
             <title>🔑 也谈 HTTPS - 如何内测</title>
             <link>https://blog.alswl.com/2016/12/https-2/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/12/https-2/</guid>
             <pubDate>Thu, 08 Dec 2016 13:16:26 +0100</pubDate>
             <description>
@@ -668,6 +695,9 @@ Domain Validation / Orgnization Validation / Extented Validation。
         <item>
             <title>教你在上海挑房子</title>
             <link>https://blog.alswl.com/2016/12/house/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/12/house/</guid>
             <pubDate>Mon, 05 Dec 2016 14:29:37 +0100</pubDate>
             <description>
@@ -773,6 +803,9 @@ Indicator 的含义是建立一系列评价指标，比如价格、户型、位�
         <item>
             <title>🔒 也谈 HTTPS - HTTPDNS + HTTPS</title>
             <link>https://blog.alswl.com/2016/11/https-1/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/11/https-1/</guid>
             <pubDate>Wed, 30 Nov 2016 15:02:23 +0100</pubDate>
             <description>
@@ -869,6 +902,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>关注2017维也纳新年音乐会</title>
             <link>https://www.freemindworld.com/blog/2016/161128_2017_viena_new_year_concert.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/161128_2017_viena_new_year_concert.shtml</guid>
             <pubDate>Mon, 28 Nov 2016 16:50:41 +0100</pubDate>
             <description>
@@ -916,6 +952,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>使用 Unbound 搭建更好用的 DNS 服务器</title>
             <link>https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/</guid>
             <pubDate>Sun, 13 Nov 2016 05:54:06 +0100</pubDate>
             <description>
@@ -974,6 +1013,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>关于 SSL 和 IPKVM/VNC Applet 的笔记两则</title>
             <link>https://blog.phoenixlzx.com/2014/10/14/2-notes-for-ssl-and-ipkvm/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2014/10/14/2-notes-for-ssl-and-ipkvm/</guid>
             <pubDate>Sat, 12 Nov 2016 02:47:06 +0100</pubDate>
             <description>
@@ -1005,6 +1047,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>2014·夏</title>
             <link>https://blog.phoenixlzx.com/2014/09/02/2014-natsu/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2014/09/02/2014-natsu/</guid>
             <pubDate>Sat, 12 Nov 2016 02:46:49 +0100</pubDate>
             <description>
@@ -1051,6 +1096,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>Sierra 4G LTE EM7345 with Arch Linux</title>
             <link>https://blog.phoenixlzx.com/2015/12/29/archlinux-4g-lte-with-sierra-em7345/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/12/29/archlinux-4g-lte-with-sierra-em7345/</guid>
             <pubDate>Sat, 12 Nov 2016 02:46:22 +0100</pubDate>
             <description>
@@ -1085,6 +1133,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>公共场合请使用指纹识别器</title>
             <link>https://blog.phoenixlzx.com/2016/04/19/fingerprint-improves-your-security-zhuangbility/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2016/04/19/fingerprint-improves-your-security-zhuangbility/</guid>
             <pubDate>Sat, 12 Nov 2016 02:45:23 +0100</pubDate>
             <description>
@@ -1115,6 +1166,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>使用 IPSec 连接带有 chnroutes 的隧道网络配置小记</title>
             <link>https://blog.phoenixlzx.com/2015/09/14/ipsec-plus-tunnel-chnroutes-notes/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/09/14/ipsec-plus-tunnel-chnroutes-notes/</guid>
             <pubDate>Sat, 12 Nov 2016 02:45:06 +0100</pubDate>
             <description>
@@ -1171,6 +1225,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>使用 iptables 过滤 DNS 放大攻击</title>
             <link>https://blog.phoenixlzx.com/2014/05/23/iptables-rate-limiting-rules-to-block-dns-amplification-attack/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2014/05/23/iptables-rate-limiting-rules-to-block-dns-amplification-attack/</guid>
             <pubDate>Sat, 12 Nov 2016 02:45:01 +0100</pubDate>
             <description>
@@ -1196,6 +1253,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>Kancolle Broker - 舰娘直连游戏！</title>
             <link>https://blog.phoenixlzx.com/2015/02/08/kancolle-broker/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/02/08/kancolle-broker/</guid>
             <pubDate>Sat, 12 Nov 2016 02:44:56 +0100</pubDate>
             <description>
@@ -1229,6 +1289,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>懒(烂)办法制作 Telegram Sticker Pack</title>
             <link>https://blog.phoenixlzx.com/2015/06/06/make-telegram-sticker-the-lazy-way/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/06/06/make-telegram-sticker-the-lazy-way/</guid>
             <pubDate>Sat, 12 Nov 2016 02:44:39 +0100</pubDate>
             <description>
@@ -1266,6 +1329,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>迁移到了 uWSGI</title>
             <link>https://blog.phoenixlzx.com/2015/12/21/migrating-to-uwsgi/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/12/21/migrating-to-uwsgi/</guid>
             <pubDate>Sat, 12 Nov 2016 02:44:34 +0100</pubDate>
             <description>
@@ -1300,6 +1366,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>想要导出 Telegram 贴图</title>
             <link>https://blog.phoenixlzx.com/2016/08/23/my-first-yet-useless-telegram-bot/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2016/08/23/my-first-yet-useless-telegram-bot/</guid>
             <pubDate>Sat, 12 Nov 2016 02:44:29 +0100</pubDate>
             <description>
@@ -1327,6 +1396,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>搭建一套权威 DNS 服务架构</title>
             <link>https://blog.phoenixlzx.com/2016/09/07/powerdns-admin-replacing-moedns/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2016/09/07/powerdns-admin-replacing-moedns/</guid>
             <pubDate>Sat, 12 Nov 2016 02:43:52 +0100</pubDate>
             <description>
@@ -1404,6 +1476,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>ThinkPad X1 Carbon 2015 与久违的 Arch Linux</title>
             <link>https://blog.phoenixlzx.com/2015/12/28/returning-to-archlinux-with-thinkpad-x1-carbon-2015/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/12/28/returning-to-archlinux-with-thinkpad-x1-carbon-2015/</guid>
             <pubDate>Sat, 12 Nov 2016 02:43:24 +0100</pubDate>
             <description>
@@ -1448,6 +1523,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>用优雅的方式在 OS X 中为单个应用设置语言</title>
             <link>https://blog.phoenixlzx.com/2014/11/11/set-language-for-individual-app-in-os-x-the-elegant-way/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2014/11/11/set-language-for-individual-app-in-os-x-the-elegant-way/</guid>
             <pubDate>Sat, 12 Nov 2016 02:43:18 +0100</pubDate>
             <description>
@@ -1477,6 +1555,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>在 Ubuntu 服务器上搭建 OpenConnect 服务器小记</title>
             <link>https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/</guid>
             <pubDate>Sat, 12 Nov 2016 02:43:04 +0100</pubDate>
             <description>
@@ -1512,6 +1593,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>末字幕组时代，我们何去何从</title>
             <link>https://blog.phoenixlzx.com/2015/10/07/the-end-of-subtitle-teams-era/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2015/10/07/the-end-of-subtitle-teams-era/</guid>
             <pubDate>Sat, 12 Nov 2016 02:42:43 +0100</pubDate>
             <description>
@@ -1553,6 +1637,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>尝试迁移到 AWS Cloud</title>
             <link>https://blog.phoenixlzx.com/2016/01/21/try-to-migrate-to-aws-cloud/</link>
+            
+            <author>Phoenix Nemo</author>
+            
             <guid>https://blog.phoenixlzx.com/2016/01/21/try-to-migrate-to-aws-cloud/</guid>
             <pubDate>Sat, 12 Nov 2016 02:40:51 +0100</pubDate>
             <description>
@@ -1589,6 +1676,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>十年（中）</title>
             <link>https://www.freemindworld.com/blog/2016/160918_ten_years_2.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160918_ten_years_2.shtml</guid>
             <pubDate>Sun, 18 Sep 2016 17:16:50 +0200</pubDate>
             <description>
@@ -1623,6 +1713,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>Big transaction and MySQL replication lag</title>
             <link>http://jaseywang.me/2016/09/09/big-transaction-and-mysql-replication-lag/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2016/09/09/big-transaction-and-mysql-replication-lag/</guid>
             <pubDate>Fri, 09 Sep 2016 14:33:33 +0200</pubDate>
             <description>
@@ -1715,6 +1808,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>Nginx 200 response with empty body by double slash</title>
             <link>http://jaseywang.me/2016/08/26/nginx-empty-200-response-body-by-double-slash/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2016/08/26/nginx-empty-200-response-body-by-double-slash/</guid>
             <pubDate>Fri, 26 Aug 2016 15:20:23 +0200</pubDate>
             <description>
@@ -1754,6 +1850,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>API 集成测试实践</title>
             <link>https://blog.alswl.com/2016/08/api-integration-test/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/08/api-integration-test/</guid>
             <pubDate>Sun, 14 Aug 2016 13:08:20 +0200</pubDate>
             <description>
@@ -1998,6 +2097,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>十年（上）</title>
             <link>https://www.freemindworld.com/blog/2016/160706_ten_years_1.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160706_ten_years_1.shtml</guid>
             <pubDate>Wed, 06 Jul 2016 17:32:14 +0200</pubDate>
             <description>
@@ -2035,6 +2137,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>搞定暴涨的流量</title>
             <link>https://blog.alswl.com/2016/06/capacity-planning/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/06/capacity-planning/</guid>
             <pubDate>Sun, 19 Jun 2016 17:57:39 +0200</pubDate>
             <description>
@@ -2149,6 +2254,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>一次「分答」记录</title>
             <link>https://blog.alswl.com/2016/06/q-and-a/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/06/q-and-a/</guid>
             <pubDate>Wed, 15 Jun 2016 03:59:16 +0200</pubDate>
             <description>
@@ -2244,6 +2352,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <item>
             <title>Synology PhotoStation性能优化</title>
             <link>https://www.freemindworld.com/blog/2016/160514_optimize_synology_photostation.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160514_optimize_synology_photostation.shtml</guid>
             <pubDate>Sat, 14 May 2016 11:29:09 +0200</pubDate>
             <description>
@@ -2450,6 +2561,9 @@ bled FROM video WHERE $cond &quot; .
         <item>
             <title>一个网络访问故障的排查</title>
             <link>https://www.freemindworld.com/blog/2016/160507_troubleshooting_a_weird_network_problem.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160507_troubleshooting_a_weird_network_problem.shtml</guid>
             <pubDate>Sat, 07 May 2016 16:26:59 +0200</pubDate>
             <description>
@@ -2485,6 +2599,9 @@ bled FROM video WHERE $cond &quot; .
         <item>
             <title>海贼王和创业团队</title>
             <link>https://blog.alswl.com/2016/04/onepiece-startup/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/04/onepiece-startup/</guid>
             <pubDate>Tue, 26 Apr 2016 18:36:10 +0200</pubDate>
             <description>
@@ -2616,6 +2733,9 @@ bled FROM video WHERE $cond &quot; .
         <item>
             <title>Windows management for hacker</title>
             <link>https://blog.alswl.com/2016/04/windows-management-for-hacker/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/04/windows-management-for-hacker/</guid>
             <pubDate>Sun, 24 Apr 2016 10:36:16 +0200</pubDate>
             <description>
@@ -2785,6 +2905,7 @@ bled FROM video WHERE $cond &quot; .
         <item>
             <title>Firefox 插件：TooManyTabs</title>
             <link>https://glacjay.info/post/2016-04-23/firefox-%E6%8F%92%E4%BB%B6toomanytabs/</link>
+            
             <guid>https://glacjay.info/post/2016-04-23/firefox-%E6%8F%92%E4%BB%B6toomanytabs/</guid>
             <pubDate>Sat, 23 Apr 2016 04:33:22 +0200</pubDate>
             <description>
@@ -2808,6 +2929,9 @@ bled FROM video WHERE $cond &quot; .
         <item>
             <title>最好的简谱编辑排版软件JP-Word</title>
             <link>https://www.freemindworld.com/blog/2016/160311_the_best_jianpu_software.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160311_the_best_jianpu_software.shtml</guid>
             <pubDate>Fri, 11 Mar 2016 12:50:21 +0100</pubDate>
             <description>
@@ -2841,6 +2965,9 @@ bled FROM video WHERE $cond &quot; .
         <item>
             <title>实践个人网站迁移HTTPS与HTTP/2</title>
             <link>https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml</guid>
             <pubDate>Wed, 02 Mar 2016 02:26:22 +0100</pubDate>
             <description>
@@ -2950,6 +3077,9 @@ ssl_session_timeout 5m;</code></p>
         <item>
             <title>技术之外</title>
             <link>https://blog.alswl.com/2016/02/team-geek/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/02/team-geek/</guid>
             <pubDate>Sun, 28 Feb 2016 11:16:01 +0100</pubDate>
             <description>
@@ -3084,6 +3214,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
         <item>
             <title>OpenVPN Connectivity Issue in Public Network</title>
             <link>http://jaseywang.me/2016/02/12/openvpn-connectivity-issue-in-public-network/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2016/02/12/openvpn-connectivity-issue-in-public-network/</guid>
             <pubDate>Fri, 12 Feb 2016 14:12:57 +0100</pubDate>
             <description>
@@ -3107,6 +3240,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
         <item>
             <title>一例 Timeout 故障</title>
             <link>https://blog.alswl.com/2016/02/a-timeout-fault/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/02/a-timeout-fault/</guid>
             <pubDate>Tue, 02 Feb 2016 16:34:44 +0100</pubDate>
             <description>
@@ -3200,6 +3336,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
         <item>
             <title>一次艰难的 Wiki 升级</title>
             <link>https://blog.alswl.com/2016/01/confluence-upgrade/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2016/01/confluence-upgrade/</guid>
             <pubDate>Tue, 12 Jan 2016 15:53:55 +0100</pubDate>
             <description>
@@ -3313,6 +3452,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
         <item>
             <title>2016新年好</title>
             <link>https://www.freemindworld.com/blog/2016/160104_happy_new_year_2016.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2016/160104_happy_new_year_2016.shtml</guid>
             <pubDate>Mon, 04 Jan 2016 11:51:39 +0100</pubDate>
             <description>
@@ -3346,6 +3488,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
         <item>
             <title>关注2016维也纳新年音乐会</title>
             <link>https://www.freemindworld.com/blog/2015/151211_2016_vienna_new_year_concert.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2015/151211_2016_vienna_new_year_concert.shtml</guid>
             <pubDate>Fri, 11 Dec 2015 15:34:28 +0100</pubDate>
             <description>
@@ -3400,6 +3545,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
         <item>
             <title>SS with Haproxy</title>
             <link>https://blog.alswl.com/2015/11/ss-with-haproxy/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/11/ss-with-haproxy/</guid>
             <pubDate>Fri, 27 Nov 2015 13:23:24 +0100</pubDate>
             <description>
@@ -3505,6 +3653,9 @@ update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项�
         <item>
             <title>fHash 2.0.0 for Mac OS X</title>
             <link>http://www.sunjw.us/blog/fhash-2-0-0-for-mac-os-x/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/fhash-2-0-0-for-mac-os-x/</guid>
             <pubDate>Wed, 11 Nov 2015 06:09:16 +0100</pubDate>
             <description>
@@ -3542,6 +3693,9 @@ May use other licenses for binary package on other distribution sites.</p>
         <item>
             <title>JSToolNpp 1.16.10 Released</title>
             <link>http://www.sunjw.us/blog/jstoolnpp-1-16-10-released/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/jstoolnpp-1-16-10-released/</guid>
             <pubDate>Wed, 11 Nov 2015 05:57:44 +0100</pubDate>
             <description>
@@ -3585,6 +3739,9 @@ May use other licenses for binary package on other distribution sites.</p>
         <item>
             <title>Can Venta Airwasher Effectively Reduce PM2.5 or PM10?</title>
             <link>http://jaseywang.me/2015/11/01/can-venta-airwasher-effectively-reduce-pm2-5-or-pm10/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2015/11/01/can-venta-airwasher-effectively-reduce-pm2-5-or-pm10/</guid>
             <pubDate>Sun, 01 Nov 2015 14:11:18 +0100</pubDate>
             <description>
@@ -3617,6 +3774,9 @@ May use other licenses for binary package on other distribution sites.</p>
         <item>
             <title>几步拥有一个安全密码</title>
             <link>https://blog.alswl.com/2015/10/a-security-password/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/10/a-security-password/</guid>
             <pubDate>Tue, 27 Oct 2015 17:17:44 +0100</pubDate>
             <description>
@@ -3679,6 +3839,9 @@ May use other licenses for binary package on other distribution sites.</p>
         <item>
             <title>怎么打日志</title>
             <link>https://blog.alswl.com/2015/10/how-to-log/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/10/how-to-log/</guid>
             <pubDate>Sun, 18 Oct 2015 08:25:28 +0200</pubDate>
             <description>
@@ -3764,6 +3927,9 @@ May use other licenses for binary package on other distribution sites.</p>
         <item>
             <title>Metrics Dashboard Comparision for Linux Desktop</title>
             <link>http://jaseywang.me/2015/08/16/metrics-dashboard-comparision-for-linux-desktop/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2015/08/16/metrics-dashboard-comparision-for-linux-desktop/</guid>
             <pubDate>Sun, 16 Aug 2015 15:37:54 +0200</pubDate>
             <description>
@@ -3832,6 +3998,9 @@ May use other licenses for binary package on other distribution sites.</p>
         <item>
             <title>Redis 集群扩容</title>
             <link>https://blog.alswl.com/2015/07/redis-migration/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/07/redis-migration/</guid>
             <pubDate>Sun, 26 Jul 2015 09:33:49 +0200</pubDate>
             <description>
@@ -3934,6 +4103,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>带理想的执行者 - 柳比歇夫的一生</title>
             <link>https://blog.alswl.com/2015/07/liu-bi-xie-fu/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/07/liu-bi-xie-fu/</guid>
             <pubDate>Sun, 12 Jul 2015 11:29:19 +0200</pubDate>
             <description>
@@ -3997,6 +4169,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>Router Matters</title>
             <link>http://jaseywang.me/2015/07/05/router-matters/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2015/07/05/router-matters/</guid>
             <pubDate>Sun, 05 Jul 2015 15:05:24 +0200</pubDate>
             <description>
@@ -4042,6 +4217,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>Trips to HCMC, Nha Trang, Phnom Penh and Siem Reap</title>
             <link>http://jaseywang.me/2015/06/24/trips-to-hcmc-nha-trang-phnom-penh-and-siem-reap/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2015/06/24/trips-to-hcmc-nha-trang-phnom-penh-and-siem-reap/</guid>
             <pubDate>Wed, 24 Jun 2015 10:36:29 +0200</pubDate>
             <description>
@@ -4099,6 +4277,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>How Many Non-Persistent Connections Can Nginx/Tengine Support Concurrently</title>
             <link>http://jaseywang.me/2015/06/04/how-many-non-persistent-connections-can-nginxtengine-support-concurrently/</link>
+            
+            <author>jaseywang</author>
+            
             <guid>http://jaseywang.me/2015/06/04/how-many-non-persistent-connections-can-nginxtengine-support-concurrently/</guid>
             <pubDate>Thu, 04 Jun 2015 08:00:39 +0200</pubDate>
             <description>
@@ -4165,6 +4346,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>2015 沪港 Hackathon</title>
             <link>https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/</guid>
             <pubDate>Fri, 03 Apr 2015 18:39:41 +0200</pubDate>
             <description>
@@ -4207,6 +4391,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>读《遇见未知的自己》</title>
             <link>https://blog.alswl.com/2015/03/real-self/</link>
+            
+            <author>alswl</author>
+            
             <guid>https://blog.alswl.com/2015/03/real-self/</guid>
             <pubDate>Sat, 14 Mar 2015 07:38:39 +0100</pubDate>
             <description>
@@ -4278,6 +4465,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <item>
             <title>为Raspberry Pi 2编译内核模块</title>
             <link>https://www.freemindworld.com/blog/2015/150312_complie_kernel_module_for_raspberry_pi_2.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2015/150312_complie_kernel_module_for_raspberry_pi_2.shtml</guid>
             <pubDate>Thu, 12 Mar 2015 13:32:20 +0100</pubDate>
             <description>
@@ -4349,6 +4539,9 @@ $ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br 
         <item>
             <title>Build CyanogenMod 12 for Nexus 5</title>
             <link>http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/</guid>
             <pubDate>Wed, 11 Feb 2015 05:41:39 +0100</pubDate>
             <description>
@@ -4381,6 +4574,7 @@ $ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br 
         <item>
             <title>我的 MBP SSD 优化过程</title>
             <link>https://glacjay.info/post/2015-01-17/%E6%88%91%E7%9A%84-mbp-ssd-%E4%BC%98%E5%8C%96%E8%BF%87%E7%A8%8B/</link>
+            
             <guid>https://glacjay.info/post/2015-01-17/%E6%88%91%E7%9A%84-mbp-ssd-%E4%BC%98%E5%8C%96%E8%BF%87%E7%A8%8B/</guid>
             <pubDate>Sat, 17 Jan 2015 09:40:49 +0100</pubDate>
             <description>
@@ -4491,6 +4685,9 @@ sudo rm -rf /Users.bak
         <item>
             <title>2015新年好</title>
             <link>https://www.freemindworld.com/blog/2015/150101_happy_new_year_2015.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2015/150101_happy_new_year_2015.shtml</guid>
             <pubDate>Thu, 01 Jan 2015 16:28:21 +0100</pubDate>
             <description>
@@ -4526,6 +4723,9 @@ sudo rm -rf /Users.bak
         <item>
             <title>关注2015维也纳新年音乐会</title>
             <link>https://www.freemindworld.com/blog/2014/140917_2015_vienna_new_year_concert.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2014/140917_2015_vienna_new_year_concert.shtml</guid>
             <pubDate>Wed, 17 Sep 2014 02:56:39 +0200</pubDate>
             <description>
@@ -4570,6 +4770,7 @@ sudo rm -rf /Users.bak
         <item>
             <title>Keepalived 实现双机热备并对关键进程进行监控</title>
             <link>https://glacjay.info/post/2014-06-22/keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87%E5%B9%B6%E5%AF%B9%E5%85%B3%E9%94%AE%E8%BF%9B%E7%A8%8B%E8%BF%9B%E8%A1%8C%E7%9B%91%E6%8E%A7/</link>
+            
             <guid>https://glacjay.info/post/2014-06-22/keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87%E5%B9%B6%E5%AF%B9%E5%85%B3%E9%94%AE%E8%BF%9B%E7%A8%8B%E8%BF%9B%E8%A1%8C%E7%9B%91%E6%8E%A7/</guid>
             <pubDate>Sat, 21 Jun 2014 19:09:12 +0200</pubDate>
             <description>
@@ -4603,6 +4804,7 @@ sudo rm -rf /Users.bak
         <item>
             <title>LoadRunner 中进行 HTTP 测试时使 Keep-Alive 生效的注意事项</title>
             <link>https://glacjay.info/post/2014-06-19/loadrunner-%E4%B8%AD%E8%BF%9B%E8%A1%8C-http-%E6%B5%8B%E8%AF%95%E6%97%B6%E4%BD%BF-keep-alive-%E7%94%9F%E6%95%88%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
+            
             <guid>https://glacjay.info/post/2014-06-19/loadrunner-%E4%B8%AD%E8%BF%9B%E8%A1%8C-http-%E6%B5%8B%E8%AF%95%E6%97%B6%E4%BD%BF-keep-alive-%E7%94%9F%E6%95%88%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
             <pubDate>Wed, 18 Jun 2014 18:23:16 +0200</pubDate>
             <description>
@@ -4624,6 +4826,7 @@ sudo rm -rf /Users.bak
         <item>
             <title>VS2010 环境中调试 IE ActiveX 控制时断点不起作用的问题</title>
             <link>https://glacjay.info/post/2014-06-18/vs2010-%E7%8E%AF%E5%A2%83%E4%B8%AD%E8%B0%83%E8%AF%95-ie-activex-%E6%8E%A7%E5%88%B6%E6%97%B6%E6%96%AD%E7%82%B9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+            
             <guid>https://glacjay.info/post/2014-06-18/vs2010-%E7%8E%AF%E5%A2%83%E4%B8%AD%E8%B0%83%E8%AF%95-ie-activex-%E6%8E%A7%E5%88%B6%E6%97%B6%E6%96%AD%E7%82%B9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
             <pubDate>Wed, 18 Jun 2014 16:29:01 +0200</pubDate>
             <description>
@@ -4641,6 +4844,9 @@ sudo rm -rf /Users.bak
         <item>
             <title>Richard Stallman杭州行</title>
             <link>https://www.freemindworld.com/blog/2014/140531_rms_hangzhou.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2014/140531_rms_hangzhou.shtml</guid>
             <pubDate>Sat, 31 May 2014 15:46:52 +0200</pubDate>
             <description>
@@ -4670,6 +4876,9 @@ sudo rm -rf /Users.bak
         <item>
             <title>Richard Stallman演讲实录</title>
             <link>https://www.freemindworld.com/blog/2014/140531_rms_speech.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
             <guid>https://www.freemindworld.com/blog/2014/140531_rms_speech.shtml</guid>
             <pubDate>Sat, 31 May 2014 15:20:12 +0200</pubDate>
             <description>
@@ -4800,6 +5009,7 @@ sudo rm -rf /Users.bak
         <item>
             <title>OpenSSL 与 WinSock2 配合使用时遇到的一个坑</title>
             <link>https://glacjay.info/post/2014-03-29/openssl-%E4%B8%8E-winsock2-%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/</link>
+            
             <guid>https://glacjay.info/post/2014-03-29/openssl-%E4%B8%8E-winsock2-%E9%85%8D%E5%90%88%E4%BD%BF%E7%94%A8%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/</guid>
             <pubDate>Sat, 29 Mar 2014 16:06:38 +0100</pubDate>
             <description>
@@ -4856,6 +5066,9 @@ while (1)
         <item>
             <title>Notepad++ plugin local exploit</title>
             <link>http://www.sunjw.us/blog/npp-plugin-exploit/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/npp-plugin-exploit/</guid>
             <pubDate>Sun, 01 Dec 2013 07:00:15 +0100</pubDate>
             <description>
@@ -4888,6 +5101,9 @@ while (1)
         <item>
             <title>JSToolNpp 1.16 Released</title>
             <link>http://www.sunjw.us/blog/jstoolnpp-1-16-released/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/jstoolnpp-1-16-released/</guid>
             <pubDate>Sun, 20 Oct 2013 11:25:03 +0200</pubDate>
             <description>
@@ -4910,6 +5126,9 @@ while (1)
         <item>
             <title>Build CyanogenMod 10.2 for Nexus 4</title>
             <link>http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/</guid>
             <pubDate>Sun, 08 Sep 2013 04:40:16 +0200</pubDate>
             <description>
@@ -4931,6 +5150,9 @@ while (1)
         <item>
             <title>fHash 1.8 Released</title>
             <link>http://www.sunjw.us/blog/fhash-1-8-released/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/fhash-1-8-released/</guid>
             <pubDate>Tue, 03 Sep 2013 16:42:27 +0200</pubDate>
             <description>
@@ -4952,6 +5174,9 @@ Fix other bugs</p>
         <item>
             <title>用 WinDbg 调试符号不全的程序</title>
             <link>http://www.sunjw.us/blog/windbg-debug-fhash/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/windbg-debug-fhash/</guid>
             <pubDate>Thu, 22 Aug 2013 16:47:12 +0200</pubDate>
             <description>
@@ -5022,6 +5247,9 @@ u 7c81f2b9
         <item>
             <title>JSToolNpp 1.15 Released</title>
             <link>http://www.sunjw.us/blog/jstoolnpp-1-15-released/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/jstoolnpp-1-15-released/</guid>
             <pubDate>Tue, 09 Jul 2013 18:10:18 +0200</pubDate>
             <description>
@@ -5047,6 +5275,9 @@ u 7c81f2b9
         <item>
             <title>Apple WWDC 2013 Keynote 全场视频下载</title>
             <link>http://www.sunjw.us/blog/apple-wwdc-2013-keynote-video-download/</link>
+            
+            <author>sunjw</author>
+            
             <guid>http://www.sunjw.us/blog/apple-wwdc-2013-keynote-video-download/</guid>
             <pubDate>Tue, 11 Jun 2013 07:48:19 +0200</pubDate>
             <description>
@@ -5063,6 +5294,9 @@ u 7c81f2b9
         <item>
             <title>2012：变革</title>
             <link>http://wangcongming.info/2013/01/2012%ef%bc%9a%e5%8f%98%e9%9d%a9/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2013/01/2012%ef%bc%9a%e5%8f%98%e9%9d%a9/</guid>
             <pubDate>Tue, 01 Jan 2013 16:32:17 +0100</pubDate>
             <description>
@@ -5118,6 +5352,9 @@ u 7c81f2b9
         <item>
             <title>一名程序员的中期答卷 — 序</title>
             <link>http://wangcongming.info/2012/09/%e4%b8%80%e5%90%8d%e7%a8%8b%e5%ba%8f%e5%91%98%e7%9a%84%e4%b8%ad%e6%9c%9f%e7%ad%94%e5%8d%b7-%e5%ba%8f/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2012/09/%e4%b8%80%e5%90%8d%e7%a8%8b%e5%ba%8f%e5%91%98%e7%9a%84%e4%b8%ad%e6%9c%9f%e7%ad%94%e5%8d%b7-%e5%ba%8f/</guid>
             <pubDate>Sat, 15 Sep 2012 14:59:48 +0200</pubDate>
             <description>
@@ -5148,6 +5385,9 @@ u 7c81f2b9
         <item>
             <title>如果可以穿越，我想对年少的自己说：</title>
             <link>http://wangcongming.info/2012/02/%e5%a6%82%e6%9e%9c%e5%8f%af%e4%bb%a5%e7%a9%bf%e8%b6%8a%ef%bc%8c%e6%88%91%e6%83%b3%e5%af%b9%e5%b9%b4%e5%b0%91%e7%9a%84%e8%87%aa%e5%b7%b1%e8%af%b4%ef%bc%9a/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2012/02/%e5%a6%82%e6%9e%9c%e5%8f%af%e4%bb%a5%e7%a9%bf%e8%b6%8a%ef%bc%8c%e6%88%91%e6%83%b3%e5%af%b9%e5%b9%b4%e5%b0%91%e7%9a%84%e8%87%aa%e5%b7%b1%e8%af%b4%ef%bc%9a/</guid>
             <pubDate>Sun, 19 Feb 2012 18:20:35 +0100</pubDate>
             <description>
@@ -5182,6 +5422,9 @@ u 7c81f2b9
         <item>
             <title>RSS feed 迁址</title>
             <link>http://wangcongming.info/2012/02/rss-feed-%e8%bf%81%e5%9d%80/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2012/02/rss-feed-%e8%bf%81%e5%9d%80/</guid>
             <pubDate>Sun, 19 Feb 2012 17:50:39 +0100</pubDate>
             <description>
@@ -5202,6 +5445,9 @@ u 7c81f2b9
         <item>
             <title>我是怎么管理密码的</title>
             <link>http://wangcongming.info/2011/12/%e6%88%91%e6%98%af%e6%80%8e%e4%b9%88%e7%ae%a1%e7%90%86%e5%af%86%e7%a0%81%e7%9a%84/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2011/12/%e6%88%91%e6%98%af%e6%80%8e%e4%b9%88%e7%ae%a1%e7%90%86%e5%af%86%e7%a0%81%e7%9a%84/</guid>
             <pubDate>Mon, 26 Dec 2011 17:59:03 +0100</pubDate>
             <description>
@@ -5260,6 +5506,9 @@ u 7c81f2b9
         <item>
             <title>用户：如何判断某网站程序员是不是傻逼（关于密码）</title>
             <link>http://wangcongming.info/2011/12/%e7%94%a8%e6%88%b7%ef%bc%9a%e5%a6%82%e4%bd%95%e5%88%a4%e6%96%ad%e6%9f%90%e7%bd%91%e7%ab%99%e7%a8%8b%e5%ba%8f%e5%91%98%e6%98%af%e4%b8%8d%e6%98%af%e5%82%bb%e9%80%bc/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2011/12/%e7%94%a8%e6%88%b7%ef%bc%9a%e5%a6%82%e4%bd%95%e5%88%a4%e6%96%ad%e6%9f%90%e7%bd%91%e7%ab%99%e7%a8%8b%e5%ba%8f%e5%91%98%e6%98%af%e4%b8%8d%e6%98%af%e5%82%bb%e9%80%bc/</guid>
             <pubDate>Mon, 26 Dec 2011 15:25:00 +0100</pubDate>
             <description>
@@ -5292,6 +5541,9 @@ u 7c81f2b9
         <item>
             <title>怎样保护用户密码才靠谱</title>
             <link>http://wangcongming.info/2011/12/%e6%80%8e%e6%a0%b7%e4%bf%9d%e6%8a%a4%e7%94%a8%e6%88%b7%e5%af%86%e7%a0%81%e6%89%8d%e9%9d%a0%e8%b0%b1/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2011/12/%e6%80%8e%e6%a0%b7%e4%bf%9d%e6%8a%a4%e7%94%a8%e6%88%b7%e5%af%86%e7%a0%81%e6%89%8d%e9%9d%a0%e8%b0%b1/</guid>
             <pubDate>Wed, 21 Dec 2011 19:41:07 +0100</pubDate>
             <description>
@@ -5386,6 +5638,9 @@ u 7c81f2b9
         <item>
             <title>The so called “social software development”</title>
             <link>http://wangcongming.info/2011/12/ssd/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2011/12/ssd/</guid>
             <pubDate>Sun, 18 Dec 2011 11:34:05 +0100</pubDate>
             <description>
@@ -5512,6 +5767,7 @@ u 7c81f2b9
         <item>
             <title>修改 OpenVPN 实现加密算法的自动协商</title>
             <link>https://glacjay.info/post/2011-09-17/%E4%BF%AE%E6%94%B9-openvpn-%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8D%8F%E5%95%86/</link>
+            
             <guid>https://glacjay.info/post/2011-09-17/%E4%BF%AE%E6%94%B9-openvpn-%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8D%8F%E5%95%86/</guid>
             <pubDate>Sat, 17 Sep 2011 02:00:00 +0200</pubDate>
             <description>
@@ -5550,6 +5806,7 @@ key_type-&gt;hmac_length = EVP_MD_size (session-&gt;opt-&gt;key_type-&gt;digest)
         <item>
             <title>编写自己的 Web 版 Google Reader 客户端</title>
             <link>https://glacjay.info/post/2011-08-11/%E7%BC%96%E5%86%99%E8%87%AA%E5%B7%B1%E7%9A%84-web-%E7%89%88-google-reader-%E5%AE%A2%E6%88%B7%E7%AB%AF/</link>
+            
             <guid>https://glacjay.info/post/2011-08-11/%E7%BC%96%E5%86%99%E8%87%AA%E5%B7%B1%E7%9A%84-web-%E7%89%88-google-reader-%E5%AE%A2%E6%88%B7%E7%AB%AF/</guid>
             <pubDate>Thu, 11 Aug 2011 02:00:00 +0200</pubDate>
             <description>
@@ -5600,6 +5857,7 @@ key_type-&gt;hmac_length = EVP_MD_size (session-&gt;opt-&gt;key_type-&gt;digest)
         <item>
             <title>[转载] Compilers: what are you thinking about?</title>
             <link>https://glacjay.info/post/2011-07-26/%E8%BD%AC%E8%BD%BD-compilers-what-are-you-thinking-about/</link>
+            
             <guid>https://glacjay.info/post/2011-07-26/%E8%BD%AC%E8%BD%BD-compilers-what-are-you-thinking-about/</guid>
             <pubDate>Tue, 26 Jul 2011 02:00:00 +0200</pubDate>
             <description>
@@ -5639,6 +5897,7 @@ key_type-&gt;hmac_length = EVP_MD_size (session-&gt;opt-&gt;key_type-&gt;digest)
         <item>
             <title>[翻译] 用 Ruby 写编译器之六：匿名函数 lambda</title>
             <link>https://glacjay.info/post/2011-05-21/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E5%85%AD%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0-lambda/</link>
+            
             <guid>https://glacjay.info/post/2011-05-21/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E5%85%AD%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0-lambda/</guid>
             <pubDate>Sat, 21 May 2011 02:00:00 +0200</pubDate>
             <description>
@@ -5800,6 +6059,7 @@ $
         <item>
             <title>[翻译] 用 Ruby 写编译器之五：整数常量，以及 if 语句</title>
             <link>https://glacjay.info/post/2011-05-17/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%BA%94%E6%95%B4%E6%95%B0%E5%B8%B8%E9%87%8F%E4%BB%A5%E5%8F%8A-if-%E8%AF%AD%E5%8F%A5/</link>
+            
             <guid>https://glacjay.info/post/2011-05-17/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%BA%94%E6%95%B4%E6%95%B0%E5%B8%B8%E9%87%8F%E4%BB%A5%E5%8F%8A-if-%E8%AF%AD%E5%8F%A5/</guid>
             <pubDate>Tue, 17 May 2011 02:00:00 +0200</pubDate>
             <description>
@@ -6034,6 +6294,7 @@ $
         <item>
             <title>[翻译] 用 Ruby 写编译器之四：自定义函数，以及运行时支持</title>
             <link>https://glacjay.info/post/2011-05-09/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E5%9B%9B%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%90%E8%A1%8C%E6%97%B6%E6%94%AF%E6%8C%81/</link>
+            
             <guid>https://glacjay.info/post/2011-05-09/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E5%9B%9B%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%90%E8%A1%8C%E6%97%B6%E6%94%AF%E6%8C%81/</guid>
             <pubDate>Mon, 09 May 2011 02:00:00 +0200</pubDate>
             <description>
@@ -6176,6 +6437,7 @@ $
         <item>
             <title>[翻译] 用 Ruby 写编译器之三：语句序列，以及子表达式</title>
             <link>https://glacjay.info/post/2011-05-02/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%B8%89%E8%AF%AD%E5%8F%A5%E5%BA%8F%E5%88%97%E4%BB%A5%E5%8F%8A%E5%AD%90%E8%A1%A8%E8%BE%BE%E5%BC%8F/</link>
+            
             <guid>https://glacjay.info/post/2011-05-02/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%B8%89%E8%AF%AD%E5%8F%A5%E5%BA%8F%E5%88%97%E4%BB%A5%E5%8F%8A%E5%AD%90%E8%A1%A8%E8%BE%BE%E5%BC%8F/</guid>
             <pubDate>Mon, 02 May 2011 02:00:00 +0200</pubDate>
             <description>
@@ -6322,6 +6584,7 @@ $
         <item>
             <title>[翻译] 用 Ruby 写编译器之二：函数调用，以及 Hello World</title>
             <link>https://glacjay.info/post/2011-04-29/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%BA%8C%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%BB%A5%E5%8F%8A-hello-world/</link>
+            
             <guid>https://glacjay.info/post/2011-04-29/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%BA%8C%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%BB%A5%E5%8F%8A-hello-world/</guid>
             <pubDate>Fri, 29 Apr 2011 02:00:00 +0200</pubDate>
             <description>
@@ -6534,6 +6797,7 @@ Hello World
         <item>
             <title>[翻译] 用 Ruby 写编译器之一：一个简单的 main 函数模板</title>
             <link>https://glacjay.info/post/2011-04-11/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%B8%80%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-main-%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/</link>
+            
             <guid>https://glacjay.info/post/2011-04-11/%E7%BF%BB%E8%AF%91-%E7%94%A8-ruby-%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8%E4%B9%8B%E4%B8%80%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-main-%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/</guid>
             <pubDate>Mon, 11 Apr 2011 02:00:00 +0200</pubDate>
             <description>
@@ -6645,6 +6909,9 @@ Compiler.new.compile(prog)
         <item>
             <title>工作日志：从突击成长，到稳定发挥</title>
             <link>http://wangcongming.info/2011/03/%e5%b7%a5%e4%bd%9c%e6%97%a5%e5%bf%97%ef%bc%9a%e4%bb%8e%e7%aa%81%e5%87%bb%e6%88%90%e9%95%bf%ef%bc%8c%e5%88%b0%e7%a8%b3%e5%ae%9a%e5%8f%91%e6%8c%a5/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2011/03/%e5%b7%a5%e4%bd%9c%e6%97%a5%e5%bf%97%ef%bc%9a%e4%bb%8e%e7%aa%81%e5%87%bb%e6%88%90%e9%95%bf%ef%bc%8c%e5%88%b0%e7%a8%b3%e5%ae%9a%e5%8f%91%e6%8c%a5/</guid>
             <pubDate>Fri, 11 Mar 2011 22:58:14 +0100</pubDate>
             <description>
@@ -6673,6 +6940,9 @@ Compiler.new.compile(prog)
         <item>
             <title>豆瓣数据存疑</title>
             <link>http://wangcongming.info/2010/12/%e8%b1%86%e7%93%a3%e6%95%b0%e6%8d%ae%e5%ad%98%e7%96%91/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2010/12/%e8%b1%86%e7%93%a3%e6%95%b0%e6%8d%ae%e5%ad%98%e7%96%91/</guid>
             <pubDate>Sat, 18 Dec 2010 16:20:58 +0100</pubDate>
             <description>
@@ -6710,6 +6980,9 @@ Compiler.new.compile(prog)
         <item>
             <title>SaaS 的通用架构（兼回答我在做什么）</title>
             <link>http://wangcongming.info/2010/12/saas%e7%9a%84%e9%80%9a%e7%94%a8%e6%9e%b6%e6%9e%84%ef%bc%88%e5%85%bc%e5%9b%9e%e7%ad%94%e6%88%91%e5%9c%a8%e5%81%9a%e4%bb%80%e4%b9%88%ef%bc%89/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2010/12/saas%e7%9a%84%e9%80%9a%e7%94%a8%e6%9e%b6%e6%9e%84%ef%bc%88%e5%85%bc%e5%9b%9e%e7%ad%94%e6%88%91%e5%9c%a8%e5%81%9a%e4%bb%80%e4%b9%88%ef%bc%89/</guid>
             <pubDate>Tue, 14 Dec 2010 15:49:26 +0100</pubDate>
             <description>
@@ -6729,6 +7002,9 @@ Compiler.new.compile(prog)
         <item>
             <title>“国产”“双核”浏览器是个好东西</title>
             <link>http://wangcongming.info/2010/12/%e2%80%9c%e5%9b%bd%e4%ba%a7%e2%80%9d%e2%80%9c%e5%8f%8c%e6%a0%b8%e2%80%9d%e6%b5%8f%e8%a7%88%e5%99%a8%e6%98%af%e4%b8%aa%e5%a5%bd%e4%b8%9c%e8%a5%bf/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2010/12/%e2%80%9c%e5%9b%bd%e4%ba%a7%e2%80%9d%e2%80%9c%e5%8f%8c%e6%a0%b8%e2%80%9d%e6%b5%8f%e8%a7%88%e5%99%a8%e6%98%af%e4%b8%aa%e5%a5%bd%e4%b8%9c%e8%a5%bf/</guid>
             <pubDate>Thu, 02 Dec 2010 03:30:56 +0100</pubDate>
             <description>
@@ -6792,6 +7068,9 @@ Compiler.new.compile(prog)
         <item>
             <title>“SNS”和“微博”——理念相克，试图揉合可能适得其反</title>
             <link>http://wangcongming.info/2010/11/sns%e5%92%8c%e5%be%ae%e5%8d%9a%e2%80%94%e7%90%86%e5%bf%b5%e7%9b%b8%e5%85%8b%ef%bc%8c%e8%af%95%e5%9b%be%e6%8f%89%e5%90%88%e5%8f%af%e8%83%bd%e9%80%82%e5%be%97%e5%85%b6%e5%8f%8d/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2010/11/sns%e5%92%8c%e5%be%ae%e5%8d%9a%e2%80%94%e7%90%86%e5%bf%b5%e7%9b%b8%e5%85%8b%ef%bc%8c%e8%af%95%e5%9b%be%e6%8f%89%e5%90%88%e5%8f%af%e8%83%bd%e9%80%82%e5%be%97%e5%85%b6%e5%8f%8d/</guid>
             <pubDate>Mon, 29 Nov 2010 18:40:58 +0100</pubDate>
             <description>
@@ -6827,6 +7106,9 @@ Compiler.new.compile(prog)
         <item>
             <title>工作日志：我们不是一个人在战斗</title>
             <link>http://wangcongming.info/2010/11/%e5%b7%a5%e4%bd%9c%e6%97%a5%e5%bf%97%ef%bc%9a%e6%88%91%e4%bb%ac%e4%b8%8d%e6%98%af%e4%b8%80%e4%b8%aa%e4%ba%ba%e5%9c%a8%e6%88%98%e6%96%97/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2010/11/%e5%b7%a5%e4%bd%9c%e6%97%a5%e5%bf%97%ef%bc%9a%e6%88%91%e4%bb%ac%e4%b8%8d%e6%98%af%e4%b8%80%e4%b8%aa%e4%ba%ba%e5%9c%a8%e6%88%98%e6%96%97/</guid>
             <pubDate>Tue, 02 Nov 2010 01:22:38 +0100</pubDate>
             <description>
@@ -6884,6 +7166,9 @@ Compiler.new.compile(prog)
         <item>
             <title>价值的迷思</title>
             <link>http://wangcongming.info/2010/09/%e4%bb%b7%e5%80%bc%e7%9a%84%e8%bf%b7%e6%80%9d/</link>
+            
+            <author>Wang Congming</author>
+            
             <guid>http://wangcongming.info/2010/09/%e4%bb%b7%e5%80%bc%e7%9a%84%e8%bf%b7%e6%80%9d/</guid>
             <pubDate>Fri, 10 Sep 2010 06:30:06 +0200</pubDate>
             <description>
