@@ -7,8 +7,110 @@
         <link>http://planet.nanjinglug.org</link>
         <atom:link href="http://planet.nanjinglug.org/rss.xml" rel="self" type="application/rss+xml"/>
         <description>寻找南京 Linux 爱好者。每月第二个周末见！</description>
-        <pubDate>Sat, 18 Feb 2017 10:19:05 +0100</pubDate>
+        <pubDate>Mon, 27 Feb 2017 15:30:14 +0100</pubDate>
         <generator>Planet.js (https://github.com/phoenixlzx/planet.js)</generator>
+        
+        <item>
+            <title>一张复杂网络的生长过程</title>
+            <link>http://jaseywang.me/2017/02/27/%e4%b8%80%e5%bc%a0%e5%a4%8d%e6%9d%82%e7%bd%91%e7%bb%9c%e7%9a%84%e7%94%9f%e9%95%bf%e8%bf%87%e7%a8%8b/</link>
+            
+            <author>jaseywang</author>
+            
+            <guid>http://jaseywang.me/2017/02/27/%e4%b8%80%e5%bc%a0%e5%a4%8d%e6%9d%82%e7%bd%91%e7%bb%9c%e7%9a%84%e7%94%9f%e9%95%bf%e8%bf%87%e7%a8%8b/</guid>
+            <pubDate>Mon, 27 Feb 2017 15:30:14 +0100</pubDate>
+            <description>
+                
+                  虽然不是网络出身，但是对于我们全网架构的「生长」过程还是比较了解的，分几个重要的时间点讲讲里面有意思的事情。    15 年下旬    公司业务还没起飞，全网架构简单，应付一天 1k+ 的订单了（有效挂号单）绰绰有余，机房跟第三方的卡管机构通过一根 10M 的 SDH 专线
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>
+	虽然不是网络出身，但是对于我们全网架构的「生长」过程还是比较了解的，分几个重要的时间点讲讲里面有意思的事情。
+</p>
+<p>
+	15 年下旬
+</p>
+<p>
+	公司业务还没起飞，全网架构简单，应付一天 1k+ 的订单了（有效挂号单）绰绰有余，机房跟第三方的卡管机构通过一根 10M 的 SDH 专线打通，所有到院方的请求先经过第三方的卡管机构，由其转发再进行业务层面的处理，实际的带宽峰值不到 500kbps。<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/arch_v1.jpg" />
+</p>
+<p>
+	16 年初
+</p>
+<p>
+	正式开始批量接入三甲医院，同时跟医院数据打通的方式也由原先的经过第三方卡管机构的非直连方式变成了直连方式，所有接入的院区通过两根双活的专线跟我们机房打通，两根专线的意义很重大，一旦一根专线被挖掘机挖断，可以在 1s 之内切换到另外一根，上层业务通过重试机制可以做到几乎无感知。新闻上报道的某某地区由于光纤被挖掘机挖断造成网络中断的问题在后来专线数量增加的情况下时有发生，但是到目前为止对于这种双主的架构并无影响，考虑到成本等因素，暂时不会做 N + 2。
+</p>
+<p>
+	为了控制 IP 地址的分配以及部分安全性的考虑，跟院方接入全部采用双向 nat 的方式，<a href="http://jaseywang.me/2014/08/30/nat-%E8%B7%9F%E9%BB%98%E8%AE%A4%E7%BD%91%E5%85%B3%E7%9A%84%E9%97%AE%E9%A2%98dual-nat/">双向 nat 的问题之前的博客有过介绍</a>，只不过之前是通过 iptables 实现，本次通过专业的路由设备实现。经过双向的 IP 地址转后，我们对院方的地址全部隐藏，另外由于院内自助机的 IP 全部由我们自行分配，通过双向 nat 之后，我们有更大的自主权。下面这张图演示了 IP 地址转换的过程:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/dual_nat.jpg" />
+</p>
+<p>
+	与此同时，为了快速实现新接入医院的稳定上线，保守采用了双防火墙双路由器的策略，通过 BGP/BFD 协议实现单条线路失败的快速收敛，总成本控制在 20K 左右:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/dl_v2.jpg" />
+</p>
+<p>
+	医院的数据通过一根 2M 的专线，一根 10M 的专线汇聚到我们的核心机房，核心机房通过主流的三层结构互联。
+</p>
+<p>
+	对于办公网来说，为了实现访问 google 等国际联路，我们通过在办公网的路由器上设立 GRE 隧道的方式连接到国内的专线服务商，再由该服务商进行国际流量的转发，由于跨了国内的公网环境，会出现偶尔的延时增高以及中断的问题。
+</p>
+<p>
+	16 年中
+</p>
+<p>
+	随着接入院区的爆发式增长，成本成了很大的一个问题，原先所有院区接入同一个核心机房的方式不仅成本无法得到控制，单点也成为了一个迫在眉睫的问题。原先三层的简单架构也无法满足日后的水平横向扩展。为了解决上面的问题，花了大量时间跟北京具有运营商资质的公司进行了大量的商务沟通，实现了专线、带宽资源的大幅度下降。在保证稳定性的前提下，2M 的专线做到了平均 450RMB/m，10M 的 1500RMB/m，50M 的 4000RMB/m，100M 的 6000RMB，同时引入了阶梯价格的策略，量大会更加具有竞争力，当然三大运营商的价格会比鹏博士、天地祥云的高些，毕竟稳定性也高的多（这个后来验证确实如此）。最终跟北京三大运营商以及几家准运营商达成了友好的合作，实现了双方的共赢。上面的问题谈妥了，接下来自然引入了下面几个核心思想:<br />
+	1. 链路类型，优先选用 SDH/MSTP 协议的，G.703 次之。<br />
+	2. 运营商，成本跟稳定性下的权衡，优先选用电信/电信通，联通/天地祥云次之。<br />
+	3. 专线接口类型，优先选用双绞线电口，光纤单模次之，方便排查问题，同时默认接入千兆全双工，百兆全双工作为备选。<br />
+	4. 建立中立的中转机房，所有院区的专线先通过中转机房再进入核心机房，实现了跨区域专线的成本以及稳定性的大幅提升。<br />
+	5. 在上条的基础上，全网引入骨干网 msr（metropolitan small router）、核心网 csr（core small router）、汇聚网 csw (core switch)，专线 dll（dedicated leased line），边界路由器 edr（edge router），边界交换机 esw（edge switch）。优先选择中低端廉价设备，比如 msr 使用 Cisco2921/K9，csw 使用 WS-C3750X-24T-F，esw 使用 WS-2960X-24TS-L 等型号，通过 HSRP/BFD 等协议实现分而治之。
+</p>
+<p>
+	着重说下最后的两点，对于第 4 点，其架构图如下:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/transfer_idc.jpg" />
+</p>
+<p>
+	可以看到，这一阶段引入了 msr/csw 等角色，将运营商的专线接入诸如鹏博士、天地祥云等中立机房的进行中转，最终汇聚到核心的机房。每一台中转机房的 msr 承载 20 条左右的专线，通过上方的 csw 进行线性扩展，目前每条专线的带宽在 2~10M 左右，所以不会给机器造成很大的压力。
+</p>
+<p>
+	对于第 5 点，在核心骨干汇聚分成之后，一方面是实现了多网分离，即生产网、测试网、OOB 网，办公网以及到院方的专线网的分离，极大的方便了 tcp/ip 层面的访问控制，在这个阶段，所有对人的访问控制（人访问线上线下）全部通过在网络设备上加白名单的方式实现，算是实现了基础的访问控制，虽然比较繁琐。另外一方面全网由之前的树根结构扩展到了树根枝干末梢叶子的网状结构，扩展性以及冗余性都有了很大的提高，下面这张图是相对比较成型的网络拓扑:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/arch_v2.jpg" />
+</p>
+<p>
+	这个阶段，除了院内、机房的大幅度改造之外，办公网尤其是国际网络也做了优化，从原先的 GRE 隧道方式一步到位成了专线直连方式，办公网通过专线直接到服务商节点，节点直接到第一线的香港节点，同时，为了避免所有流量都走国际网络，我们在内网通过 DNS view 的方式，将主要被墙的域名解析丢给 Google DNS，其余则解析丢给国内 DNS，DNS 层面解析结束之后，TCP/HTTP 的流量则通过在路由层面通过不同的 ACL 规则实现国内国际流量的划分。下图是日常访问 Google 的 ICMP 延时:
+</p>
+<p>
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/google_latency_dll.jpg" />
+</p>
+<p>
+	16 年底
+</p>
+<p>
+	为了进一步控制成本，响应国产化的号召，原先一家院区 4 台设备（2 台防火墙、2 台路由器）的架构，在保证稳定性不变的情况下，优化成了由 2 台带路由功能的防火墙(USG 6306)组成的专线网络:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/net/hospital/dl_v3.jpg" />
+</p>
+<p>
+	在同样秒级切换的情况下，成本降低到了原先的一半不到。同时，考虑到后续接入非三甲院区的特殊性，目前正在调研舍弃大型物理硬件，通过 4G 网卡配套 VPN 的方式来进行网络层面的直连。
+</p>
+<p>
+	在优化成本以及性能的基础上，还进行了下面几点的优化:<br />
+	1. 通过 PowerDNS 的 API 实现了上千条内网的 DNS 正反向解析，这对于使用 mtr 细颗粒度的排查定位问题提供了很大的帮助<br />
+	2. QoS 的优化，优先走生产上的业务流量，其次生产上的非核心（日志、监控等），在 msr 上通过 CoPP 实现<br />
+	3. 全网设备的配置备份问题，所有设备的配置每日自动备份到内网的 gitlab 上<br />
+	4. 为了实现生产网访问被墙的资源，在办公网搞了两套 <a href="https://tinyproxy.github.io/">tinyproxy</a>，生产的机器通过 http_proxy，访问前端的 Haproxy 实现了网络资源的自由访问<br />
+	5. 办公网无线的 LDAP 认证，这块在全网统一账户实践有所涉及
+</p>
+<p>
+	从 15 年底到 16 年底的一年多时间，通过不断的演变，一个相对比较完善有很强冗余性的大网基本建设完成，该架构支撑目前每天的 100k 订单（有没有发现一年期间增长了多少倍），40k 的有效挂号量没有任何瓶颈。
+</p>
+<p>
+	在建设初期遇到不少跟院方通信的网络中断问题，起初做贼心虚以为是自身的问题，后来通过监控不断的完善，实现了分钟级别的问题发现与诊断。
+</p>
+<p>
+	下面列一些有趣的问题：<br />
+	最常见的，某院区由于专线被挖断，单条专线中断，平均一个月一次。院方机房全部或者部分掉电，导致所有专线中断；院方机房制冷设备故障，导致专线设备罢工死机。院方线下自助机网络设备故障，导致该区域自助机全部脱网，类似的事情不一而足。再比如我们的 RPC 服务访问某院区 HIS，凡是下一跳为 10.222.0.45 均能够访问终点 IP，凡是下一跳为 10.222.0.41 则无法访问同样的的终点 IP，经过抓包发现由于院方的两台核心路由故障导致。最喜剧的性的事，某院区偷懒将我们跟 HIS 直连的 IP 划分到他们的核心网络，由于 arp-proxy 的问题导致全院 HIS 宕机数个小时。当然医院 HIS 宕机其实是件很频繁的事，之前仅仅因为处在一个封闭落后并且无知的环境，很多时候重启应用重启机器问题就算是绕过去了，现在一下子暴露在了一支「正规军」面前，一下子露馅了。</p>
+<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2015/07/05/router-matters/">Router Matters</a></li><li><a href="http://jaseywang.me/2014/11/15/%e4%b8%8d%e8%a6%81%e4%b9%b1%e7%94%a8-tcp-enc-flag/">不要乱用 TCP ECN flag</a></li><li><a href="http://jaseywang.me/2015/04/27/tcp_keepalive_time-and-rst-flag-in-nat-environment/">tcp_keepalive_time and rst Flag in NAT Environment</a></li><li><a href="http://jaseywang.me/2014/12/11/pstop-cheatsheet/">ps(top) cheatsheet</a></li><li><a href="http://jaseywang.me/2016/02/12/openvpn-connectivity-issue-in-public-network/">OpenVPN Connectivity Issue in Public Network</a></li></ul><div></div></div>]]></content:encoded>
+            
+        </item>
         
         <item>
             <title>新轮子：Planet.js</title>
@@ -4271,75 +4373,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <p>
 	We took nothing back but a bag of kampot black pepper corn, so fragrant and fresh.</p>
 <div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2015/08/16/metrics-dashboard-comparision-for-linux-desktop/">Metrics Dashboard Comparision for Linux Desktop</a></li><li><a href="http://jaseywang.me/2014/04/10/thailand-%e5%b0%8f%e6%b8%b8koh-samui-chiang-mai-bangkok/">Thailand 小游(Koh Samui, Chiang Mai, Bangkok)</a></li><li><a href="http://jaseywang.me/2015/04/23/migrating-github-enterprise-from-beijing-to-shanghai/">Migrating GitHub Enterprise From Beijing To Shanghai</a></li><li><a href="http://jaseywang.me/2015/05/01/installing-debian-jessie-on-loongson-notebook8089_b-with-ubuntu-keyboard-suits/">Installing Debian jessie on Loongson notebook(8089_B) with…</a></li><li><a href="http://jaseywang.me/2015/02/16/umeng-operations-infrastructure-practice/">Umeng Operations Infrastructure &amp; Practice</a></li></ul><div></div></div>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>How Many Non-Persistent Connections Can Nginx/Tengine Support Concurrently</title>
-            <link>http://jaseywang.me/2015/06/04/how-many-non-persistent-connections-can-nginxtengine-support-concurrently/</link>
-            
-            <author>jaseywang</author>
-            
-            <guid>http://jaseywang.me/2015/06/04/how-many-non-persistent-connections-can-nginxtengine-support-concurrently/</guid>
-            <pubDate>Thu, 04 Jun 2015 08:00:39 +0200</pubDate>
-            <description>
-                
-                  Recently, I took over a product line which has horrible performance issues and our customers complain a lot. The architecture is qute sim
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>
-	Recently, I took over a product line which has horrible performance issues and our customers complain a lot. The architecture is qute simple, clients, which are SDKs installed in our customers' handsets send POST requests to a cluster of Tengine servers, via a cluster of IPVS load balancers, actually the Tengine is a highly customized Nginx server, it comes with tons of handy features. then, the Tengine proxy redirects the requests to the upstream servers, after some computations, the app servers will send the results to MongoDB.
-</p>
-<p>
-	When using curl to send a POST request like this:<br />
-	$ curl -X POST -H &quot;Content-Type: application/json&quot; -d '{&quot;name&quot;: &quot;jaseywang&quot;,&quot;sex&quot;: &quot;1&quot;,&quot;birthday&quot;: &quot;19990101&quot;}' http://api.jaseywang.me/person -v
-</p>
-<p>
-	Every 10 tries, you'll probably get 8 or even more failure responses with &quot;connection timeout&quot; back.
-</p>
-<p>
-	After some basic debugging, I find that Nginx is quite abnormal with TCP accept queue totally full, therefore, it's explainable that the client get unwanted response. The CPU and memory util is acceptable, but the networking goes wild cuz packets nics received is extremely tremendous, about 300kpps average, 500kpps at peak times, since the package number is so large, the interrupts is correspondingly quite high. Fortunately, these Nginx servers all ship with 10G network cards, with mode 4 bonding, some link layer and lower level are also pre-optimizated like TSO/GSO/GRO/LRO, ring buffer size, etc. I havn't seen any package drop/overrun using ifconfig or similar tools.
-</p>
-<p>
-	After some package capturing, I found more teffifying facts, almost all of the incoming packagea are less than 75Byte. Most of these package are non-persistent. They start the 3-way handshake, send one or a few more usually less than 2 if need TCP sengment HTTP POST request, and exist with 4-way handshake. Besides that, these clients usually resend the same requests every 10 minutes or longer, the interval time is set by the app's developer and is beyond our control. That means:
-</p>
-<p>
-	1. More than 80% of the traffic are purely small TCP packages, which will have significant impact on network card and CPU. You can get the overall ideas about the percent with the below image. Actually, the percent is about 88%.<br />
-	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/webserver/pkg_size.png" />
-</p>
-<p>
-	2. Since they can't keep the connections persistent, just TCP 3-wayhandshak, one or more POST, TCP 4-way handshake, quite simple. You have no way to reuse the connection. That's OK for network card and CPU, but it's a nightmare for Nginx, even I enlarge the backlog, the TCP accept queue quickly becomes full after reloading Nginx. The below two images show the a client packet's lifetime. The first one is the packet capture between load balance IPVS and Nginx, the second one is the communications between Nginx and upstream server.<br />
-	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/webserver/oc_ipvs_ngx.png" /><br />
-	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/webserver/oc_ngx_upstream.png" />
-</p>
-<p>
-	3. It's quite expensive to set up a TCP connection, especially when Nginx runs out of resources. I can see during that period, the network traffic it quite large, but the new request connected per second is qute small compare to the normal. HTTP 1.0 needs client to specify Connection: Keep-Alive in the request header to enable persistent connection, and HTTP 1.1 enables by default. After turning off, not so much effect.
-</p>
-<p>
-	It now have many evidences shows that our 3 Nginx servers, yes, its' 3, we never thought Nginx will becomes bottleneck one day, are half broken in such a harsh environment. How mnay connections can it keep and how many new connections can it accept? I need to run some real traffic benchmarks to get the accurate result.
-</p>
-<p>
-	Since recovering the product is the top priority, I add another 6 Nginx servers with same configurations to IPVS. With 9 servers serving the online service, it behaves normal now. Each Nginx gets about 10K qps, with 300ms response time, zero TCP queue, and 10% CPU util.
-</p>
-<p>
-	The benchmark process is not complex, remove one Nginx server(real server) from IPVS at a time, and monitor its metrics like qps, response time, TCP queue, and CPU/memory/networking/disk utils. When qps or similar metric don't goes up anymore and begins to turn round, that's usually the maximum power the server can support.
-</p>
-<p>
-	Before kicking off, make sure some key parameters or directives are setting correct, including Nginx worker_processes/worker_connections, CPU affinity to distrubute interrupts, and kernel parameter(tcp_max_syn_backlog/file-max/netdev_max_backlog/somaxconn, etc.). Keep an eye on the rmem_max/wmem_max, during my benchmark, I notice quite different results with different values.
-</p>
-<p>
-	Here are the results:<br />
-	The best performance for a single server is 25K qps, however during that period, it's not so stable, I observe a almost full queue size in TCP and some connection failures during requesting the URI, except that, everything seems normal. A conservative value is about 23K qps. That comes with 300K TCP established connections, 200Kpps, 500K interrupts and 40% CPU util.<br />
-	During that time, the total resource consumed from the IPVS perspective is 900K current connection, 600Kpps, 800Mbps, and 100K qps.<br />
-	The above benchmark was tested during 10:30PM ~ 11:30PM, the peak time usually falls between 10:00PM to 10:30PM.
-</p>
-<p>
-	Turning off your access log to cut down the IO and timestamps in TCP stack may achieve better performance, I haven't tested.
-</p>
-<p>
-	Don't confused TCP keepalievd with HTTP keeplive, they are totally diffent concept. One thing to keep in mind is that, the client-LB-Nginx-upstream mode usually has a LB<a href="http://goo.gl/JsE98U"> TCP sesstion timeout value</a> with 90s by default. that means, when client sends a request to Nginx, if Nginx doesn't response within 90s to client, LB will disconnect both end TCP connection by sending rst package in order to save LB's resource and sometimes for security reasons. In this case, you can decrease TCP keepalive parameter to workround.</p>
-<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2014/07/20/tcp-queue-%e7%9a%84%e4%b8%80%e4%ba%9b%e9%97%ae%e9%a2%98/">TCP queue 的一些问题</a></li><li><a href="http://jaseywang.me/2015/04/27/tcp_keepalive_time-and-rst-flag-in-nat-environment/">tcp_keepalive_time and rst Flag in NAT Environment</a></li><li><a href="http://jaseywang.me/2014/11/15/%e4%b8%8d%e8%a6%81%e4%b9%b1%e7%94%a8-tcp-enc-flag/">不要乱用 TCP ECN flag</a></li><li><a href="http://jaseywang.me/2014/10/23/%e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2%e4%b8%80%e4%b8%aa%e7%a8%b3%e5%ae%9a%e9%ab%98%e6%95%88%e5%8f%af%e6%89%a9%e5%b1%95%e7%9a%84%e5%89%8d%e7%ab%af/">如何部署一个稳定高效可扩展的前端</a></li><li><a href="http://jaseywang.me/2014/11/09/ipvs-%e9%a2%91%e7%b9%81-addremove-%e5%90%8e%e7%ab%af-rs-%e9%97%ae%e9%a2%98%e8%bf%bd%e6%9f%a5/">ipvs 频繁 add/remove 后端 rs 问题追查</a></li></ul><div></div></div>]]></content:encoded>
             
         </item>
         
