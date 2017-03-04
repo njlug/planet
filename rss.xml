@@ -7,8 +7,138 @@
         <link>http://planet.nanjinglug.org</link>
         <atom:link href="http://planet.nanjinglug.org/rss.xml" rel="self" type="application/rss+xml"/>
         <description>寻找南京 Linux 爱好者。每月第二个周末见！</description>
-        <pubDate>Mon, 27 Feb 2017 15:30:14 +0100</pubDate>
+        <pubDate>Sat, 04 Mar 2017 07:44:46 +0100</pubDate>
         <generator>Planet.js (https://github.com/phoenixlzx/planet.js)</generator>
+        
+        <item>
+            <title>全网统一账户实践</title>
+            <link>http://jaseywang.me/2017/03/04/%e5%85%a8%e7%bd%91%e7%bb%9f%e4%b8%80%e8%b4%a6%e6%88%b7%e5%ae%9e%e8%b7%b5/</link>
+            
+            <author>jaseywang</author>
+            
+            <guid>http://jaseywang.me/2017/03/04/%e5%85%a8%e7%bd%91%e7%bb%9f%e4%b8%80%e8%b4%a6%e6%88%b7%e5%ae%9e%e8%b7%b5/</guid>
+            <pubDate>Sat, 04 Mar 2017 07:44:46 +0100</pubDate>
+            <description>
+                
+                  分享下目前我们全网的账号管理体系。    整体的账户管理思路是分而治之。主要分为下面三类账户：  1. 办公网账户，也就是大家熟悉的域账户。对于办公网账户，全网用户一人一账户，在 OpenLDAP 的基础上做了一些开发，这是进入公司内部的大门，所有新入职的员工都会分配一个该
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>
+	分享下目前我们全网的账号管理体系。
+</p>
+<p>
+	整体的账户管理思路是分而治之。主要分为下面三类账户：<br />
+	1. 办公网账户，也就是大家熟悉的域账户。对于办公网账户，全网用户一人一账户，在 OpenLDAP 的基础上做了一些开发，这是进入公司内部的大门，所有新入职的员工都会分配一个该账号，不管是在办公室连接 Wi-Fi 还是在家连接 anyconnect VPN，访问 confluence/jira 等基础办公设置，都需要通过此账户进行登录认证。<br />
+	2. 生产网账户，主要用来访问线上、线下机器资源。工程师访问线上生产、测试机器，登录线下自助机树莓派(raspberry) 均需要通过此账户认证，整个 user/group 的分配、HBAC/sudo 的控制、密码/公钥的管理均在 <a href="https://www.freeipa.org/page/Main_Page">freeIPA</a>/<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Linux_Domain_Identity_Authentication_and_Policy_Guide/index.html">IDM</a> 上实现，freeIPA 是 RedHat 支持的一整套集成安全信息管理解决方案系统，又称 IDM。<br />
+	3. 数据库账户，这块比较小众，简单带过。<br />
+	下面会针对上面两大块分别介绍。
+</p>
+<p>
+	办公网账户
+</p>
+<p>
+	该账号与所有人息息相关，从入职第一天起到你的 lastday，都需要登录该账户才可以访问办公资源，包括常见的 Wi-Fi/Gitlab/Jira/Confluence/Jenkins/Cisco Anyconnect VPN/Zabbix/Grafana/跳板机(intermediate host) 以及自己开发的各种内部系统。
+</p>
+<p>
+	这里面需要先简单描述下目前我们的<a href="http://jaseywang.me/2017/02/27/%e4%b8%80%e5%bc%a0%e5%a4%8d%e6%9d%82%e7%bd%91%e7%bb%9c%e7%9a%84%e7%94%9f%e9%95%bf%e8%bf%87%e7%a8%8b/">多网分离的架构</a>，多网是指办公网(包含国际线路)、生产网、测试网、专线网（到医院 HIS/LIS 等信息系统）、OOB（带外管理网），这五张大网是处于「部分」分离的状态的，比如，办公网到生产网/测试网/专线网/OOB 是完全分离的状态，除非通过跳板机(后面全部以 ih 代指）登录之后再访问；生产网跟测试网也是几乎分离的，除了极个别的公共服务。以办公网登录生产、测试网为例，在进入用户验证这步之前，会先通过 IP &lt;-&gt; MAC &lt;-&gt; 用户身份的一一映射绑定，先通过最基本 IP:PORT 的 ACL 方式来控制住大部分的请求。所以在你能通过网页打开 git，通过 ssh 协议 pull/push git 仓库的时候，说明已经通过 TCP/IP 层面的验证机制以及用户级别的验证机制，具体如何实现的会在后面的博客中说明。
+</p>
+<p>
+	默认情况下，OpenLDAP 支持的 schema 非常有限；另外不同应用接入方式都不大一样，需要逐一尝试。
+</p>
+<p>
+	比如 LDAP 跟 Anyconnect 的对接，<a href="http://www.cisco.com/c/en/us/support/docs/ip/lightweight-directory-access-protocol-ldap/116096-configure-anyconnect-openldap-00.html">官方提供的 schema</a> 仅仅<a href="https://gist.github.com/jaseywang/041f76d03e2f43579d6f6984e3358774">基本可用</a>，离生产还有一段距离，默认只支持添加一组 IP/Netmask，以及一条 IP 层面的 ACL，为此需要自行扩展维护一套 cisco.ldif 文件，<a href="https://gist.github.com/jaseywang/9454b9a6c4405dea4d679dcb05738322">这个</a>是我们自行维护的一个 schema 文件，根据我们业务的情况，新增了一组 IP/netmask 以及若干的 ACL。下面是一个普通用户的数据文件示例：<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/slapcat.jpg" />
+</p>
+<p>
+	从 slapcat 导出的字段数据可以看到，为了实现 Wi-Fi 账号跟 OpenLDAP 的共享，加入了 samba 相关的 schema，具体的可以看<a href="https://gist.github.com/jaseywang/0d1b50b2eb6d52faacece84cd382365a">这个文件</a>。
+</p>
+<p>
+	再比如，对于 anyconnect/ih 的认证，需要增加两步验证机制，这里引入 OTP(privacyIDEA) 以及 Radius 作为跟 OpenLDAP 的桥梁例，具体的交互图可以看这里：<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/otp_arch.jpg" />
+</p>
+<p>
+	最终实现了用户的 CRUD 在 OpenLDAP 层面控制。用户的两步验证，下图可以看到，privacyIDEA 支持十余种的 token，包括 hOTP/mOTP/sms/email/Yubikey 等等:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/otp_auth_type.jpg" />
+</p>
+<p>
+	privacyIDEA 不仅仅支持我们使用的 ldapresolver，sql/passwd/scim 的 resolver 都有很好的支持。目前我们使用 <a href="https://support.google.com/accounts/answer/1066447?hl=en">Google Authenticator</a> 是基于事件的 HOTP(RFC4226):<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/google-auth.jpg" />
+</p>
+<p>
+	用来管理 OpenLDAP 的工具有不少，包括我们使用的经典的 <a href="http://phpldapadmin.sourceforge.net/wiki/index.php/Main_Page">phpldapadmin</a>，除此之外，<a href="http://phpldapadmin.sourceforge.net/wiki/index.php/Main_Page">fusiondirectory</a>，<a href="https://web2ldap.de/demo.htm">web2ldap</a> 都是不错的选择。同时为了支持用户的自助修改、重置密码，定期修改用户密码，我们引入了 <a href="http://ltb-project.org">LTB</a>，一个非常神奇的 LDAP 工具箱集合，目前仅支持通过邮件找回密码的链接来重置密码:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/ltb-selfservice-passwd.jpg" />
+</p>
+<p>
+	除了自助机服务，LTB 还支持 LDAP 性能、用户使用数据的监控等若干非常实用的脚本。<br />
+	这么重要的基础服务稳定性肯定是需要保障的，通过 syncprov 模块实现双 master 的写的高可用，通过多个 slave 同步 master，前端挂 Haproxy 实现读的高可用:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/ldap-ha.jpg" />
+</p>
+<p>
+	对用户来说，他们看到的是下面这个样子:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/office_accout_user_mail.jpg" />
+</p>
+<p>
+	PACKT 出版的 <a href="https://www.dropbox.com/s/kw59qfm4zkn8llt/ldap_mastering_OpenLDAP.pdf?dl=0">Mastering OpenLDAP</a> 是本通俗易懂的书，浏览一遍之后应该能轻松应对上面的内容。 
+</p>
+<p>
+	生产网账户
+</p>
+<p>
+	这里的生产网泛指包含线上生产测试服务器线下自助机树莓派等在内的所有 *nix 系统。所有需要登录如上机器的用户都需要获得该账户的权限之后，才能访问基于 HBAC 机制的主机以及颗粒度更细致的用户执行权限。
+</p>
+<p>
+	整个系统基于 freeIPA/IDM 实现，默认情况下，每台机器有一个专门用来运行进程(我们所有的 JVM 进程都跑在 vm 上，不会出现混跑的状态)的 worker 用户，所有的相关的 bin/, log/, lib/ 等目录文件都通过 Jenkins 统一打包到 ~/worker/ 下面，实现跟系统文件的隔离。/home/worker/ 的权限如下:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/prod_user_group.jpg" />
+</p>
+<p>
+	worker/ 下面所有的目录文件权限都如上所示。这样，只要用户在 bm_be_sre 这个组下面，就能实现 worker/ 下面也即 JVM 相关服务的读取权限:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/prod_bm_be_sre.jpg" />
+</p>
+<p>
+	下图可以看到，appCenter 这个服务是跑在 worker 下面的:<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/prod_process_user.jpg" />
+</p>
+<p>
+	类似的，如果想实现 worker/ 下面的写操作，比如执行 bin/ 下面的脚本，将用户加到 30002(sre) 这个组即可，这里完全可以各自的需求自定义。所有的 sudo/su 相关权限设置全部在 IPA 的 Policy 操作即可，比如下面这个赋予的是 sre 这个组的用户可以执行 /bin/su – worker、/bin/su worker 这两个单独的比较危险的命令以及 sre_allow 命令行组里面基础命令(/bin/chmod, /bin/chown, /bin/cp 等等):<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/prod_freeipa.gif" />
+</p>
+<p>
+	目前单台 8G/4core 的 IPA 支撑着 1000+ 的线上生产测试的物理虚拟机以及线下 100+ 的树莓派，应付起来绰绰有余，CPU 平均 1% 利用率、disk IO 平均 10%。
+</p>
+<p>
+	对我们的用户来说，在经过办公网/VPN 的 IP ACL 过滤之后，通过办公网账号结合 OTP 登录线上的任意一台跳板机(ih)，然后通过 ih 再登录线上的机器，跟办公网账户类似的是，需要定期修改密码。对有权限看到的用户来说，他们看到的是下面这样<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/account/prod_account_user_mail.jpg" />
+</p>
+<p>
+	以上的两块账户体系算是把当年在阿里的基础核心账户体系复制了一遍，对最终用户来说，体验相对来说会更好些，当然我们没法也暂时没必要实现类似阿里郎那种监控每台入网设备所有操作的系统。
+</p>
+<p>
+	需要注意的是，在 IPA 上新增的用户，或者新增 sudo 权限，由于 sssd 的<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/sssd-cache.html">缓存</a>，不会立即生效，可以通过 sss_cache 或者删除缓存文件可以让规则<a href="http://http://osdir.com/ml/freeipa-users/2013-02/msg00458.html">立即生效</a>，这部分可以以类似 hook 的方式触发，每次修改用户权限的时候自动触发该操作。
+</p>
+<p>
+	freeIPA 结尾的 A 表示 audit，实际情况是目前还不支持 audit 功能，所以这块功能我们通过 <a href="https://github.com/a2o/snoopy">snoopy</a> 结合 rsyslog 方式进行收集<a href="http://jaseywang.me/2014/09/26/%E9%80%9A%E8%BF%87-execvsnoopy-%E6%9D%A5%E5%81%9A%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA-audit/">审计</a>。
+</p>
+<p>
+	对于办公网账户，目前通过 python-ldap 实现了多个层次的自助以及服务的打通，freeIPA 还未进行这块的开发工作，最终的效果类比阿里内外，一个 portal 实现不同用户的自助服务。
+</p>
+<p>
+	数据库账户
+</p>
+<p>
+	第三块，或者说非常小众的一块账户是 DB 的账户，这里面主要涉及 MySQL 以及 NoSQL(Redis/ElasticSearch) 的账户划分管理审计。
+</p>
+<p>
+	MySQL 的账户管理我们通过 saltstack 的 <a href="https://docs.saltstack.com/en/latest/ref/states/all/salt.states.mysql_user.html">mysql_user</a> 进行管理，我们用的saltstack 是 2015.8.7，对 MySQL 5.7 的支持有不少 bug，2016 开头的版本对此都<a href="https://github.com/michalsuba/salt/commit/6a115f271c59121e5e9f100c17e72c87fd165891">修复</a>了，嫌麻烦的不妨直接把 salt 给升级了或者做 diff 给 2015.8.7 打 patch，主要原因是 5.7 之前存储用户表的密码字段是 password 而 5.7 之后变成了 authentication_string。
+</p>
+<p>
+	目前所有的 MySQL 账户用户通过 git 管理而密码通过 salt pillar 管理，审计则使用了 Percona 的 <a href="https://www.percona.com/doc/percona-server/5.7/management/audit_log_plugin.html">Audit Log Plugin</a> 通过 rsyslog 打到中心服务器收集分析。
+</p>
+<p>
+	对于 Redis/ES 来说，由于上面存储的数据为非敏感数据，所有的都通过 IP 层面的 ACL 进行控制访问。</p>
+<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2017/02/08/%e6%a0%91%e8%8e%93%e6%b4%beraspberrypi%e3%80%81saltstack-%e5%9c%a8%e7%ba%bf%e4%b8%8b%e8%87%aa%e5%8a%a9%e6%9c%ba%e8%bf%90%e7%bb%b4%e4%b8%8a%e7%9a%84%e5%ba%94%e7%94%a8/">树莓派(raspberrypi)、saltstack…</a></li><li><a href="http://jaseywang.me/2016/09/09/big-transaction-and-mysql-replication-lag/">Big transaction and MySQL replication lag</a></li><li><a href="http://jaseywang.me/2014/09/26/%e9%80%9a%e8%bf%87-execvsnoopy-%e6%9d%a5%e5%81%9a%e7%94%a8%e6%88%b7%e8%a1%8c%e4%b8%ba-audit/">通过 execv(snoopy) 来做用户行为 audit</a></li><li><a href="http://jaseywang.me/2017/01/06/%e9%80%9a%e8%bf%87-novnc-%e5%ae%9e%e7%8e%b0%e6%95%b0%e5%8d%83%e5%8f%b0%e8%87%aa%e5%8a%a9%e6%9c%ba%e7%9a%84%e5%ae%9e%e6%97%b6%e5%8f%af%e8%a7%86%e5%8c%96/">通过 noVNC 实现数千台自助机的实时可视化</a></li><li><a href="http://jaseywang.me/2014/06/28/%e7%bb%b4%e6%8a%a4-github-enterprise-%e7%89%88%e6%9c%ac/">维护 github enterprise 版本</a></li></ul><div></div></div>]]></content:encoded>
+            
+        </item>
         
         <item>
             <title>一张复杂网络的生长过程</title>
@@ -319,7 +449,7 @@
 </p>
 <p>
 	在这之前，我们尝试直接通过 salt master/minion 的方式进行日常的变更管理，这种方式对于线下的实施同事来说非常的不友好，其灵活性以及方便性远低于目前的方案，遂未在团队内推广使用。上面介绍的系统是目前在线的稳定系统，使用了一段时间整体反馈还不错，后续会优化版本控制以及更加自动的回滚等操作。</p>
-<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2017/01/06/%e9%80%9a%e8%bf%87-novnc-%e5%ae%9e%e7%8e%b0%e6%95%b0%e5%8d%83%e5%8f%b0%e8%87%aa%e5%8a%a9%e6%9c%ba%e7%9a%84%e5%ae%9e%e6%97%b6%e5%8f%af%e8%a7%86%e5%8c%96/">通过 noVNC 实现数千台自助机的实时可视化</a></li><li><a href="http://jaseywang.me/2016/09/09/big-transaction-and-mysql-replication-lag/">Big transaction and MySQL replication lag</a></li><li><a href="http://jaseywang.me/2014/12/12/%e4%b8%80%e4%b8%aa%e6%9c%88%e7%9a%84%e8%89%b0%e8%be%9b%e7%a8%b3%e5%ae%9a%e6%9c%8d%e5%8a%a1%e8%bf%87%e7%a8%8b/">一个月的艰辛稳定服务过程</a></li><li><a href="http://jaseywang.me/2014/10/23/%e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2%e4%b8%80%e4%b8%aa%e7%a8%b3%e5%ae%9a%e9%ab%98%e6%95%88%e5%8f%af%e6%89%a9%e5%b1%95%e7%9a%84%e5%89%8d%e7%ab%af/">如何部署一个稳定高效可扩展的前端</a></li><li><a href="http://jaseywang.me/2015/01/02/resolv-conf-%e7%9a%84%e8%b6%85%e6%97%b6timeout%e4%b8%8e%e9%87%8d%e8%af%95attempts%e6%9c%ba%e5%88%b6/">resolv.conf 的超时(timeout)与重试(attempts)机制</a></li></ul><div></div></div>]]></content:encoded>
+<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2017/03/04/%e5%85%a8%e7%bd%91%e7%bb%9f%e4%b8%80%e8%b4%a6%e6%88%b7%e5%ae%9e%e8%b7%b5/">全网统一账户实践</a></li><li><a href="http://jaseywang.me/2017/01/06/%e9%80%9a%e8%bf%87-novnc-%e5%ae%9e%e7%8e%b0%e6%95%b0%e5%8d%83%e5%8f%b0%e8%87%aa%e5%8a%a9%e6%9c%ba%e7%9a%84%e5%ae%9e%e6%97%b6%e5%8f%af%e8%a7%86%e5%8c%96/">通过 noVNC 实现数千台自助机的实时可视化</a></li><li><a href="http://jaseywang.me/2016/09/09/big-transaction-and-mysql-replication-lag/">Big transaction and MySQL replication lag</a></li><li><a href="http://jaseywang.me/2014/12/12/%e4%b8%80%e4%b8%aa%e6%9c%88%e7%9a%84%e8%89%b0%e8%be%9b%e7%a8%b3%e5%ae%9a%e6%9c%8d%e5%8a%a1%e8%bf%87%e7%a8%8b/">一个月的艰辛稳定服务过程</a></li><li><a href="http://jaseywang.me/2014/10/23/%e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2%e4%b8%80%e4%b8%aa%e7%a8%b3%e5%ae%9a%e9%ab%98%e6%95%88%e5%8f%af%e6%89%a9%e5%b1%95%e7%9a%84%e5%89%8d%e7%ab%af/">如何部署一个稳定高效可扩展的前端</a></li></ul><div></div></div>]]></content:encoded>
             
         </item>
         
@@ -459,7 +589,7 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
 </p>
 <p>
 	以上思想可以移植到 *nix 平台上，目前不少主流的云 OpenStack/OpenNebula/Digital Ocean 也集成进了 noVNC。</p>
-<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2014/07/20/tcp-queue-%e7%9a%84%e4%b8%80%e4%ba%9b%e9%97%ae%e9%a2%98/">TCP queue 的一些问题</a></li><li><a href="http://jaseywang.me/2017/02/08/%e6%a0%91%e8%8e%93%e6%b4%beraspberrypi%e3%80%81saltstack-%e5%9c%a8%e7%ba%bf%e4%b8%8b%e8%87%aa%e5%8a%a9%e6%9c%ba%e8%bf%90%e7%bb%b4%e4%b8%8a%e7%9a%84%e5%ba%94%e7%94%a8/">树莓派(raspberrypi)、saltstack…</a></li><li><a href="http://jaseywang.me/2015/04/27/tcp_keepalive_time-and-rst-flag-in-nat-environment/">tcp_keepalive_time and rst Flag in NAT Environment</a></li><li><a href="http://jaseywang.me/2016/08/26/nginx-empty-200-response-body-by-double-slash/">Nginx 200 response with empty body by double slash</a></li><li><a href="http://jaseywang.me/2014/11/15/%e4%b8%8d%e8%a6%81%e4%b9%b1%e7%94%a8-tcp-enc-flag/">不要乱用 TCP ECN flag</a></li></ul><div></div></div>]]></content:encoded>
+<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2014/07/20/tcp-queue-%e7%9a%84%e4%b8%80%e4%ba%9b%e9%97%ae%e9%a2%98/">TCP queue 的一些问题</a></li><li><a href="http://jaseywang.me/2017/02/08/%e6%a0%91%e8%8e%93%e6%b4%beraspberrypi%e3%80%81saltstack-%e5%9c%a8%e7%ba%bf%e4%b8%8b%e8%87%aa%e5%8a%a9%e6%9c%ba%e8%bf%90%e7%bb%b4%e4%b8%8a%e7%9a%84%e5%ba%94%e7%94%a8/">树莓派(raspberrypi)、saltstack…</a></li><li><a href="http://jaseywang.me/2015/04/27/tcp_keepalive_time-and-rst-flag-in-nat-environment/">tcp_keepalive_time and rst Flag in NAT Environment</a></li><li><a href="http://jaseywang.me/2017/03/04/%e5%85%a8%e7%bd%91%e7%bb%9f%e4%b8%80%e8%b4%a6%e6%88%b7%e5%ae%9e%e8%b7%b5/">全网统一账户实践</a></li><li><a href="http://jaseywang.me/2016/08/26/nginx-empty-200-response-body-by-double-slash/">Nginx 200 response with empty body by double slash</a></li></ul><div></div></div>]]></content:encoded>
             
         </item>
         
@@ -3753,92 +3883,6 @@ update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项�
         </item>
         
         <item>
-            <title>fHash 2.0.0 for Mac OS X</title>
-            <link>http://www.sunjw.us/blog/fhash-2-0-0-for-mac-os-x/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/fhash-2-0-0-for-mac-os-x/</guid>
-            <pubDate>Wed, 11 Nov 2015 06:09:16 +0100</pubDate>
-            <description>
-                
-                fHash 2.0.0 for Mac OS X is available on Mac App Store now!  fHash is an open source files’ hash calculator for Windows and Mac OS X  MD5, 
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>fHash 2.0.0 for Mac OS X is available on Mac App Store now!<br />
-<a href="https://itunes.apple.com/us/app/fhash/id1055555711?mt=12" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/Download_on_the_Mac_App_Store_Badge_US-UK_165x40.png" /></a></p>
-<p>fHash is an open source files’ hash calculator for Windows and Mac OS X</p>
-<ul>
-<li>MD5, SHA1, SHA256 and CRC32.</li>
-<li>Drag &amp; drop.</li>
-<li>Integrated with context menu in Explorer/Finder.</li>
-<li>Support multiple files.</li>
-<li>Support 10.10 and later Mac OS X.</li>
-<li>English and Simplified Chinese UI.</li>
-</ul>
-<p>The icon “希” is from hash in Chinese “哈希”.<br />
-Thanks for Trend Micro Mobile Club’s support.</p>
-<p>Project Site <a href="https://github.com/sunjw/fhash" target="_blank">https://github.com/sunjw/fhash</a></p>
-<p><span></span></p>
-<p>LICENSE<br />
-GPL 2.0 for codes hosted on GitHub.<br />
-May use other licenses for binary package on other distribution sites.</p>
-<p><a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_ui.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_ui.jpg" /></a><br />
-<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_about.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_about.jpg" /></a><br />
-<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_context_menu_item.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_context_menu_item.jpg" /></a><br />
-<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_one_start.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_one_start.jpg" /></a><br />
-<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_multi_finish.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_multi_finish.jpg" /></a></p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>JSToolNpp 1.16.10 Released</title>
-            <link>http://www.sunjw.us/blog/jstoolnpp-1-16-10-released/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/jstoolnpp-1-16-10-released/</guid>
-            <pubDate>Wed, 11 Nov 2015 05:57:44 +0100</pubDate>
-            <description>
-                
-                What’s New in JSToolNpp:  1.16.10  Fix configuration saving bug.   1.16.8  Fix regex related bug.   1.16.6  Fix negative number bug. Fix so
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>What’s New in JSToolNpp:</p>
-<ul>
-<li>1.16.10
-<ul>
-<li>Fix configuration saving bug.</li>
-</ul>
-</li>
-<li>1.16.8
-<ul>
-<li>Fix regex related bug.</li>
-</ul>
-</li>
-<li>1.16.6
-<ul>
-<li>Fix negative number bug.</li>
-<li>Fix some expression format bug.</li>
-</ul>
-</li>
-<li>1.16.5
-<ul>
-<li>Fix regex detection.</li>
-<li>Fix some crash bugs.</li>
-</ul>
-</li>
-</ul>
-<p>Project site:<br />
-<a href="http://www.sunjw.us/jstoolnpp/" target="_blank">http://www.sunjw.us/jstoolnpp/</a></p>
-<p>Download links:<br />
-<a href="http://sourceforge.net/projects/jsminnpp/files/Uni/JSToolNPP.1.16.10.uni.zip/download" target="_blank">SourceForget.net </a></p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
             <title>Can Venta Airwasher Effectively Reduce PM2.5 or PM10?</title>
             <link>http://jaseywang.me/2015/11/01/can-venta-airwasher-effectively-reduce-pm2-5-or-pm10/</link>
             
@@ -4317,66 +4361,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         </item>
         
         <item>
-            <title>Trips to HCMC, Nha Trang, Phnom Penh and Siem Reap</title>
-            <link>http://jaseywang.me/2015/06/24/trips-to-hcmc-nha-trang-phnom-penh-and-siem-reap/</link>
-            
-            <author>jaseywang</author>
-            
-            <guid>http://jaseywang.me/2015/06/24/trips-to-hcmc-nha-trang-phnom-penh-and-siem-reap/</guid>
-            <pubDate>Wed, 24 Jun 2015 10:36:29 +0200</pubDate>
-            <description>
-                
-                  Last month, Kiki and I went for a vacation, here are some experience and tips.    For HCMC, it’s quite modern, as invaded by France befor
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>
-	Last month, Kiki and I went for a vacation, here are some experience and tips.
-</p>
-<p>
-	For HCMC, it’s quite modern, as invaded by France before, it still exits a lot culture from France, like iced coffee and French baguette, both are delicious and cheap. HCMC is also famous for its French cuisine, we went to one of the best French restaurants in HCMC, but not so impressed, the only impression is so many ants on the desk, maybe we don’t know how to enjoy French cuisine.
-</p>
-<p>
-	Later, we flew to Nha Trang, the beach is fancy, we spent a few nights in Sheraton, it’s location is really good, walking distance to most of the restaurants, and Lanterns restaurant is one of the best we ever met, authentic Vietnamese cuisine, we went there many time, from breakfast, launch to dinner. We were too busy eating and drinking to enjoy the free beach chair, umbrella and the best public beach sections in Nha Trang provided by hotel, later we regretted. After that, we went to mia, the so called best resort in Nha Trang, generally speaking, its still better than others, but didn’t give us as much as we expected. It’s location is far aways from city center, and nothing when step out of the resort, so you need to take the shuttle bus to go into the city or just stay in the resort, enjoying its private beach. I had to say, the beach here is even better than those in the city, since the whole resort only holds about two dozens of customers, the beach is quiet and clean at any time, you can play canoe and surfing, but the food here is just the average level with top price. For drinks, they have happy hours, buy one get one free, so Kiki and I ordered 4 cups of mojito, watching the night sea view, till midnight, nobody but we two, totally drunk.
-</p>
-<p>
-	As saied before, the coffee here is wonderful and price is reasonable, so just pick up one when you need a rest. Also the mongo shake is worth trying, we tried dozens cups of shake during the staying in Vietnam, even later in Cambodia, we still ordered the same, most of them are between $1 to $2, enjoy. So many Russians, there are probably three languages in the city, Vietnamese, English and Russian.
-</p>
-<p>
-	We had a terrible experience while taking the Mai linh taxi. The first day when we arrived at HCMC airport in the midnight due to flight delay, we halled a Mai linh, and told him by meter, but when he took us to the hotel, he forced us to pay 100, 000VND, which was 30RMB, just a 5 minutes tour, we tried to explained to him, the only word he said is one hundred, well, we surrendered. Later, we only hall vinasun taxi, which was quite fair, by meter by default.
-</p>
-<p><span></span></p>
-<p>
-	Cambodia, the country is still less developed, and the infrastructure is quite poor. We went through <a href="http://www.tripadvisor.com/ShowTopic-g297390-i9163-k8479335-Big_storm_18_May-Siem_Reap_Siem_Reap_Province.html">a big storm</a> on 18 May, then came to power outage. Luckily, our hotels equipped with a power generator, and didn’t have much effect for us. Though May is between dry and rainy season for Cambodia, we went through some rain almost every afternoon, usually lasted for less a hour, quite fresh after rain.
-</p>
-<p>
-	The traffic in Cambodia is better than Vietnam, cuz not so many motorcycle, As for eating, I have to say, there is really not much to choice, the taste is really weird, and the sanitation conditions also make us upset. At last, we went to Lotteria to make us alive, which is in sorya shopping center. Most of its food is imported from other countries, like Thailand, Vietnam and China, the local food is really limited, only some honey and pepper. when you walk around in Lucky market, maybe the best market in Cambodia, it’s pricy even compared to some high end markets in Beijing.
-</p>
-<p>
-	Although Cambodia cuisine is not my cup of tea, there is a special sauce that really makes me high, I never taste that before, it’s called kampot pepper sauce, kampot pepper it one of the best peppers in the world.  The recipe is quite simple,  just mix kampot pepper with green lemon, sugar and salt. It makes you feel cool in hot summer, especially when eating with BBQ. we had this sauce several times later in Siem Reap.
-</p>
-<p>
-	We bought Mekong company ticket from HCMC to PP, sat on the rear, the last row, air conditioners broken, hot to die. when arriving at mod bai, the checkpoint at Vietnam border, it’s really chaotic compared to Bavet which is the Cambodian border entry passport checkpoint. What you need to do is to pay $30 to get the e-visa with extra $5 as the service fee for the bus steward when getting on the bus, no security check at all. Later when we prepared to buy the ticket from PP to Siem Reap, we bought from Giant bus company, a little pricy, but I assure you, worth it, don’t save a small bucks, you have to sit on the bus for almost 7 hours.
-</p>
-<p>
-	Note that, people in Cambodia don’t accept old 100USD, even with a little creases and tears, so give them brand new 100 USD.
-</p>
-<p>
-	We chartered a tuk-tuk when circling around Angkor Wat for 2 days. After some discussion, we decided to take the grand tour first which was quite far, about 30 kilometers, the view on the way is beautiful, the typical tropical scene. when we arrived at waterfalls, due to it was dry season, no water at all. But we happened to see the guard on the top of the mountain, we said hi since he was the only one we can talk, he was quite nice and led us to show some carving on the surface and its history. The second day, we took the classic route, grand and peaceful, worth the money to buy a 3-day pass ticket.
-</p>
-<p>
-	The driver is the one who picked up us when arriving at the bus stations in Siem Reap, he was quite nice, introduced us a lot history about Angkor. We underestimated how much water we need for the whole day, so we just took a 1.5L bottle of water with us, fortunately, the driver prepared a iced box with bottles of water in his tank under the seat, or we may get a sunstroke.
-</p>
-<p>
-	Last day, we went to a shooting range, about 40 minutes by taking the tuk-tuk. We fired some AK-47 and M16. Cambodia may be the only country for tourists to fire a RPG and other heavy weapons, so, don’t miss that, once in a life time opportunity. One thing to keep in mind is that the country is quite corrupted, you can get the direct feeling when crossing the custom check or taking pictures in Angkor Wat, so just don't give a shit to them, and pretend not to understand what they are saying. One reason of this is they are spoiled by Chinese tourists, so more and more dollors go to their pockets.
-</p>
-<p>
-	We took nothing back but a bag of kampot black pepper corn, so fragrant and fresh.</p>
-<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2015/08/16/metrics-dashboard-comparision-for-linux-desktop/">Metrics Dashboard Comparision for Linux Desktop</a></li><li><a href="http://jaseywang.me/2014/04/10/thailand-%e5%b0%8f%e6%b8%b8koh-samui-chiang-mai-bangkok/">Thailand 小游(Koh Samui, Chiang Mai, Bangkok)</a></li><li><a href="http://jaseywang.me/2015/04/23/migrating-github-enterprise-from-beijing-to-shanghai/">Migrating GitHub Enterprise From Beijing To Shanghai</a></li><li><a href="http://jaseywang.me/2015/05/01/installing-debian-jessie-on-loongson-notebook8089_b-with-ubuntu-keyboard-suits/">Installing Debian jessie on Loongson notebook(8089_B) with…</a></li><li><a href="http://jaseywang.me/2015/02/16/umeng-operations-infrastructure-practice/">Umeng Operations Infrastructure &amp; Practice</a></li></ul><div></div></div>]]></content:encoded>
-            
-        </item>
-        
-        <item>
             <title>2015 沪港 Hackathon</title>
             <link>https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/</link>
             
@@ -4566,41 +4550,6 @@ $ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br 
 <p>[2] <a href="https://github.com/Hexxeh/rpi-firmware/blob/master/README.md" target="_blank">https://github.com/Hexxeh/rpi-firmware/blob/master/README.md</a></p>
 <p>[3] <a href="https://github.com/raspberrypi/documentation/blob/master/linux/kernel/building.md" target="_blank">https://github.com/raspberrypi/documentation/blob/master/linux/kernel/building.md</a></p>
 <p>[4] <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-kernelmodules/" target="_blank">http://www.ibm.com/developerworks/cn/linux/l-cn-kernelmodules/</a></p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>Build CyanogenMod 12 for Nexus 5</title>
-            <link>http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/</guid>
-            <pubDate>Wed, 11 Feb 2015 05:41:39 +0100</pubDate>
-            <description>
-                
-                工作之后好久不写博客了，这里都要长草了。。。 之前写过一篇 Build CyanogenMod 10.2 for Nexus 4，现在手机换成 Nexus 5 了，系统也升级到 CM 12 了，写一篇 How to 总结一下。 1. 你还是要准备一台机器（虚拟机也行），装上 U
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>工作之后好久不写博客了，这里都要长草了。。。</p>
-<p>之前写过一篇 <a href="http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/">Build CyanogenMod 10.2 for Nexus 4</a>，现在手机换成 Nexus 5 了，系统也升级到 CM 12 了，写一篇 How to 总结一下。</p>
-<p>1. 你还是要准备一台机器（虚拟机也行），装上 Ubuntu，Ubuntu 14 LTS 是个不错的选择，LTS 会有很长时间的软件更新支持。硬盘分的大一些，100GB 起步吧，内存 3G 起，其他随意。</p>
-<p>2. 系统装好之后，按照 CM 官方的指导 <a href="http://wiki.cyanogenmod.org/w/Build_for_hammerhead?setlang=en#Install_the_Build_Packages" target="_blank">How To Build CyanogenMod Android for Google Nexus 5 (“hammerhead”)</a> 安装必要的软件。需要注意的是，编译 CM 12 需要 OpenJDK 7，所以安装时，将 openjdk-6-jdk openjdk-6-jre 换成 openjdk-7-jdk openjdk-7-jre，另外 Ubuntu 14 已经没有 ia32-libs 这个包了，需要安装 lib32z1 lib32ncurses5 lib32bz2-1.0 作为 32 位兼容运行时。</p>
-<p>3. 之后就可以按照手册准备 repo，使用 repo init -u https://github.com/CyanogenMod/android.git -b cm-12.0 初始化 repo。</p>
-<p>4. repo sync</p>
-<p>5. breakfast hammerhead</p>
-<p>6. 这里建议在 breakfast 之后再 repo sync 一次</p>
-<p>7. Nexus 5 的私有库在这里有 <a href="https://github.com/TheMuppets/proprietary_vendor_lge" target="_blank">https://github.com/TheMuppets/proprietary_vendor_lge</a>，可以将其添加到本地 repo，打开同步好的源码目录，进入 .repo/local_manifests 目录，在其中创建 lge.xml，内容如下：</p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;manifest&gt;
-  &lt;project name=&quot;TheMuppets/proprietary_vendor_lge.git&quot; path=&quot;vendor/lge&quot; remote=&quot;github&quot; /&gt;
-&lt;/manifest&gt;
-</pre>
-<p>之后再 repo sync 一次。</p>
-<p>8. 到这里源码同步完成，可以 brunch hammerhead 啦。</p>
-<p>需要注意的是，请使用多种方法科学上网。</p>]]></content:encoded>
             
         </item>
         
@@ -5093,234 +5042,6 @@ while (1)
 <p>原因找到了，那么相应的解决方法也就不难发现了，对于我的使用场景来说（不完全是像上面的示例片断那么清晰），最简单的作法就是在 SSL_read 之前加一个空的 recv 调用，其传给 recv 的第二、三个参数的值分别是 NULL 和 0 ，这样就能强制触发 windows event 的 reenable ，同时又不会影响到 SSL 对象内部的读取状态了。</p>
 
 <p>PS. 遇到这个问题时，最重要的一步其实是如何能够稳定而快速的复现问题。一开始做压力测试时，只有在连续跑个一天以上时才会不定时的出现，导致效率很低；后来偶然发现，通过虚拟机搭建的受限环境，反而能很快复现问题。想来这也是另一种形式的压力测试吧，正常的压力测试是保持环境不变，加大请求压力；这里则变成了保持请求不变，同时压缩可用环境。</p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>Notepad++ plugin local exploit</title>
-            <link>http://www.sunjw.us/blog/npp-plugin-exploit/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/npp-plugin-exploit/</guid>
-            <pubDate>Sun, 01 Dec 2013 07:00:15 +0100</pubDate>
-            <description>
-                
-                前段时间，在用 npp 分析一个 html 文件时，准备把其中的混合在一起的 js 分离出来，在 js 前后换行时 npp 崩溃了，感觉是哪里 bug 了，重试了几次都能很稳定的重现。本着张银奎老师的精神，上调试器。用 windbg 附加到 npp 进程，重现这个 crash 
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>前段时间，在用 npp 分析一个 html 文件时，准备把其中的混合在一起的 js 分离出来，在 js 前后换行时 npp 崩溃了，感觉是哪里 bug 了，重试了几次都能很稳定的重现。本着张银奎老师的精神，上调试器。用 windbg 附加到 npp 进程，重现这个 crash 后，停到调试器内，看了下栈。</p>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p1.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p1-1024x598.png" /></a></p>
-<p>很明显栈溢出了，返回地址都是文本中的字符，溢出发生在 NotepadSharp.dll 也就是 Notepad# 插件中。Npp 上的插件基本都是开源的，那就把代码搞下来，用 VS 编译了个 debug 版，放进去再次触发崩溃，发现 PluginDefinition.cpp 的 void Newline() 函数中</p>
-<p><span></span></p>
-<p>char line[9999];</p>
-<p>::SendMessage(curScintilla, SCI_GETLINE, line_number – 1 , (LPARAM)line);</p>
-<p>将当前光标上一行的文本内容拷贝到 char line[9999] 这个 buffer 中，所以很自然，当文本行内容很长，就栈溢出了。</p>
-<p>既然溢出在栈上，通过覆盖返回地址和栈指针，在 XP 上应该可以轻松控制程序执行流。不过这个插件的 release 版是在 VS2010 上编译的，打开了 /GS 参数，所以在函数中有 security cookie 检查，而且 security cookie 是随机值。</p>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p2.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p2-1024x435.png" /></a></p>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p3.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p3-1024x458.png" /></a></p>
-<p>试图覆盖返回地址时，也会将 security cookie 覆盖，所以导致函数返回之前就出错。</p>
-<p>在 Yuki 的指点下，加长文本行的内容，向后继续覆盖，试图覆盖到 exception handler。再次触发后，eip的确变成了覆盖的内容，不过并非覆盖了 exception handler ，而是覆盖了某个窗口消息循环中的回调函数指针。</p>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p4.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p4.png" /></a></p>
-<p>这是原始的 0x000da8dc 开始的内容，后面会看到 0x000da8dc 存储的是 edi，0x000da8f4 存储的则是回调函数指针，原始的内容是 User32.dll 的 CallWindowProcW 函数指针。经测试，这里应该是 Explorer 插件的回调函数，其实没有Explorer 插件也可以在附近的位置覆盖到其它窗口回调。当按回车后，::SendMessage 不仅拷贝了字符串，还触发了多个插件注册的回调函数。所以在 NotepadSharp 的 Newline 函数还未返回前，其他插件，例如 Explorer 之前注册的窗口回调就被调用了。于是通过很长的溢出，覆盖了其他的栈空间，避开了 security cookie 检查，从而能控制 eip。通过覆盖，在 html 文件对应位置填写 0x7E47B533，也就是 Windows XP SP3 en 上的 jmp edi 指令。</p>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p5.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p5.png" /></a></p>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p6.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p6.png" /></a></p>
-<p>并且在 0x000da8dc 填上 EB1C，短跳转 1C 个字节。之所以要跳转是因为 edi 在之前覆盖的函数指针前方，如果需要执行更多的代码，空间似乎有点不太够，通过跳转来到指针位置的后方。在跳转目标地址填上 int 3 也就是 CC。触发漏洞后，成功的停在 windbg里面。后面就可以用 shellcode 弹个计算器什么的了，不过查看寄存器，发现 ebp 指向的地址不可写，就把 esp 的值赋给 ebp，当作新的栈。最终，贴上一段 metasploit 的 shellcode，成功的在 npp 中按一下回车，导致 npp 崩溃，并弹出了计算器。</p>
-<p>这个问题已经报告给 npp 的插件管理者，也报告给了 Notepad# 的作者，不过似乎该插件作者已经很久不更新该插件，也没有留下有效的联系地址，似乎一直对该问题没有响应。如果已经安装了 Notepad# 插件，最好将其卸载，虽然被攻击的可能性不大，但是崩溃什么的也不好。</p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>JSToolNpp 1.16 Released</title>
-            <link>http://www.sunjw.us/blog/jstoolnpp-1-16-released/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/jstoolnpp-1-16-released/</guid>
-            <pubDate>Sun, 20 Oct 2013 11:25:03 +0200</pubDate>
-            <description>
-                
-                What’s New in JSToolNpp 1.16:  Performance improvement. Move download back to SourceForge.net.  Download links: SourceForget.net Download G
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>What’s New in JSToolNpp 1.16:</p>
-<ul>
-<li>Performance improvement.</li>
-<li>Move download back to SourceForge.net.</li>
-</ul>
-<p>Download links:<br />
-<a href="http://sourceforge.net/projects/jsminnpp/files/Uni/JSToolNPP.1.16.uni.zip/download" target="_blank">SourceForget.net Download</a><br />
-<a href="http://jstoolnpp.googlecode.com/files/JSToolNPP.1.16.uni.zip" target="_blank">Google Code Download</a></p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>Build CyanogenMod 10.2 for Nexus 4</title>
-            <link>http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/</guid>
-            <pubDate>Sun, 08 Sep 2013 04:40:16 +0200</pubDate>
-            <description>
-                
-                一直想尝试着自己编译 CM，毕竟如果想修改系统 Apk，就有可能需要编译整个系统。于是在开了一台 Ubuntu x86_64 虚拟机（这是一个大坑，等会儿说）作为编译机器，参考的主要是 CM 官方 wiki：http://wiki.cyanogenmod.org/w/Build
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>一直想尝试着自己编译 CM，毕竟如果想修改系统 Apk，就有可能需要编译整个系统。于是在开了一台 Ubuntu x86_64 虚拟机（这是一个大坑，等会儿说）作为编译机器，参考的主要是 CM 官方 wiki：<a href="http://wiki.cyanogenmod.org/w/Build_for_mako?setlang=en" target="_blank">http://wiki.cyanogenmod.org/w/Build_for_mako?setlang=en</a>。根据 wiki 指示准备好基础环境后，开始 repo sync，总共下载了 6GB 多的工程代码。总的来说，一直到 wiki 的 “Start the build” 一节，都没有问题，照着做就好了。不过当执行 brunch mako 之后，坑就一个个冒出来了。</p>
-<p>第一个坑是磁盘空间，一开始给虚拟机分配的磁盘小了些，明显不足以完成整个编译，于是又加了个 40GB 的虚拟磁盘，并且在该磁盘上编译。40GB 似乎够了，不过最后的事实证明其实 40GB 几乎不够，最终完成编译后只剩 400MB 了！所以编译 Android 还是分配一个大一点的磁盘吧。</p>
-<p>第二个坑就是 x86_64，ARM 处理器目前还是 32 位的，包括编译使用的 repo 好像也是 32 位的，所以首先需要安装 32 位 c/c++ 运行库。之后真正的坑在于 JDK，wiki 中没有明确说明 JDK 应该安装 32 位还是 64 位的，我一开始想 java 部分应该和架构没什么关系，就装了个 64 位 JDK，结果开始使用 javadoc 编译 Droiddoc 时，make 出错了，显示错误 45，一开始在论坛上查了一下，说是应该使用 Oracle JDK，于是尝试安装了 64 位的 Oracle JDK，结果还是一样出错。后来仔细看了论坛，发现其实问题是 64 位 JDK。也不知道为什么，64 位 JDK 的 javadoc 就是会导致编译错误，但是之前的 jar 包都编译正常。通过 apt-get 安装了 32 位 Open JDK 后，问题解决了。</p>
-<p>第三个坑是内存，一开始只给虚拟机分配了 1GB 内存，结果在编译 framework 时，malloc.c 中的 assert 出错了。。。关机，调整到 2GB，编译终于继续下去了。</p>
-<p>第四个坑是 CM 加入的 Focal，在编译 external/Focal 中的链接库时总是出错，论坛上说 Focal 不太稳定，可以不编译。好吧，暴力一点，直接把 external/Focal 和 apps/Focal 删掉了，编译继续。</p>
-<p>最终花了一个下午+半个晚上（不包括 repo sync 的时间，这个根据网速会有所不同，可以自己算算下载 6GB 需要多久），终于编译出来了。好了，能编译了，下一步就是准备尝试修改了。</p>
-<p> </p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>fHash 1.8 Released</title>
-            <link>http://www.sunjw.us/blog/fhash-1-8-released/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/fhash-1-8-released/</guid>
-            <pubDate>Tue, 03 Sep 2013 16:42:27 +0200</pubDate>
-            <description>
-                
-                增加 Shell Extension 实现的高级右键菜单支持 修正其他 bug Use Shell Extension to implement context menu shortcut Fix other bugs Download: https://code.google
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>增加 Shell Extension 实现的高级右键菜单支持<br />
-修正其他 bug</p>
-<p>Use Shell Extension to implement context menu shortcut<br />
-Fix other bugs</p>
-<p>Download:<br />
-<a href="https://code.google.com/p/fhash/downloads/list" target="_blank">https://code.google.com/p/fhash/downloads/list</a><br />
-<a href="http://sourceforge.net/projects/fhash/files/1.8/" target="_blank">http://sourceforge.net/projects/fhash/files/1.8/</a></p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>用 WinDbg 调试符号不全的程序</title>
-            <link>http://www.sunjw.us/blog/windbg-debug-fhash/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/windbg-debug-fhash/</guid>
-            <pubDate>Thu, 22 Aug 2013 16:47:12 +0200</pubDate>
-            <description>
-                
-                其实也就是记录一下用 WinDbg 调试 fHash 的一次过程，这个 bug 是由于没好好看文档造成的，我需要让 fHash 知道当前运行的操作系统是 32 位还是 64 位的，之后好去选择正确的 shell extension 文件。查文档看到了这个函数 IsWow64Pr
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>其实也就是记录一下用 WinDbg 调试 fHash 的一次过程，这个 bug 是由于没好好看文档造成的，我需要让 fHash 知道当前运行的操作系统是 32 位还是 64 位的，之后好去选择正确的 shell extension 文件。查文档看到了这个函数 <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684139%28v=vs.85%29.aspx" target="_blank">IsWow64Process</a> ，之后错误的以为 kernel32 中有这个函数就是 64 位操作系统，结果就已这个逻辑写下了错误的 64 位系统判断函数，和错误文件读取逻辑。</p>
-<pre>
-
-tstring tstrExeDirPath(pszExeFullPath);
-tstring::size_type idx = tstrExeDirPath.rfind(_T(&quot;\\&quot;));
-tstrExeDirPath = tstrExeDirPath.substr(0, idx);
-
-tstring tstrShlExtDll = tstrExeDirPath;
-tstrShlExtDll.append(_T(&quot;\\fHashShlExt&quot;));
-if(IsWindows64())
-    tstrShlExtDll.append(_T(&quot;64&quot;));
-tstrShlExtDll.append(_T(&quot;.dll&quot;));
-
-WIN32_FIND_DATA ffData;
-HANDLE hFind = FindFirstFile(tstrShlExtDll.c_str(), &amp;ffData);
-
-bool bRet = (hFind != INVALID_HANDLE_VALUE);
-
-if(bRet)
-{
-#if defined(UNICODE) || defined(_UNICODE)
-    wcscpy_s(pszShlDllPath, MAX_PATH, tstrShlExtDll.c_str());
-#else
-    strcpy_s(pszShlDllPath, MAX_PATH, tstrShlExtDll.c_str());
-#endif
-
-   FindClose(hFind);
-}
-
-return bRet;
-</pre>
-<p>结果很自然，在 32 位的 Windows XP 上没有执行正确。但是测试环境没有 VisualStudio，而且用的是 Release 编译，也没有带着符号文件，这怎么调试呢。Windows XP 上装有 WinDbg，那么就用它来调试。</p>
-<p><span></span></p>
-<p>启动 fHash 和 WinDbg，附加到 fHash 进程，由于没有 fHash 的符号，于是考虑在 FindFirstFile 函数上下断点：</p>
-<pre>bp kernel32!FindFirstFileW</pre>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/08/1.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/08/1-300x187.png" /></a></p>
-<p>Go，开始运行，点击“添加右键菜单”，WinDbg 停在 FindFirstFile 断点上，回到 Call Stack 的上一层：</p>
-<pre>.frame 01</pre>
-<p>看到 call 之前第二次压栈 push eax，检查 eax 对应内存地址的数据：</p>
-<pre>
-
-r eax
-db 003b7ed0
-</pre>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/08/2.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/08/2-300x187.png" /></a></p>
-<p>看到指针指向的字符串是 …/fHashShlExt64.dll，说明之前 IsWindows64() 返回的 true。也就是说 kernel32 中有 IsWow64Process 函数，我们来看一下。</p>
-<p>在 GetProcAddress 函数上下断点：</p>
-<pre>bp kernel32!GetProcAddress</pre>
-<p>再次尝试添加右键菜单，WinDbg 停在 GetProcAddress 断点，我们让它 Step Out，之后停在 IsWindows64() 函数里面，看看返回值 eax：</p>
-<pre>
-
-r eax
-u 7c81f2b9
-</pre>
-<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/08/3.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/08/3-300x187.png" /></a></p>
-<p>可以看到反编译该内存地址就是 IsWow64Process。</p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>JSToolNpp 1.15 Released</title>
-            <link>http://www.sunjw.us/blog/jstoolnpp-1-15-released/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/jstoolnpp-1-15-released/</guid>
-            <pubDate>Tue, 09 Jul 2013 18:10:18 +0200</pubDate>
-            <description>
-                
-                What’s New in JSToolNpp 1.15:  Change name to JSTool. Added simple search in Json Viewer. Fixed Json Viewer and editor linkin bug. Fixed Js
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>What’s New in JSToolNpp 1.15:</p>
-<ul>
-<li>Change name to JSTool.</li>
-<li>Added simple search in Json Viewer.</li>
-<li>Fixed Json Viewer and editor linkin bug.</li>
-<li>Fixed Json Viewer utf-8 bug.</li>
-<li>Other tweaks.</li>
-</ul>
-<p>Download links:</p>
-<p><a href="http://jstoolnpp.googlecode.com/files/JSMinNPP.1.15.uni.zip" target="_blank">http://jstoolnpp.googlecode.com/files/JSMinNPP.1.15.uni.zip</a></p>
-<p><a href="http://sourceforge.net/projects/jsminnpp/files/latest/download" target="_blank">http://sourceforge.net/projects/jsminnpp/files/latest/download</a></p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>Apple WWDC 2013 Keynote 全场视频下载</title>
-            <link>http://www.sunjw.us/blog/apple-wwdc-2013-keynote-video-download/</link>
-            
-            <author>sunjw</author>
-            
-            <guid>http://www.sunjw.us/blog/apple-wwdc-2013-keynote-video-download/</guid>
-            <pubDate>Tue, 11 Jun 2013 07:48:19 +0200</pubDate>
-            <description>
-                
-                刚刚 Apple 放出了下载地址，各位猛击即可： http://itstreaming.apple.com/podcasts/apple_keynotes/wwdc2013_ipod.m4v
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>刚刚 Apple 放出了下载地址，各位猛击即可：</p>
-<p><a href="http://itstreaming.apple.com/podcasts/apple_keynotes/wwdc2013_ipod.m4v" target="_blank">http://itstreaming.apple.com/podcasts/apple_keynotes/wwdc2013_ipod.m4v</a></p>]]></content:encoded>
             
         </item>
         
