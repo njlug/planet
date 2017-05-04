@@ -7,8 +7,45 @@
         <link>http://planet.nanjinglug.org</link>
         <atom:link href="http://planet.nanjinglug.org/rss.xml" rel="self" type="application/rss+xml"/>
         <description>寻找南京 Linux 爱好者。每月第二个周末见！</description>
-        <pubDate>Sat, 04 Mar 2017 07:44:46 +0100</pubDate>
+        <pubDate>Thu, 04 May 2017 19:46:56 +0200</pubDate>
         <generator>Planet.js (https://github.com/phoenixlzx/planet.js)</generator>
+        
+        <item>
+            <title>Minecraft 服务器资源控制策略：AI 抑制而非数量限制</title>
+            <link>https://blog.phoenixlzx.com/2017/05/05/reduce-minecraft-server-lag-without-limit-mob-amount/</link>
+            
+            <author>Phoenix Nemo</author>
+            
+            <guid>https://blog.phoenixlzx.com/2017/05/05/reduce-minecraft-server-lag-without-limit-mob-amount/</guid>
+            <pubDate>Thu, 04 May 2017 19:46:56 +0200</pubDate>
+            <description>
+                
+                Minecraft 的 lag 问题已经司空见惯，各种控制资源消耗和卡顿的插件也层出不穷。但是它们几乎都非常用力地在一个点上：控制实体数量。 这并不无道理，因为 Minecraft 中最消耗资源的部分就是实体。但是暴力控制实体数量会导致刷怪塔无法正常工作、掉落物清理速度过快等问
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>Minecraft 的 lag 问题已经司空见惯，各种控制资源消耗和卡顿的插件也层出不穷。但是它们几乎都非常用力地在一个点上：控制实体数量。</p>
+<p>这并不无道理，因为 Minecraft 中最消耗资源的部分就是实体。但是暴力控制实体数量会导致刷怪塔无法正常工作、掉落物清理速度过快等问题，在生存服务器中可能引发玩家的强烈不满。</p>
+<p>所以，<a href="https://nyaa.cat" target="_blank">喵窝</a>开发组从另一个角度做出了一些尝试。</p>
+<a></a>
+<h3><a href="https://blog.phoenixlzx.com/2017/05/05/reduce-minecraft-server-lag-without-limit-mob-amount/#启发"></a>启发</h3><p>生物实体的数量巨大，主要集中的地区显然不是野外的自然刷怪区，而是玩家聚集的刷怪场、村民工程、动物养殖场等。如果不限制生物的数量和密度同时降低资源消耗，那么只能从生物实体的特性入手了。</p>
+<p>Minecraft 最近的版本中引用了 <code>NoAI</code> 的 NBT Tag，带有此标签的生物将不会进行 AI 计算。换句话说，除了占用服务器内存中的一点数据，几乎不会对这个生物实体有任何其他的 CPU 算力消耗。</p>
+<p>也就是说，实体消耗的算力资源，绝大部分都是 AI 计算的消耗。</p>
+<h3><a href="https://blog.phoenixlzx.com/2017/05/05/reduce-minecraft-server-lag-without-limit-mob-amount/#方案"></a>方案</h3><p>抓上一票人做了一些测试，结果证实生物失去 AI 后大幅降低了 CPU 的算力消耗。这是个 positive 的信号，但是接下来的测试则遇到了问题。</p>
+<p>对于养殖场，等生物数量变化不大（或者说只是定期来清理并重新养殖一次）的设施，生物失去 AI 的影响很小，只有在重新繁殖时需要恢复 AI。但是刷怪塔则因为生物没有 AI，同时也被强制不受重力影响而几乎无法使用，即便同时设置 <code>NoGravity</code> 为 <code>false</code> 也无效。</p>
+<p>开发组中 <a href="https://im.librazy.org/" target="_blank">@Librazy</a> 提到了 Spigot 的一个<a href="https://www.spigotmc.org/wiki/spigot-configuration/" target="_blank">参数</a> <code>nerf-spawner-mobs</code>，开启时刷怪笼生成的生物将不会拥有 AI，但是会被外界影响（例如水流和火球等）而移动。这个选项是全局的，因此不需要开启，只需要反射 spigot 中设置该功能的方法即可。</p>
+<p>于是整个方案的流程便是当服务器卡顿时抑制生物密集区的生物 AI 从而降低资源占用，同时最大程度上保证玩家对生物的需求。「服务器卡顿」的考量以服务器 TPS 而非实体数量为准，当服务器 TPS 高于一定值时即认为服务器没有超负荷，不会有任何操作，最大程度上利用硬件的性能。</p>
+<h3><a href="https://blog.phoenixlzx.com/2017/05/05/reduce-minecraft-server-lag-without-limit-mob-amount/#实现"></a>实现</h3><p>插件主要由开发组的 <a href="https://github.com/cyilin" target="_blank">@Cylin</a> 和 <a href="https://github.com/Librazy" target="_blank">@Librazy</a> 编写，源代码以 MIT 协议发布在 <a href="https://github.com/NyaaCat/yasui" target="_blank">GitHub</a> 上。</p>
+<p>插件每隔一段时间扫描服务器的 TPS 确认运行状况，如果 TPS 低于阈值则触发 AI 控制，TPS 高于一定值且持续一段时间即认为服务器已恢复正常运行状态，自动恢复被抑制的实体 AI 减少对生存体验的影响。</p>
+<p>实现过程中额外添加了一些额外可能被生存服务器用到的功能：</p>
+<ul>
+<li>per-world 控制，如果玩家需要建造以仇恨为基础的小黑塔，可以关闭对末地的控制。</li>
+<li>实体总量和单区块实体密度在 AI 抑制时纳入考虑，更加精准抑制资源消耗较高的区块。</li>
+</ul>
+<h3><a href="https://blog.phoenixlzx.com/2017/05/05/reduce-minecraft-server-lag-without-limit-mob-amount/#测试"></a>测试</h3><p><a href="https://github.com/NyaaCat/yasui" target="_blank">yasui</a> 插件在 <a href="https://craft.moe" target="_blank">毛玉線圈物語</a> 服务器中应用测试。由于近期玩家数量爆炸式增长（日常在线 5 人到 ~30 人甚至 50 人），各种实体控制插件均告无效。yasui 插件应用后被证实数次发挥作用，没有任何实体数量限制的前提下将服务器 TPS 稳定在 19 以上，服务器实体承载数量从 ~2500 提到至接近 5000，并且还有继续提高的可能（数次触发中最高一次单世界实体记录是 4808，其他世界中仍有大约 2000 实体未被计入）。</p>
+<p><del>吐槽：你们贼能刷</del></p>]]></content:encoded>
+            
+        </item>
         
         <item>
             <title>全网统一账户实践</title>
@@ -1451,34 +1488,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <li>用户名、密码、预共享密钥为服务器 A 中配置文件中的值</li>
 </ul>
 <p>连接上之后在客户端 ping 任意公网 IP、服务器 A 和服务器 B 的隧道端 IP 应该都是通的。至此，客户端连接 IPSec VPN 后所有流量都会加密经由服务器 A 中转，在必要时会经由海外服务器 B 转发，保证了访问工作必需站点的速度和在任何公共网络环境下的数据安全。</p>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>使用 iptables 过滤 DNS 放大攻击</title>
-            <link>https://blog.phoenixlzx.com/2014/05/23/iptables-rate-limiting-rules-to-block-dns-amplification-attack/</link>
-            
-            <author>Phoenix Nemo</author>
-            
-            <guid>https://blog.phoenixlzx.com/2014/05/23/iptables-rate-limiting-rules-to-block-dns-amplification-attack/</guid>
-            <pubDate>Sat, 12 Nov 2016 02:45:01 +0100</pubDate>
-            <description>
-                
-                昨晚开始我们的 DNS 日志中出现大量的针对wradish.com的ANY记录请求，导致大量正常解析请求超时。今天上午到中午时分再次出现流量更大、针对ping.zong.co.ua的ANY记录请求，导致整个 DNS 服务瘫痪，完全无法响应正常解析请求。  检查后发现 wradi
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>昨晚开始我们的 DNS 日志中出现大量的针对<code>wradish.com</code>的<code>ANY</code>记录请求，导致大量正常解析请求超时。今天上午到中午时分再次出现流量更大、针对<code>ping.zong.co.ua</code>的<code>ANY</code>记录请求，导致整个 DNS 服务瘫痪，完全无法响应正常解析请求。</p>
-<a></a>
-<p>检查后发现 <code>wradish.com</code> 早已因多次 DNS 放大攻击而被列入开放 DNS 服务器黑名单，网络上也有大量的针对该域名攻击请求包的过滤方法。<code>ping.zong.co.ua</code> 却完全没有任何搜索记录。</p>
-<p>DNS 放大攻击 (DNS Amplification Attack) 即通过向多台 DNS 开放服务器发送无意义的 recursive 解析请求，从而使得根域名服务器遭到超大流量的解析请求包，无暇顾及正常的解析请求，由此实现分布式拒绝服务攻击 (Distributed Denial of Service)。我们的 DNS 服务器在这里既是攻击者，也是受害者。</p>
-<p>DNSMasq 默认允许 recursive 请求，且似乎本身就没有设计为开放 DNS 服务，所以貌似也没有办法禁用掉 recursive 请求。因此我们使用 <a href="http://blog.dataforce.org.uk/2013/08/limiting-the-effectiveness-of-dns-amplification/" target="_blank">iptables 规则</a>来过滤掉这些请求。</p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /><span>3</span><br /><span>4</span><br /><span>5</span><br /><span>6</span><br /><span>7</span><br /><span>8</span><br /><span>9</span><br /><span>10</span><br /><span>11</span><br /><span>12</span><br /><span>13</span><br /><span>14</span><br /><span>15</span><br /><span>16</span><br /></pre></td><td><pre><span><span># Create a chain to store block rules in</span></span><br /><span>iptables -N BADDNS </span><br /><span></span><br /><span><span># Match all &quot;IN ANY&quot; DNS Queries, and run them past the BADDNS chain.</span></span><br /><span>iptables -A INPUT -p udp --dport 53 -m string --hex-string <span>&quot;|00 00 ff 00 01|&quot;</span> --to 255 --algo bm -m comment --comment <span>&quot;IN ANY?&quot;</span> -j BADDNS</span><br /><span>iptables -A FORWARD -p udp --dport 53 -m string --hex-string <span>&quot;|00 00 ff 00 01|&quot;</span> --to 255 --algo bm -m comment --comment <span>&quot;IN ANY?&quot;</span> -j BADDNS</span><br /><span></span><br /><span><span># Block domains that are being used for DNS Amplification...</span></span><br /><span>iptables -A BADDNS -m string --hex-string <span>&quot;|04 72 69 70 65 03 6e 65 74 00|&quot;</span> --algo bm -j DROP --to 255 -m comment --comment <span>&quot;ripe.net&quot;</span></span><br /><span>iptables -A BADDNS -m string --hex-string <span>&quot;|03 69 73 63 03 6f 72 67 00|&quot;</span> --algo bm -j DROP --to 255 -m comment --comment <span>&quot;isc.org&quot;</span></span><br /><span>iptables -A BADDNS -m string --hex-string <span>&quot;|04 73 65 6d 61 02 63 7a 00|&quot;</span> --algo bm -j DROP --to 255 -m comment --comment <span>&quot;sema.cz&quot;</span></span><br /><span>iptables -A BADDNS -m string --hex-string <span>&quot;|09 68 69 7a 62 75 6c 6c 61 68 02 6d 65 00|&quot;</span> --algo bm -j DROP --to 255 -m comment --comment <span>&quot;hizbullah.me&quot;</span></span><br /><span></span><br /><span><span># Rate limit the rest.</span></span><br /><span>iptables -A BADDNS -m recent --set --name DNSQF --rsource</span><br /><span>iptables -A BADDNS -m recent --update --seconds 10 --hitcount 1 --name DNSQF --rsource -j DROP</span><br /></pre></td></tr></table>
-<p>添加以上规则后执行 <code>iptables-save</code> 来使更改生效。</p>
-<p>目前为止似乎没有报告出现了明显规模的 DNS 放大攻击征兆，攻击者针对我们防火墙封锁的反应速度、攻击所用的记录以及从日志中发现的大量不同请求源也暗示着我们的服务器可能是最终攻击目标，用攻击流量消耗尽服务器带宽而导致服务瘫痪。至于原因，我也没有想明白为何会有攻击者对一个小型私用服务器感兴趣。</p>
-<p>PS. 到本文发表时，攻击依旧在继续，且流量越来越大。目前阿里云的云盾设置可以说无力，只能依靠 iptables 暂时缓解。后续的应对计划仍在制定中。</p>
-<p>=== 2014-05-24 更新 ===</p>
-<p>Aveline 菊苣给出了一个<a href="https://github.com/smurfmonitor/dns-iptables-rules" target="_blank">DNS Amplification IPTABLES block lists</a> 给点128个赞！</p>]]></content:encoded>
             
         </item>
         
