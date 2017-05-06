@@ -1477,9 +1477,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <table><tr><td><pre><span>1</span><br /><span>2</span><br /></pre></td><td><pre><span><span>server</span>=<span>8.8</span>.<span>8.8</span> # 默认上游服务器通过隧道交由 Google DNS 解析以获得最佳海外站点效果</span><br /><span><span>conf-dir</span>=/etc/dnsmasq.d  # 启用配置文件目录</span><br /></pre></td></tr></table>
 <p>获取 <a href="https://github.com/felixonmars/dnsmasq-china-list" target="_blank">dnsmasq-china-list</a>，将其中的配置文件软连接到 <code>/etc/dnsmasq.d</code> 下即可使用 114DNS 直接解析大部分需要加速的国内站点。</p>
 <p>屏蔽公网对本机 DNS 服务的直接访问：</p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /></pre></td><td><pre><span><span># iptables -A INPUT -p udp -d &lt;服务器 A 公网 IP&gt; --dport 53 -j DROP</span></span><br /><span><span># iptables -A INPUT -p tcp -d &lt;服务器 A 公网 IP&gt; --dport 53 -j DROP</span></span><br /></pre></td></tr></table>
+<table><tr><td><pre><span>1</span><br /><span>2</span><br /></pre></td><td><pre><span># iptables -A INPUT -p udp -<span>d</span> &lt;服务器 A 公网 IP&gt; --dport <span>53</span> -<span>j</span> DROP</span><br /><span># iptables -A INPUT -p tcp -<span>d</span> &lt;服务器 A 公网 IP&gt; --dport <span>53</span> -<span>j</span> DROP</span><br /></pre></td></tr></table>
 <p>修改 <code>/etc/strongswan.conf</code> 在 <code>charon { ... }</code> 块内添加：</p>
-<table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span><span>dns1</span> = <span>10.7.0.2</span>  <span># 此处可填服务器 A 上除公网 IP 和 localhost 之外的任意可绑定 IP 地址，例如隧道的本地端地址</span></span><br /></pre></td></tr></table>
+<table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span>dns1 = <span>10.7</span><span>.0</span><span>.2</span>  # 此处可填服务器 A 上除公网 <span>IP</span> 和 localhost 之外的任意可绑定 <span>IP</span> 地址，例如隧道的本地端地址</span><br /></pre></td></tr></table>
 <h3><a href="https://blog.phoenixlzx.com/2015/09/14/ipsec-plus-tunnel-chnroutes-notes/#测试"></a>测试</h3><p>一切就绪后重启 strongswan 服务：</p>
 <table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span><span># service strongswan restart</span></span><br /></pre></td></tr></table>
 <p>客户端的 IPSec VPN 配置：</p>
