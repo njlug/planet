@@ -37,6 +37,53 @@
                 
                 <section class="post">
                     <p class="post-meta">
+                        <span class="post-author">May 13th 2017 5:13:04 AM</span>
+                        
+                        <span class="post-author">// Update May 13th 2017 5:36:32 AM</span>
+                        
+                    </p>
+                    <header class="post-header">
+                        
+                        <img width="48" height="48" alt="Phoenix Nemo&#x27;s avatar" class="post-avatar" src="https://blog.phoenixlzx.com/static/img/avatar/avatar.jpg">
+                        
+                        <h2 class="post-title"><a href="https://blog.phoenixlzx.com/2017/05/13/recover-netgear-nighthawk-x6-with-tftp/" class="post-title">不作死就不会死系列，TFTP 修复变砖的 Nighthawk X6</a></h2>
+                        <p class="post-meta">
+                            <span class="post-author">Phoenix Nemo</span>
+                            
+                            <span class="post-category post-category-c" href="#">Note</span>
+                            
+                            <span class="post-category post-category-b" href="#">Router</span>
+                            
+                            <span class="post-category post-category-a" href="#">TFTP</span>
+                            
+                            <span class="post-category post-category-c" href="#">Debrick</span>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+                        <p>由于之前买的 AC87U 经常被 roommate 抱怨掉线（风评表示这货 5G 有问题，然而我连着 5G 毛事儿没有，隔壁用 2.4G 却一直掉线）…</p>
+<p>新购入的路由器是 Netgear Nighthawk X6 R8000。</p>
+<p>由于之前的 Security Advisory，所以到手第一件事就是配上网络更新固件啦。更新挺慢的于是点点点完事儿撸猫去了。过了一会儿回来一看怎么还没网络？得，砖了…</p>
+<a></a>
+<p>讲道理，Netgear 也算大厂了，这种 online update 干了不知道多少回，第一次遇到这都能变砖的（扶额。</p>
+<p>现象就是电源橙色灯亮后一会儿变成白色灯闪烁，且网络服务没有启动。尝试过 factory reset 无效，官方提供的 TFTP 强刷工具也无效（刷不进…</p>
+<p><a href="https://community.netgear.com/t5/Nighthawk-WiFi-Routers/SOLVED-Steps-for-debrick-unresponsive-R7000-softbricked/td-p/414034" target="_blank">解决方案</a>反而是意想不到的简单。总之大概记录下修复的过程。</p>
+<ol>
+<li>从<a href="https://www.netgear.com/support/" target="_blank">官方网站</a>下载适用的新版固件并解压，应该得到一个 .chk 文件</li>
+<li>关闭路由器电源等待 10 秒，网线插 LAN 口开机。</li>
+<li>检查是否获得了正确的 IP。如果没有，可能 DHCP 服务没起来。手动设置一个正确的 IP 吧。然后能 ping 通路由器 IP 即可。</li>
+<li>电源灯开始闪烁的时候，执行命令 <code>tftp -i [router ip] put [path/to/firmware.chk]</code>。例如 <code>tftp -i 192.168.1.1 put ./R8000-V1.0.3.36_1.1.25.chk</code></li>
+<li>等一会儿路由器自动重启，搞定。</li>
+</ol>
+<p>配置都没丢…然后我依旧没有搞定 OCN 要怎么连 IPv6… 说好的 IPv6 PPPoE 呢…</p>
+<p><img src="https://blog.phoenixlzx.com/static/img/posts/2017-05-13-sticker.png" /></p>
+                        
+                    </div>
+                </section>
+                
+                <section class="post">
+                    <p class="post-meta">
                         <span class="post-author">May 4th 2017 6:42:42 PM</span>
                         
                         <span class="post-author">// Update May 4th 2017 7:46:56 PM</span>
@@ -93,15 +140,15 @@
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-c" href="#">*nix</span>
+                            <span class="post-category post-category-a" href="#">*nix</span>
                             
-                            <span class="post-category post-category-a" href="#">freeIPA</span>
+                            <span class="post-category post-category-d" href="#">freeIPA</span>
                             
-                            <span class="post-category post-category-d" href="#">infrastucture</span>
+                            <span class="post-category post-category-a" href="#">infrastucture</span>
                             
                             <span class="post-category post-category-a" href="#">LDAP</span>
                             
-                            <span class="post-category post-category-d" href="#">tcp</span>
+                            <span class="post-category post-category-b" href="#">tcp</span>
                             
                             <span class="post-category post-category-b" href="#">vpn</span>
                             
@@ -239,11 +286,11 @@
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-d" href="#">*nix</span>
+                            <span class="post-category post-category-c" href="#">*nix</span>
                             
                             <span class="post-category post-category-d" href="#">infrastucture</span>
                             
-                            <span class="post-category post-category-c" href="#">networking</span>
+                            <span class="post-category post-category-b" href="#">networking</span>
                             
                         </p>
                     </header>
@@ -353,11 +400,11 @@
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Node.js</span>
+                            <span class="post-category post-category-d" href="#">Node.js</span>
                             
                             <span class="post-category post-category-a" href="#">RSS</span>
                             
-                            <span class="post-category post-category-d" href="#">Feed</span>
+                            <span class="post-category post-category-c" href="#">Feed</span>
                             
                         </p>
                     </header>
@@ -422,11 +469,11 @@
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Notes</span>
+                            <span class="post-category post-category-c" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">NGINX</span>
+                            <span class="post-category post-category-b" href="#">NGINX</span>
                             
-                            <span class="post-category post-category-d" href="#">Server</span>
+                            <span class="post-category post-category-a" href="#">Server</span>
                             
                         </p>
                     </header>
@@ -471,17 +518,17 @@
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-b" href="#">*nix</span>
+                            <span class="post-category post-category-d" href="#">*nix</span>
                             
-                            <span class="post-category post-category-a" href="#">infrastucture</span>
+                            <span class="post-category post-category-c" href="#">infrastucture</span>
                             
                             <span class="post-category post-category-c" href="#">kiosk</span>
                             
                             <span class="post-category post-category-c" href="#">operations</span>
                             
-                            <span class="post-category post-category-d" href="#">raspberrypi</span>
+                            <span class="post-category post-category-b" href="#">raspberrypi</span>
                             
-                            <span class="post-category post-category-b" href="#">saltstack</span>
+                            <span class="post-category post-category-a" href="#">saltstack</span>
                             
                         </p>
                     </header>
@@ -698,17 +745,17 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-d" href="#">*nix</span>
+                            <span class="post-category post-category-b" href="#">*nix</span>
                             
                             <span class="post-category post-category-b" href="#">Django</span>
                             
-                            <span class="post-category post-category-c" href="#">infrastucture</span>
+                            <span class="post-category post-category-d" href="#">infrastucture</span>
                             
-                            <span class="post-category post-category-d" href="#">kiosk</span>
+                            <span class="post-category post-category-b" href="#">kiosk</span>
                             
-                            <span class="post-category post-category-d" href="#">LDAP</span>
+                            <span class="post-category post-category-c" href="#">LDAP</span>
                             
-                            <span class="post-category post-category-b" href="#">mysql</span>
+                            <span class="post-category post-category-c" href="#">mysql</span>
                             
                             <span class="post-category post-category-d" href="#">saltstack</span>
                             
@@ -770,9 +817,9 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-c" href="#">[Infrastructure</span>
+                            <span class="post-category post-category-d" href="#">[Infrastructure</span>
                             
-                            <span class="post-category post-category-c" href="#">DevOps]</span>
+                            <span class="post-category post-category-d" href="#">DevOps]</span>
                             
                         </p>
                     </header>
@@ -921,7 +968,7 @@ TPS 、Latency 和 Capacity。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Notes</span>
+                            <span class="post-category post-category-c" href="#">Notes</span>
                             
                         </p>
                     </header>
@@ -1009,9 +1056,9 @@ TPS 、Latency 和 Capacity。
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-c" href="#">[HTTPS</span>
+                            <span class="post-category post-category-a" href="#">[HTTPS</span>
                             
-                            <span class="post-category post-category-b" href="#">HTTPDNS</span>
+                            <span class="post-category post-category-a" href="#">HTTPDNS</span>
                             
                             <span class="post-category post-category-a" href="#">MikroTik]</span>
                             
@@ -1133,7 +1180,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-a" href="#">Shanghai</span>
+                            <span class="post-category post-category-b" href="#">Shanghai</span>
                             
                         </p>
                     </header>
@@ -1247,9 +1294,9 @@ Indicator 的含义是建立一系列评价指标，比如价格、户型、位�
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-c" href="#">[HTTPS</span>
+                            <span class="post-category post-category-b" href="#">[HTTPS</span>
                             
-                            <span class="post-category post-category-a" href="#">HTTPDNS]</span>
+                            <span class="post-category post-category-b" href="#">HTTPDNS]</span>
                             
                         </p>
                     </header>
@@ -1354,7 +1401,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-c" href="#">音乐</span>
+                            <span class="post-category post-category-d" href="#">音乐</span>
                             
                             <span class="post-category post-category-a" href="#">维也纳新年音乐会</span>
                             
@@ -1414,9 +1461,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Notes</span>
+                            <span class="post-category post-category-d" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">DNS</span>
+                            <span class="post-category post-category-b" href="#">DNS</span>
                             
                             <span class="post-category post-category-b" href="#">Unbound</span>
                             
@@ -1487,15 +1534,15 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Notes</span>
+                            <span class="post-category post-category-d" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">Configuration</span>
+                            <span class="post-category post-category-a" href="#">SSL</span>
                             
-                            <span class="post-category post-category-c" href="#">SSL</span>
+                            <span class="post-category post-category-a" href="#">NGINX</span>
                             
-                            <span class="post-category post-category-b" href="#">NGINX</span>
+                            <span class="post-category post-category-d" href="#">Server</span>
                             
-                            <span class="post-category post-category-c" href="#">Server</span>
+                            <span class="post-category post-category-d" href="#">Configuration</span>
                             
                             <span class="post-category post-category-a" href="#">IPKVM</span>
                             
@@ -1600,11 +1647,11 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-c" href="#">Notes</span>
                             
-                            <span class="post-category post-category-b" href="#">Arch Linux</span>
+                            <span class="post-category post-category-c" href="#">Arch Linux</span>
                             
-                            <span class="post-category post-category-c" href="#">Linux</span>
+                            <span class="post-category post-category-b" href="#">Linux</span>
                             
-                            <span class="post-category post-category-d" href="#">Network</span>
+                            <span class="post-category post-category-b" href="#">Network</span>
                             
                         </p>
                     </header>
@@ -1649,15 +1696,15 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-d" href="#">Linux</span>
+                            <span class="post-category post-category-c" href="#">Linux</span>
                             
-                            <span class="post-category post-category-c" href="#">Configuration</span>
+                            <span class="post-category post-category-a" href="#">Configuration</span>
                             
-                            <span class="post-category post-category-b" href="#">Arch Linux</span>
+                            <span class="post-category post-category-c" href="#">Arch Linux</span>
                             
-                            <span class="post-category post-category-d" href="#">ThinkPad</span>
+                            <span class="post-category post-category-a" href="#">ThinkPad</span>
                             
-                            <span class="post-category post-category-d" href="#">Fingerprint</span>
+                            <span class="post-category post-category-b" href="#">Fingerprint</span>
                             
                         </p>
                     </header>
@@ -1698,19 +1745,19 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Notes</span>
+                            <span class="post-category post-category-a" href="#">Notes</span>
                             
                             <span class="post-category post-category-d" href="#">Server</span>
                             
                             <span class="post-category post-category-a" href="#">DNS</span>
                             
-                            <span class="post-category post-category-a" href="#">Ubuntu</span>
+                            <span class="post-category post-category-d" href="#">Ubuntu</span>
                             
-                            <span class="post-category post-category-a" href="#">VPN</span>
+                            <span class="post-category post-category-b" href="#">VPN</span>
                             
-                            <span class="post-category post-category-b" href="#">IPSec</span>
+                            <span class="post-category post-category-d" href="#">IPSec</span>
                             
-                            <span class="post-category post-category-d" href="#">iptables</span>
+                            <span class="post-category post-category-b" href="#">iptables</span>
                             
                         </p>
                     </header>
@@ -1747,9 +1794,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <table><tr><td><pre><span>1</span><br /><span>2</span><br /></pre></td><td><pre><span><span>server</span>=<span>8.8</span>.<span>8.8</span> # 默认上游服务器通过隧道交由 Google DNS 解析以获得最佳海外站点效果</span><br /><span><span>conf-dir</span>=/etc/dnsmasq.d  # 启用配置文件目录</span><br /></pre></td></tr></table>
 <p>获取 <a href="https://github.com/felixonmars/dnsmasq-china-list" target="_blank">dnsmasq-china-list</a>，将其中的配置文件软连接到 <code>/etc/dnsmasq.d</code> 下即可使用 114DNS 直接解析大部分需要加速的国内站点。</p>
 <p>屏蔽公网对本机 DNS 服务的直接访问：</p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /></pre></td><td><pre><span># iptables -A INPUT -p udp -<span>d</span> &lt;服务器 A 公网 IP&gt; --dport <span>53</span> -<span>j</span> DROP</span><br /><span># iptables -A INPUT -p tcp -<span>d</span> &lt;服务器 A 公网 IP&gt; --dport <span>53</span> -<span>j</span> DROP</span><br /></pre></td></tr></table>
+<table><tr><td><pre><span>1</span><br /><span>2</span><br /></pre></td><td><pre><span><span># iptables -A INPUT -p udp -d &lt;服务器 A 公网 IP&gt; --dport 53 -j DROP</span></span><br /><span><span># iptables -A INPUT -p tcp -d &lt;服务器 A 公网 IP&gt; --dport 53 -j DROP</span></span><br /></pre></td></tr></table>
 <p>修改 <code>/etc/strongswan.conf</code> 在 <code>charon { ... }</code> 块内添加：</p>
-<table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span>dns1 = <span>10.7</span><span>.0</span><span>.2</span>  # 此处可填服务器 A 上除公网 <span>IP</span> 和 localhost 之外的任意可绑定 <span>IP</span> 地址，例如隧道的本地端地址</span><br /></pre></td></tr></table>
+<table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span><span>dns1</span> = <span>10.7.0.2</span>  <span># 此处可填服务器 A 上除公网 IP 和 localhost 之外的任意可绑定 IP 地址，例如隧道的本地端地址</span></span><br /></pre></td></tr></table>
 <h3><a href="https://blog.phoenixlzx.com/2015/09/14/ipsec-plus-tunnel-chnroutes-notes/#测试"></a>测试</h3><p>一切就绪后重启 strongswan 服务：</p>
 <table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span><span># service strongswan restart</span></span><br /></pre></td></tr></table>
 <p>客户端的 IPSec VPN 配置：</p>
@@ -1777,9 +1824,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Node.js</span>
+                            <span class="post-category post-category-b" href="#">Node.js</span>
                             
-                            <span class="post-category post-category-a" href="#">Anime</span>
+                            <span class="post-category post-category-b" href="#">Anime</span>
                             
                         </p>
                     </header>
@@ -1823,11 +1870,11 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Notes</span>
+                            <span class="post-category post-category-b" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">Telegram</span>
+                            <span class="post-category post-category-b" href="#">Telegram</span>
                             
-                            <span class="post-category post-category-c" href="#">OS X</span>
+                            <span class="post-category post-category-b" href="#">OS X</span>
                             
                         </p>
                     </header>
@@ -1875,15 +1922,15 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Linux</span>
+                            <span class="post-category post-category-d" href="#">Linux</span>
                             
                             <span class="post-category post-category-a" href="#">Server</span>
                             
                             <span class="post-category post-category-d" href="#">Ubuntu</span>
                             
-                            <span class="post-category post-category-c" href="#">uWSGI</span>
+                            <span class="post-category post-category-d" href="#">uWSGI</span>
                             
-                            <span class="post-category post-category-c" href="#">Configration</span>
+                            <span class="post-category post-category-a" href="#">Configration</span>
                             
                         </p>
                     </header>
@@ -1928,11 +1975,11 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Node.js</span>
+                            <span class="post-category post-category-d" href="#">Node.js</span>
                             
-                            <span class="post-category post-category-a" href="#">Telegram</span>
+                            <span class="post-category post-category-b" href="#">Telegram</span>
                             
-                            <span class="post-category post-category-c" href="#">ImageMagick</span>
+                            <span class="post-category post-category-d" href="#">ImageMagick</span>
                             
                         </p>
                     </header>
@@ -1970,17 +2017,17 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Notes</span>
+                            <span class="post-category post-category-b" href="#">Notes</span>
                             
-                            <span class="post-category post-category-d" href="#">NGINX</span>
+                            <span class="post-category post-category-a" href="#">NGINX</span>
                             
-                            <span class="post-category post-category-c" href="#">Server</span>
+                            <span class="post-category post-category-a" href="#">Server</span>
                             
-                            <span class="post-category post-category-d" href="#">DNS</span>
+                            <span class="post-category post-category-a" href="#">DNS</span>
                             
-                            <span class="post-category post-category-b" href="#">MySQL</span>
+                            <span class="post-category post-category-a" href="#">MySQL</span>
                             
-                            <span class="post-category post-category-b" href="#">PowerDNS</span>
+                            <span class="post-category post-category-c" href="#">PowerDNS</span>
                             
                         </p>
                     </header>
@@ -2070,9 +2117,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-c" href="#">Life</span>
                             
-                            <span class="post-category post-category-a" href="#">Arch Linux</span>
+                            <span class="post-category post-category-b" href="#">Arch Linux</span>
                             
-                            <span class="post-category post-category-d" href="#">ThinkPad</span>
+                            <span class="post-category post-category-a" href="#">ThinkPad</span>
                             
                         </p>
                     </header>
@@ -2127,9 +2174,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Notes</span>
+                            <span class="post-category post-category-d" href="#">Notes</span>
                             
-                            <span class="post-category post-category-d" href="#">OS X</span>
+                            <span class="post-category post-category-b" href="#">OS X</span>
                             
                         </p>
                     </header>
@@ -2156,64 +2203,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">July 21st 2014 6:21:57 AM</span>
-                        
-                        <span class="post-author">// Update November 12th 2016 2:43:04 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="Phoenix Nemo&#x27;s avatar" class="post-avatar" src="https://blog.phoenixlzx.com/static/img/avatar/avatar.jpg">
-                        
-                        <h2 class="post-title"><a href="https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/" class="post-title">在 Ubuntu 服务器上搭建 OpenConnect 服务器小记</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">Phoenix Nemo</span>
-                            
-                            <span class="post-category post-category-c" href="#">Notes</span>
-                            
-                            <span class="post-category post-category-b" href="#">Server</span>
-                            
-                            <span class="post-category post-category-a" href="#">Linux</span>
-                            
-                            <span class="post-category post-category-c" href="#">Network</span>
-                            
-                            <span class="post-category post-category-b" href="#">Ubuntu</span>
-                            
-                            <span class="post-category post-category-d" href="#">VPN</span>
-                            
-                            <span class="post-category post-category-a" href="#">iptables</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>最近猫给推荐的 Cisco AnyConnect，面基的时候也看到 Aveline 菊苣在用 AnyConnect(插嘴：正太菊苣果然好可爱！！！) 于是自己折腾了下。作为少有的能让我折腾起来的 VPN，暂且把搭建步骤简单记录下。</p>
-<a></a>
-<p>AnyConnect 的好处是基于 HTTPS，证书可以申请 StartSSL 的，而且配置也不很复杂。另外配置文件里发现了很多专门为商业化/企业服务定制的选项，例如最大同时在线客户端数量，同账户最大在线设备数量等等。</p>
-<p>OpenConnect 是 AnyConnect 的开源实现。目前 0.8.0 版本需要 GnuTLS 3.1 以上版本，所以我们就直接在 Ubuntu 14.04 中搭建。另外 就算是基于 HTTPS，这货也是要用 TUN 设备的，所以 OpenVZ 用户们请注意。</p>
-<h3><a href="https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/#准备"></a>准备</h3><p>命令</p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /><span>3</span><br /></pre></td><td><pre><span>apt-get install build-essential libwrap0-dev libpam0g-dev libdbus-1-dev \</span><br /><span>  libreadline-dev libnl-route-3-dev libprotobuf-c0-dev libpcl1-dev libopts25-dev \</span><br /><span>  autogen libgnutls28 libgnutls28-dev libseccomp-dev libhttp-parser-dev</span><br /></pre></td></tr></table>
-<h3><a href="https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/#安装"></a>安装</h3><p>下载源码</p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /><span>3</span><br /></pre></td><td><pre><span>wget -c ftp://ftp.infradead.org/pub/ocserv/ocserv-0.8.0.tar.xz</span><br /><span>tar xvf ocserv-0.8.0.tar.xz</span><br /><span><span>cd</span> ocserv-0.8.0</span><br /></pre></td></tr></table>
-<p>编译安装</p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /><span>3</span><br /><span>4</span><br /><span>5</span><br /></pre></td><td><pre><span>./configure --prefix=/opt/ocserv </span><br /><span>make</span><br /><span>make install</span><br /><span>mkdir /opt/ocserv/etc/</span><br /><span>cp doc/sample.config /opt/ocserv/etc/config</span><br /></pre></td></tr></table>
-<h3><a href="https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/#配置"></a>配置</h3><p>这里只记录需要修改的重点配置，其他配置请参照样例配置文件的注释按需修改。</p>
-<p>文件 <code>/opt/ocserv/etc/config</code></p>
-<table><tr><td><pre><span>1</span><br /><span>2</span><br /><span>3</span><br /><span>4</span><br /><span>5</span><br /><span>6</span><br /><span>7</span><br /><span>8</span><br /><span>9</span><br /><span>10</span><br /><span>11</span><br /><span>12</span><br /><span>13</span><br /><span>14</span><br /><span>15</span><br /></pre></td><td><pre><span><span>auth</span> = <span>&quot;plain[/opt/ocserv/etc/passwd]&quot;</span></span><br /><span><span>listen-host</span> = connect.your.domain</span><br /><span><span>max-clients</span> = <span>128</span></span><br /><span><span>max-same-clients</span> = <span>4</span></span><br /><span><span>server-cert</span> = /opt/ocserv/etc/ssl/server-cert.pem</span><br /><span><span>server-key</span> = /opt/ocserv/etc/ssl/server-key.pem</span><br /><span><span>ca-cert</span> = /opt/ocserv/etc/ssl/ca.pem</span><br /><span><span>mobile-idle-timeout</span> = <span>2400</span></span><br /><span><span>ipv4-network</span> = <span>192.168</span>.<span>1.0</span></span><br /><span><span>ipv4-netmask</span> = <span>255.255</span>.<span>255.0</span></span><br /><span><span>dns</span> = <span>8.8</span>.<span>8.8</span></span><br /><span><span>dns</span> = <span>8.8</span>.<span>4.4</span></span><br /><span><span>route</span> = <span>192.168</span>.<span>1.0</span>/<span>255.255</span>.<span>255.0</span></span><br /><span><span>route-add-cmd</span> = <span>&quot;ip route add 192.168.1.0 dev tun0&quot;</span></span><br /><span><span>route-del-cmd</span> = <span>&quot;ip route delete 192.168.1.0 dev tun0&quot;</span></span><br /></pre></td></tr></table>
-<p>创建用户，命令</p>
-<table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span><span>/opt/</span>ocserv<span>/bin/</span>ocpasswd -c <span>/opt/</span>ocserv<span>/etc/</span>passwd username</span><br /></pre></td></tr></table>
-<p>按提示输入两次密码。</p>
-<p>iptables 规则</p>
-<table><tr><td><pre><span>1</span><br /></pre></td><td><pre><span>iptables -t nat -A POSTROUTING -<span>j</span> SNAT --<span>to</span>-<span>source</span> &lt;server ip&gt; -<span>o</span> <span>&lt;nic&gt;</span></span><br /></pre></td></tr></table>
-<p>记得把 <code>&lt;server ip&gt;</code> 和 <code>&lt;nic&gt;</code> 改为服务器公网 IP 和对应网卡的名称。</p>
-<h3><a href="https://blog.phoenixlzx.com/2014/07/21/setup-openconnect-server-on-ubuntu/#搞定"></a>搞定</h3><p>折腾完毕，AnyConnect 客户端可以成功使用了。</p>
-<p><del>不过呢折腾完之后发现这货其实被干扰得很厉害啊…</del></p>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">October 7th 2015 2:14:03 AM</span>
                         
                         <span class="post-author">// Update November 12th 2016 2:42:43 AM</span>
@@ -2229,7 +2218,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-a" href="#">Life</span>
                             
-                            <span class="post-category post-category-a" href="#">Anime</span>
+                            <span class="post-category post-category-c" href="#">Anime</span>
                             
                         </p>
                     </header>
@@ -2285,9 +2274,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-d" href="#">Network</span>
                             
-                            <span class="post-category post-category-d" href="#">AWS</span>
+                            <span class="post-category post-category-a" href="#">AWS</span>
                             
-                            <span class="post-category post-category-d" href="#">Cloud Computing</span>
+                            <span class="post-category post-category-c" href="#">Cloud Computing</span>
                             
                         </p>
                     </header>
@@ -2332,7 +2321,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-c" href="#">总结</span>
+                            <span class="post-category post-category-a" href="#">总结</span>
                             
                         </p>
                     </header>
@@ -2375,9 +2364,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-a" href="#">*nix</span>
+                            <span class="post-category post-category-b" href="#">*nix</span>
                             
-                            <span class="post-category post-category-a" href="#">mysql</span>
+                            <span class="post-category post-category-c" href="#">mysql</span>
                             
                         </p>
                     </header>
@@ -2480,7 +2469,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-d" href="#">*nix</span>
                             
-                            <span class="post-category post-category-a" href="#">nginx</span>
+                            <span class="post-category post-category-b" href="#">nginx</span>
                             
                         </p>
                     </header>
@@ -2528,7 +2517,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-b" href="#">[Test</span>
+                            <span class="post-category post-category-d" href="#">[Test</span>
                             
                             <span class="post-category post-category-a" href="#">API]</span>
                             
@@ -3052,7 +3041,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">折腾</span>
+                            <span class="post-category post-category-c" href="#">折腾</span>
                             
                         </p>
                     </header>
@@ -3267,7 +3256,7 @@ bled FROM video WHERE $cond &quot; .
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">技术</span>
+                            <span class="post-category post-category-d" href="#">技术</span>
                             
                         </p>
                     </header>
@@ -3449,7 +3438,7 @@ bled FROM video WHERE $cond &quot; .
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-d" href="#">Mac</span>
+                            <span class="post-category post-category-b" href="#">Mac</span>
                             
                         </p>
                     </header>
@@ -3659,7 +3648,7 @@ bled FROM video WHERE $cond &quot; .
                             
                             <span class="post-category post-category-b" href="#">工具</span>
                             
-                            <span class="post-category post-category-a" href="#">音乐</span>
+                            <span class="post-category post-category-c" href="#">音乐</span>
                             
                         </p>
                     </header>
@@ -3962,13 +3951,13 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-c" href="#">*nix</span>
+                            <span class="post-category post-category-b" href="#">*nix</span>
                             
-                            <span class="post-category post-category-b" href="#">monitoring</span>
+                            <span class="post-category post-category-a" href="#">monitoring</span>
                             
-                            <span class="post-category post-category-c" href="#">networking</span>
+                            <span class="post-category post-category-b" href="#">networking</span>
                             
-                            <span class="post-category post-category-c" href="#">tcp</span>
+                            <span class="post-category post-category-d" href="#">tcp</span>
                             
                             <span class="post-category post-category-c" href="#">vpn</span>
                             
@@ -4002,7 +3991,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-a" href="#">Qiniu</span>
+                            <span class="post-category post-category-c" href="#">Qiniu</span>
                             
                             <span class="post-category post-category-b" href="#">TCP</span>
                             
@@ -4106,7 +4095,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-b" href="#">confluence</span>
+                            <span class="post-category post-category-c" href="#">confluence</span>
                             
                         </p>
                     </header>
@@ -4228,7 +4217,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-b" href="#">新年</span>
+                            <span class="post-category post-category-d" href="#">新年</span>
                             
                         </p>
                     </header>
@@ -4270,9 +4259,9 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-c" href="#">音乐</span>
+                            <span class="post-category post-category-a" href="#">音乐</span>
                             
-                            <span class="post-category post-category-c" href="#">维也纳新年音乐会</span>
+                            <span class="post-category post-category-d" href="#">维也纳新年音乐会</span>
                             
                         </p>
                     </header>
@@ -4337,7 +4326,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                             
                             <span class="post-category post-category-b" href="#">SS</span>
                             
-                            <span class="post-category post-category-c" href="#">HAProxy</span>
+                            <span class="post-category post-category-d" href="#">HAProxy</span>
                             
                         </p>
                     </header>
@@ -4451,11 +4440,11 @@ update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项�
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-a" href="#">fHash</span>
+                            <span class="post-category post-category-b" href="#">fHash</span>
                             
-                            <span class="post-category post-category-b" href="#">OS X</span>
+                            <span class="post-category post-category-a" href="#">OS X</span>
                             
-                            <span class="post-category post-category-d" href="#">小软件</span>
+                            <span class="post-category post-category-b" href="#">小软件</span>
                             
                         </p>
                     </header>
@@ -4503,21 +4492,21 @@ May use other licenses for binary package on other distribution sites.</p>
                             
                             <span class="post-category post-category-d" href="#">JSToolNpp</span>
                             
-                            <span class="post-category post-category-a" href="#">javascript</span>
+                            <span class="post-category post-category-b" href="#">javascript</span>
                             
-                            <span class="post-category post-category-a" href="#">jsformat</span>
+                            <span class="post-category post-category-d" href="#">jsformat</span>
                             
-                            <span class="post-category post-category-a" href="#">JsToolNpp</span>
+                            <span class="post-category post-category-b" href="#">JsToolNpp</span>
                             
-                            <span class="post-category post-category-d" href="#">notepad++</span>
+                            <span class="post-category post-category-b" href="#">notepad++</span>
                             
-                            <span class="post-category post-category-d" href="#">npp</span>
+                            <span class="post-category post-category-a" href="#">npp</span>
                             
                             <span class="post-category post-category-c" href="#">plugin</span>
                             
-                            <span class="post-category post-category-a" href="#">小软件</span>
+                            <span class="post-category post-category-b" href="#">小软件</span>
                             
-                            <span class="post-category post-category-a" href="#">开发</span>
+                            <span class="post-category post-category-d" href="#">开发</span>
                             
                         </p>
                     </header>
@@ -4569,11 +4558,11 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-b" href="#">around my life</span>
+                            <span class="post-category post-category-c" href="#">around my life</span>
                             
-                            <span class="post-category post-category-c" href="#">beijing</span>
+                            <span class="post-category post-category-b" href="#">beijing</span>
                             
-                            <span class="post-category post-category-b" href="#">gadget</span>
+                            <span class="post-category post-category-a" href="#">gadget</span>
                             
                         </p>
                     </header>
@@ -4614,7 +4603,7 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-a" href="#">Security</span>
+                            <span class="post-category post-category-d" href="#">Security</span>
                             
                         </p>
                     </header>
@@ -4685,7 +4674,7 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-d" href="#">Logger</span>
+                            <span class="post-category post-category-c" href="#">Logger</span>
                             
                         </p>
                     </header>
@@ -4779,7 +4768,7 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-d" href="#">*nix</span>
+                            <span class="post-category post-category-a" href="#">*nix</span>
                             
                             <span class="post-category post-category-b" href="#">desktop</span>
                             
@@ -4860,7 +4849,7 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-d" href="#">Redis</span>
+                            <span class="post-category post-category-b" href="#">Redis</span>
                             
                         </p>
                     </header>
@@ -4971,7 +4960,7 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-b" href="#">读书笔记</span>
+                            <span class="post-category post-category-a" href="#">读书笔记</span>
                             
                         </p>
                     </header>
@@ -5045,7 +5034,7 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                             
                             <span class="post-category post-category-a" href="#">*nix</span>
                             
-                            <span class="post-category post-category-d" href="#">networking</span>
+                            <span class="post-category post-category-c" href="#">networking</span>
                             
                             <span class="post-category post-category-a" href="#">tcp</span>
                             
@@ -5101,7 +5090,7 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-d" href="#">技术达人</span>
+                            <span class="post-category post-category-a" href="#">技术达人</span>
                             
                             <span class="post-category post-category-d" href="#">上海</span>
                             
@@ -5154,7 +5143,7 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                         <p class="post-meta">
                             <span class="post-author">alswl</span>
                             
-                            <span class="post-category post-category-a" href="#">读书笔记</span>
+                            <span class="post-category post-category-b" href="#">读书笔记</span>
                             
                         </p>
                     </header>
@@ -5234,27 +5223,27 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-d" href="#">技术</span>
+                            <span class="post-category post-category-c" href="#">技术</span>
                             
-                            <span class="post-category post-category-c" href="#">compile</span>
+                            <span class="post-category post-category-b" href="#">compile</span>
                             
-                            <span class="post-category post-category-c" href="#">driver</span>
+                            <span class="post-category post-category-a" href="#">driver</span>
                             
-                            <span class="post-category post-category-c" href="#">gcc</span>
+                            <span class="post-category post-category-a" href="#">gcc</span>
                             
-                            <span class="post-category post-category-a" href="#">kernel</span>
+                            <span class="post-category post-category-b" href="#">kernel</span>
                             
-                            <span class="post-category post-category-d" href="#">module</span>
+                            <span class="post-category post-category-c" href="#">module</span>
                             
-                            <span class="post-category post-category-c" href="#">Raspberry Pi</span>
+                            <span class="post-category post-category-b" href="#">Raspberry Pi</span>
                             
-                            <span class="post-category post-category-b" href="#">内核</span>
+                            <span class="post-category post-category-a" href="#">内核</span>
                             
                             <span class="post-category post-category-a" href="#">树莓派</span>
                             
-                            <span class="post-category post-category-a" href="#">编译</span>
+                            <span class="post-category post-category-d" href="#">编译</span>
                             
-                            <span class="post-category post-category-b" href="#">驱动</span>
+                            <span class="post-category post-category-c" href="#">驱动</span>
                             
                         </p>
                     </header>
@@ -5336,13 +5325,13 @@ $ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br 
                             
                             <span class="post-category post-category-d" href="#">计算机</span>
                             
-                            <span class="post-category post-category-c" href="#">Android</span>
+                            <span class="post-category post-category-d" href="#">Android</span>
                             
                             <span class="post-category post-category-d" href="#">CyanogenMod</span>
                             
-                            <span class="post-category post-category-a" href="#">nexus</span>
+                            <span class="post-category post-category-c" href="#">nexus</span>
                             
-                            <span class="post-category post-category-b" href="#">nexus5</span>
+                            <span class="post-category post-category-c" href="#">nexus5</span>
                             
                         </p>
                     </header>
@@ -5500,7 +5489,7 @@ sudo rm -rf /Users.bak
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">新年</span>
+                            <span class="post-category post-category-b" href="#">新年</span>
                             
                         </p>
                     </header>
@@ -5544,9 +5533,9 @@ sudo rm -rf /Users.bak
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-d" href="#">音乐</span>
+                            <span class="post-category post-category-b" href="#">音乐</span>
                             
-                            <span class="post-category post-category-b" href="#">维也纳新年音乐会</span>
+                            <span class="post-category post-category-a" href="#">维也纳新年音乐会</span>
                             
                         </p>
                     </header>
@@ -5691,7 +5680,7 @@ sudo rm -rf /Users.bak
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-c" href="#">杂</span>
+                            <span class="post-category post-category-d" href="#">杂</span>
                             
                         </p>
                     </header>
@@ -5931,19 +5920,19 @@ while (1)
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-d" href="#">计算机</span>
+                            <span class="post-category post-category-c" href="#">计算机</span>
                             
-                            <span class="post-category post-category-b" href="#">debug</span>
+                            <span class="post-category post-category-a" href="#">debug</span>
                             
-                            <span class="post-category post-category-b" href="#">exploit</span>
+                            <span class="post-category post-category-c" href="#">exploit</span>
                             
-                            <span class="post-category post-category-a" href="#">notepad++</span>
+                            <span class="post-category post-category-c" href="#">notepad++</span>
                             
                             <span class="post-category post-category-c" href="#">npp</span>
                             
-                            <span class="post-category post-category-c" href="#">安全</span>
+                            <span class="post-category post-category-b" href="#">安全</span>
                             
-                            <span class="post-category post-category-d" href="#">调试</span>
+                            <span class="post-category post-category-a" href="#">调试</span>
                             
                         </p>
                     </header>
@@ -5984,23 +5973,23 @@ while (1)
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-c" href="#">JSToolNpp</span>
+                            <span class="post-category post-category-d" href="#">JSToolNpp</span>
                             
-                            <span class="post-category post-category-c" href="#">javascript</span>
+                            <span class="post-category post-category-a" href="#">javascript</span>
                             
-                            <span class="post-category post-category-d" href="#">jsformat</span>
+                            <span class="post-category post-category-b" href="#">jsformat</span>
                             
-                            <span class="post-category post-category-b" href="#">JsToolNpp</span>
+                            <span class="post-category post-category-d" href="#">JsToolNpp</span>
                             
-                            <span class="post-category post-category-a" href="#">notepad++</span>
+                            <span class="post-category post-category-c" href="#">notepad++</span>
                             
-                            <span class="post-category post-category-c" href="#">npp</span>
+                            <span class="post-category post-category-b" href="#">npp</span>
                             
-                            <span class="post-category post-category-b" href="#">plugin</span>
+                            <span class="post-category post-category-c" href="#">plugin</span>
                             
                             <span class="post-category post-category-b" href="#">小软件</span>
                             
-                            <span class="post-category post-category-d" href="#">开发</span>
+                            <span class="post-category post-category-c" href="#">开发</span>
                             
                         </p>
                     </header>
@@ -6033,15 +6022,15 @@ while (1)
                             
                             <span class="post-category post-category-d" href="#">计算机</span>
                             
-                            <span class="post-category post-category-a" href="#">Android</span>
+                            <span class="post-category post-category-c" href="#">Android</span>
                             
-                            <span class="post-category post-category-d" href="#">build</span>
+                            <span class="post-category post-category-a" href="#">build</span>
                             
-                            <span class="post-category post-category-d" href="#">CyanogenMod</span>
+                            <span class="post-category post-category-b" href="#">CyanogenMod</span>
                             
-                            <span class="post-category post-category-a" href="#">Ubuntu</span>
+                            <span class="post-category post-category-b" href="#">Ubuntu</span>
                             
-                            <span class="post-category post-category-a" href="#">程序</span>
+                            <span class="post-category post-category-b" href="#">程序</span>
                             
                         </p>
                     </header>
@@ -6071,17 +6060,17 @@ while (1)
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-c" href="#">fHash</span>
+                            <span class="post-category post-category-b" href="#">fHash</span>
                             
-                            <span class="post-category post-category-d" href="#">计算机</span>
+                            <span class="post-category post-category-b" href="#">计算机</span>
                             
-                            <span class="post-category post-category-a" href="#">小软件</span>
+                            <span class="post-category post-category-c" href="#">小软件</span>
                             
-                            <span class="post-category post-category-d" href="#">开发</span>
+                            <span class="post-category post-category-b" href="#">开发</span>
                             
-                            <span class="post-category post-category-b" href="#">程序</span>
+                            <span class="post-category post-category-a" href="#">程序</span>
                             
-                            <span class="post-category post-category-a" href="#">编程</span>
+                            <span class="post-category post-category-d" href="#">编程</span>
                             
                         </p>
                     </header>
@@ -6111,7 +6100,7 @@ Fix other bugs</p>
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-b" href="#">计算机</span>
+                            <span class="post-category post-category-d" href="#">计算机</span>
                             
                             <span class="post-category post-category-d" href="#">fHash</span>
                             
@@ -6119,7 +6108,7 @@ Fix other bugs</p>
                             
                             <span class="post-category post-category-a" href="#">shell extension</span>
                             
-                            <span class="post-category post-category-d" href="#">WinDbg</span>
+                            <span class="post-category post-category-b" href="#">WinDbg</span>
                             
                         </p>
                     </header>
@@ -6198,23 +6187,23 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-b" href="#">JSToolNpp</span>
+                            <span class="post-category post-category-c" href="#">JSToolNpp</span>
                             
-                            <span class="post-category post-category-a" href="#">javascript</span>
+                            <span class="post-category post-category-c" href="#">javascript</span>
                             
-                            <span class="post-category post-category-d" href="#">jsformat</span>
+                            <span class="post-category post-category-a" href="#">jsformat</span>
                             
-                            <span class="post-category post-category-c" href="#">jsmin</span>
+                            <span class="post-category post-category-d" href="#">jsmin</span>
                             
-                            <span class="post-category post-category-d" href="#">JsTool</span>
+                            <span class="post-category post-category-c" href="#">JsTool</span>
                             
-                            <span class="post-category post-category-d" href="#">JsToolNpp</span>
+                            <span class="post-category post-category-c" href="#">JsToolNpp</span>
                             
-                            <span class="post-category post-category-d" href="#">notepad++</span>
+                            <span class="post-category post-category-a" href="#">notepad++</span>
                             
                             <span class="post-category post-category-d" href="#">npp</span>
                             
-                            <span class="post-category post-category-c" href="#">开发</span>
+                            <span class="post-category post-category-b" href="#">开发</span>
                             
                         </p>
                     </header>
@@ -6248,15 +6237,15 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-b" href="#">计算机</span>
+                            <span class="post-category post-category-a" href="#">计算机</span>
                             
-                            <span class="post-category post-category-a" href="#">Apple</span>
+                            <span class="post-category post-category-b" href="#">Apple</span>
                             
-                            <span class="post-category post-category-a" href="#">download</span>
+                            <span class="post-category post-category-c" href="#">download</span>
                             
                             <span class="post-category post-category-d" href="#">keynote</span>
                             
-                            <span class="post-category post-category-a" href="#">wwdc</span>
+                            <span class="post-category post-category-c" href="#">wwdc</span>
                             
                         </p>
                     </header>
@@ -6281,7 +6270,7 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-d" href="#">生活记事</span>
+                            <span class="post-category post-category-a" href="#">生活记事</span>
                             
                         </p>
                     </header>
@@ -6384,9 +6373,9 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-a" href="#">胡思乱想</span>
+                            <span class="post-category post-category-d" href="#">胡思乱想</span>
                             
-                            <span class="post-category post-category-b" href="#">胡言乱语</span>
+                            <span class="post-category post-category-d" href="#">胡言乱语</span>
                             
                         </p>
                     </header>
@@ -6429,11 +6418,11 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-b" href="#">生活记事</span>
+                            <span class="post-category post-category-c" href="#">生活记事</span>
                             
-                            <span class="post-category post-category-a" href="#">feedburner</span>
+                            <span class="post-category post-category-c" href="#">feedburner</span>
                             
-                            <span class="post-category post-category-a" href="#">rss</span>
+                            <span class="post-category post-category-d" href="#">rss</span>
                             
                         </p>
                     </header>
@@ -6462,15 +6451,15 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-b" href="#">Geek Tweak</span>
+                            <span class="post-category post-category-a" href="#">Geek Tweak</span>
                             
                             <span class="post-category post-category-a" href="#">1Password</span>
                             
-                            <span class="post-category post-category-a" href="#">KeePass</span>
+                            <span class="post-category post-category-d" href="#">KeePass</span>
                             
                             <span class="post-category post-category-b" href="#">sha1</span>
                             
-                            <span class="post-category post-category-b" href="#">密码</span>
+                            <span class="post-category post-category-a" href="#">密码</span>
                             
                         </p>
                     </header>
@@ -6537,11 +6526,11 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-a" href="#">胡言乱语</span>
+                            <span class="post-category post-category-d" href="#">胡言乱语</span>
                             
-                            <span class="post-category post-category-c" href="#">傻逼</span>
+                            <span class="post-category post-category-a" href="#">傻逼</span>
                             
-                            <span class="post-category post-category-a" href="#">密码</span>
+                            <span class="post-category post-category-c" href="#">密码</span>
                             
                         </p>
                     </header>
@@ -6586,7 +6575,7 @@ u 7c81f2b9
                             
                             <span class="post-category post-category-c" href="#">Security</span>
                             
-                            <span class="post-category post-category-b" href="#">密码</span>
+                            <span class="post-category post-category-d" href="#">密码</span>
                             
                         </p>
                     </header>
@@ -6689,7 +6678,7 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-a" href="#">胡思乱想</span>
+                            <span class="post-category post-category-d" href="#">胡思乱想</span>
                             
                         </p>
                     </header>
@@ -8022,7 +8011,7 @@ Compiler.new.compile(prog)
                             
                             <span class="post-category post-category-b" href="#">胡思乱想</span>
                             
-                            <span class="post-category post-category-a" href="#">工作日志</span>
+                            <span class="post-category post-category-b" href="#">工作日志</span>
                             
                         </p>
                     </header>
@@ -8059,13 +8048,13 @@ Compiler.new.compile(prog)
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-c" href="#">胡言乱语</span>
+                            <span class="post-category post-category-a" href="#">胡言乱语</span>
                             
                             <span class="post-category post-category-a" href="#">用户</span>
                             
-                            <span class="post-category post-category-c" href="#">统计</span>
+                            <span class="post-category post-category-b" href="#">统计</span>
                             
-                            <span class="post-category post-category-b" href="#">豆瓣</span>
+                            <span class="post-category post-category-d" href="#">豆瓣</span>
                             
                         </p>
                     </header>
