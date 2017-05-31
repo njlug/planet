@@ -4,7 +4,7 @@
     <subtitle>建一个友好的 Linux 本地社区</subtitle>
     <link href="http://planet.nanjinglug.org/atom.xml" rel="self" type="application/atom+xml" />
     <link href="http://planet.nanjinglug.org"/>
-    <updated>2017-05-13T05:36:32+02:00</updated>
+    <updated>2017-05-31T16:04:00+02:00</updated>
     <id>http://planet.nanjinglug.org</id>
     
     <author>
@@ -13,6 +13,126 @@
     </author>
     
     <generator uri="https://github.com/phoenixlzx/planet.js">Planet.js</generator>
+    
+    <entry>
+        <title>XSS 攻击的处理</title>
+        <link href="https://blog.alswl.com/2017/05/xss/"/>
+        <id>https://blog.alswl.com/2017/05/xss/</id>
+        
+        <author>
+            <name>alswl</name>
+        </author>
+        
+        <published>2017-05-31T16:04:00+02:00</published>
+        <updated>2017-05-31T16:04:00+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
+谨以此文怀念 <a href="http://wooyun.org/">乌云</a>。</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201705/wooyun.jpg" /></p>
+<hr />
+<h2>事情缘由</h2>
+<p>春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
+告知我厂网站上出现一例 XSS 漏洞。
+因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
+后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。</p>
+<p>这里简单科普一下 XSS
+<a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC">跨网站脚本 -维基百科，自由的百科全书</a>
+中介绍到：</p>
+<blockquote>
+<p>跨网站脚本（Cross-site  scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
+  它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。</p>
+</blockquote>
+<p>XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
+针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
+所有访问被攻击的页面，都会触发用户被攻击行为。</p>
+<p>这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
+时间紧迫，问题必须被解决。</p>
+<h2>XSS 实现手段</h2>
+<p>在解决问题之前，需要对这个问题有必要的基础认识。
+我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。</p>
+<p>XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
+让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p>
+<p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p>
+<p>常见的检测方法（来自 <a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95">跨网站脚本 - 维基百科，自由的百科全书</a>：</p>
+<div><pre><span>&gt;&lt;</span><span>script</span><span>&gt;</span><span>alert</span><span>(</span><span>document.cookie</span><span>)</span><span>&lt;/</span><span>script</span><span>&gt;</span>
+<span>=</span><span>'&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
+<span>&quot;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
+<span>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
+<span>&lt;script&gt;alert (vulnerable)&lt;/script&gt;</span>
+<span>%3Cscript%3Ealert('</span><span>XSS</span><span>')%3C/script%3E</span>
+<span>&lt;script&gt;alert('</span><span>XSS</span><span>')&lt;/script&gt;</span>
+<span>&lt;img src=&quot;javascript:alert('</span><span>XSS</span><span>')&quot;&gt;</span>
+<span>&lt;img src=&quot;http://xxx.com/yyy.png&quot; onerror=&quot;alert('</span><span>XSS</span><span>')&quot;&gt;</span>
+<span>（这个仅限IE有效）</span>
+</pre></div>
+
+
+<p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
+通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
+PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。</p>
+<h2>我厂历史上的处理方案</h2>
+<p>XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？
+答案是用了两个策略：第一个是使用 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a>
+提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。</p>
+<p>在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义，
+在输出时候在前端（模板渲染）层面直接输出。
+第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。</p>
+<p>我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义，
+避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如
+APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP
+上面无法正确输出。</p>
+<p>这个处理方案是稳妥的，那么为什么最近又暴露出问题了？
+排查之后发现，原来最近有若干个服务迁移到了一个新系统，
+而新系统在安全上面没有全局处理，所以爆出了漏洞。</p>
+<h2>本次处理方案</h2>
+<p>知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？
+而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。
+导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 <code>br</code> / <code>&lt;</code> 这类特殊字符时，表现不同。</p>
+<p>由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局
+encode。 将有危险的数据转移为在 HTML 文本。</p>
+<p>PS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而
+Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</p>
+<p>处理方案：</p>
+<ul>
+<li>开启全局 HTML 输出 Encode，有一个 <a href="http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/">Default HTML-escape using Freemarker</a> 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 <code>noescape</code> 特殊处理</li>
+<li>检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好</li>
+<li>将 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a> 方案强制开启</li>
+</ul>
+<h2>其他 Tips</h2>
+<p>OWASP 有一个很长的 <a href="https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">列表</a>，教导如何避免 XSS，里面提到了：</p>
+<ul>
+<li>为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身</li>
+<li>几条对抗 XSS 的规则<ul>
+<li>尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。</li>
+<li>将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 <code>&amp; &lt; &gt; &quot; ' /</code> 进行转义</li>
+<li>将不可信变量输出 URL 参数之前，进行 URLEncode</li>
+<li>使用合适的 HTML 过滤库进行过滤</li>
+<li>预防 DOM-based XSS，见 <a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based XSS Prevention Cheat Sheet</a></li>
+<li>开启 HTTPOnly cookie，让浏览器接触不到 cookie</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>最后送上一个 XSS 攻击工具 <a href="http://webxss.net/">http://webxss.net/</a>，知己知彼，百战不殆。</p>
+<hr />
+<div>
+<div>
+   原文链接: <a href="https://blog.alswl.com/2017/05/xss/">https://blog.alswl.com/2017/05/xss/</a><br />
+   欢迎关注我的微信公众号：窥豹<br />
+   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
+   3a1ff193cee606bd1e2ea554a16353ee
+</div>
+</div>]]></content>
+        
+        <summary type="html">
+            
+            这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。   事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个
+            
+        </summary>
+        
+        <category term="security"/>
+        
+    </entry>
     
     <entry>
         <title>不作死就不会死系列，TFTP 修复变砖的 Nighthawk X6</title>
@@ -5062,86 +5182,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <category term="技术达人"/>
         
         <category term="上海"/>
-        
-    </entry>
-    
-    <entry>
-        <title>读《遇见未知的自己》</title>
-        <link href="https://blog.alswl.com/2015/03/real-self/"/>
-        <id>https://blog.alswl.com/2015/03/real-self/</id>
-        
-        <author>
-            <name>alswl</name>
-        </author>
-        
-        <published>2015-03-14T07:38:39+01:00</published>
-        <updated>2015-03-14T07:38:39+01:00</updated>
-        
-        <content type="html"><![CDATA[<p>「遇到未知的自己」这本书讲的是如何来认识自己，理解自己的情绪，和自己内心沟通。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201503/s3403254.jpg" /></p>
-<p><a href="http://book.douban.com/subject/2340100/">豆瓣链接</a> /
-<a href="http://www.amazon.cn/%E9%81%87%E8%A7%81%E6%9C%AA%E7%9F%A5%E7%9A%84%E8%87%AA%E5%B7%B1-%E5%BC%A0%E5%BE%B7%E8%8A%AC/dp/B009WNRMM0/ref=sr_1_1?s=digital-text&amp;ie=UTF8&amp;qid=1426319187&amp;sr=1-1&amp;keywords=%E9%81%87%E8%A7%81%E6%9C%AA%E7%9F%A5%E7%9A%84%E8%87%AA%E5%B7%B1">Kindle 版本购买链接</a></p>
-<p>下面我写的倒不是什么读后感，而是我自己去解决自己焦虑和压力的一个探寻过程，希望对你有帮助。</p>
-<h2>不完美</h2>
-<p>最近一年来，我生活和工作状态持续处于亚健康状态。表现出来的状况是：工作上对产出的成绩不满意，
-对自己不够自信，追寻的目标（创业）变得模糊和不可量化；生活受到影响，开始陷入到哪里去的困惑。
-很久没有兴奋的迎着早晨第一缕阳光蹦着下楼梯，人变得焦虑和烦躁。</p>
-<p>这种压抑，让我回忆起小时候周日晚上动画片的结尾曲，昏黄、萧瑟，似乎一切都走向终结。
-哈，好在我不是那么消极的人，我热爱生活，期望创造价值，渴望别人的认同，
-我不愿意自己长期陷入这种低潮。</p>
-<p>我做了一些尝试和挣扎：给自己添加束缚（变成一个“工作日素食者”），计划自己工作和生活（践行 GTD），
-意识到自己情绪抖动并尝试控制自己的情绪。
-针对能力上面不足，我也去阅读了彼得德鲁克的系列丛书，柯维的「高效能人士的七个习惯」。
-这些措施的确帮助了我，我觉得自己比以前更强大。
-但是始终没有彻底解决我的问题，无法治愈我内心的恐惧和压抑。</p>
-<p>我意识到：我在焦虑，继而恐惧、自卑，害怕面对未知，更害怕面对不完美的自己。</p>
-<h2>求解</h2>
-<p>周围能提供帮助的人不多，好在有互联网。第一个药丸在知乎，我直接搜索了关键词「自我」和「自卑」。
-知乎关于认识自己有几个相当不错的问答，从中得到的观点有下列几个：</p>
-<blockquote>
-<ul>
-<li>真正的进步不是那么焦虑的自我怀疑，而是带着自我接纳体会进步的喜悦 <a href="http://www.zhihu.com/question/22063688/answer/20499104">via</a></li>
-<li>我们的一生就不断地在优越感和自卑之间切换 <a href="http://zhi.hu/YTzH">via</a></li>
-</ul>
-</blockquote>
-<p>其中有若干个回答有提到「遇到未知的自己」，我也对这本书略有耳闻，于是从亚马逊上购买了，
-没想到仅仅花了花了几个小时就一口气读完，很久没有这么舒畅的读完一本书了。</p>
-<h2>身体、情绪、思想</h2>
-<p>从书中收获最大的一点，就是和自己的内心进行沟通：通过运动来提高自己和身体的合一；
-通过臣服来客观认同理解自己的情绪；通过冥想来和自己的潜意识沟通，了解自己的内心，
-增强对自己和外部的觉察能力。</p>
-<p>认识自己的一个重要途径是回溯，重新和过去的自己沟通。这种感觉很奇妙，
-似乎在看另外一个生命。他慢慢长大，人生起伏，自信自卑，受到家庭的教育，
-被师长激励，选择新的挑战，遇到新的困难和低谷，他的优柔寡断，他的努力和堕落，
-他受到的爱护和痛苦。</p>
-<p>到哪里去？这个问题我依然没有找到很好的答案，虽然有「爱、喜悦、和平」这个大一的概念，
-但实在不够落地，就像「内圣外王」一样，太过于笼统。</p>
-<p>即便到哪里去没有一个明确地答案，但是当和自己的内心的达成一致，能够坦然面对自己的不完美，
-未来的不确定之后，不管往哪里走，都不是在原地转动。</p>
-<p>现在我学会了运动，每周两次 5km 跑步，跑步时候感觉自己释放恐惧，追逐目标。
-还在学会如何臣服自己的情绪，面对未知做的决策即便会不安和恐惧，也不至于影响自己太久。</p>
-<h2>糟粕</h2>
-<p>这本书里面有几段鸡汤文，什么「水知道答案」，女主回忆自己诞生过程而泪流满面，
-显得很鬼扯。作为工程师的我，对这些内容表示质疑。</p>
-<h2>End</h2>
-<p>这本书不完美，但是它在一个合适的时间点给了我启发和帮助。我很感谢它，如果你有和我类似的困惑，建议去读一下。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/03/real-self/">https://blog.alswl.com/2015/03/real-self/</a><br />
-   欢迎关注我的微信公众号：窥豹<br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>]]></content>
-        
-        <summary type="html">
-            
-            「遇到未知的自己」这本书讲的是如何来认识自己，理解自己的情绪，和自己内心沟通。  豆瓣链接 / Kindle 版本购买链接 下面我写的倒不是什么读后感，而是我自己去解决自己焦虑和压力的一个探寻过程，希望对你有帮助。 不完美 最近一年来，我生活和工作状态持续处于亚健康状态。表现出
-            
-        </summary>
-        
-        <category term="读书笔记"/>
         
     </entry>
     
