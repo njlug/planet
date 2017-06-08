@@ -4,7 +4,7 @@
     <subtitle>建一个友好的 Linux 本地社区</subtitle>
     <link href="http://planet.nanjinglug.org/atom.xml" rel="self" type="application/atom+xml" />
     <link href="http://planet.nanjinglug.org"/>
-    <updated>2017-06-06T01:10:01+02:00</updated>
+    <updated>2017-06-08T09:40:41+02:00</updated>
     <id>http://planet.nanjinglug.org</id>
     
     <author>
@@ -13,6 +13,194 @@
     </author>
     
     <generator uri="https://github.com/phoenixlzx/planet.js">Planet.js</generator>
+    
+    <entry>
+        <title>当我们在聊监控，我们在聊什么？</title>
+        <link href="https://blog.alswl.com/2017/06/monitoring-introducing/"/>
+        <id>https://blog.alswl.com/2017/06/monitoring-introducing/</id>
+        
+        <author>
+            <name>alswl</name>
+        </author>
+        
+        <published>2017-06-08T09:40:41+02:00</published>
+        <updated>2017-06-08T09:40:41+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>最近在团队中给大家做了一个分享，泛泛地聊了一些有关「监控」的话题。
+其实做分享对分享者的作用往往大于参与者。
+这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201706/stock-exchange.png" /></p>
+
+
+<h2>目的 🎯</h2>
+<p>我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？</p>
+<p>传统意义上的监控，是指：</p>
+<blockquote>
+<p>通过一些手段和工具，关注运行中的<strong>硬件、软件、用户体验</strong>的关键数据，将其暴露出来。
+  当关键数据出现异常时候发出警告，进行人工或者自动的响应。</p>
+</blockquote>
+<p>我们平时看到的最常见的监控系统，比如 Zabbix，提供了丰富的模板，
+可以监控服务器的 Load / CPU Usage / Alive 这些常规指标。
+并在出现问题时候，对其进行报警通知。
+随后运维工程师们会上线进行应急操作，case by case 的处理故障。</p>
+<p>我将上面的使用目的归纳为：</p>
+<ul>
+<li>故障发生时提供数据报警</li>
+<li>提供历史数据以供分析</li>
+</ul>
+<p>故事到这里似乎可以结束了，可监控真的是这么简单的么？
+当然没，随着时代的进步，用户对服务提出了更为严苛的要求，
+同时我们也有能力进一步控制平均故障修复时间
+（<a href="https://en.wikipedia.org/wiki/Mean_time_between_failures">MTBF</a>），
+上述描述的做法已经不能满足我们了。</p>
+<p>现在让我们切换一下视角，从传统的 OPS 的视角切换到 SRE
+（<a href="https://en.wikipedia.org/wiki/Site_reliability_engineering">Site Reliability Engineering</a>）的视角。
+当我们在关注网站整体的可用性时，我们会发现：
+故障警报处理当然很重要，但是我们根本上想减少甚至避免 MTBF。
+我们有两种手段：
+一种是去除单点故障，让问题自然发生，但是不对线上造成影响；
+另一种是在问题出现的早期就发现并进行及时修复。
+前者是高可用范畴，后者就是我们今天关注的「监控」了。</p>
+<p>监控的目的是要<strong>将灾难消灭在襁褓里；在灾难即将出现或者发生问题时， 给大家展示直接的原因</strong>。</p>
+<p>那为了达成这两个目标，我们需要回到问题的本质，重新思考两个问题：</p>
+<ol>
+<li>监控哪些对象？</li>
+<li>如何识别故障？</li>
+</ol>
+<h2>对象 🐘🐘</h2>
+<p>我们说的监控对象，一般指的都是某个资源，
+资源即持有某种其他方需要的某些属性的载体，包括硬件、软件。
+除了资源这种类型，还有一种常见的监控对象是「体验」，即终端用户的访问感受，
+这块内容我们暂时略去。</p>
+<p>让我们来先看一下常见的资源：</p>
+<ul>
+<li>硬件<ul>
+<li>服务器</li>
+<li>网络设备</li>
+</ul>
+</li>
+<li>软件<ul>
+<li>Application</li>
+<li>Infrastructure</li>
+</ul>
+</li>
+</ul>
+<p>这个分类是粗粒度的描述，为了落地地描述监控对象对象的健康状况，
+我们还要进一步细化。以「服务器」为例，我们可以将其监控的内容细化为以下监控项：</p>
+<ul>
+<li>CPU</li>
+<li>Memory</li>
+<li>Network interface</li>
+<li>Storage devices</li>
+<li>Controllers</li>
+</ul>
+<p>如何评估这些监控项的健康状况？我们使用
+<a href="https://en.wikipedia.org/wiki/Service_level_indicator">SLI（Service Level Indicator）</a>。
+比如<strong>可用性</strong>就是一个最容易理解的 SLI。
+这里我将资源归为两类，面向用户提供服务的资源和面向存储的资源，
+以下是针对这两类资源的常见 SLI：</p>
+<ul>
+<li>User-facing Service<ul>
+<li>Availability</li>
+<li>Latency</li>
+<li>Throughput</li>
+</ul>
+</li>
+<li>Storage System<ul>
+<li>Latency</li>
+<li>Throughput</li>
+<li>durability</li>
+</ul>
+</li>
+</ul>
+<p>基于 SLI 建立的数字关键指标，称之为
+<a href="https://en.wikipedia.org/wiki/Service_level_objective">Service Level Objective</a>。
+SLO 往往是一组数字范围，比如 CPU 负载的 SLO 可以设置为 0.0-6.0（针对 8 核 CPU）。
+不同的资源、不同的业务场景，会有不一样的 SLO 设计。</p>
+<p>看到这里，我们已经聊了要监控哪些指标，那么接下来我们聊聊如何用量化的思想，
+帮助指标更易于识别、分析和决策。</p>
+<h2>量化的思想 🔬</h2>
+<p>刚开始担任线上救火队成员时候，当有个系统出现问题时候，我经常听到这样的描述：
+网站挂了、页面打不开了，CPU 出问题了，内存爆了，线程池炸了等等。
+这样的表述虽然没错，但带来的可用价值太少，信息熵太低。
+这样的说辞多了，就给人产生一种不靠谱，不科学的感觉。</p>
+<p>那怎样才能成为科学的描述？
+古希腊哲学家在思考宇宙的时候，提出了一种心智能力，
+从而打开了科学的窗子，这就是 Reasonable，中文名叫理智，这成为了自然科学的基石。
+使用 Reasonable 探讨意味着探讨要深入问题的本质，不停留在表象，挖掘出真正有价值的内容。</p>
+<p>但是光有 Reasonable 还不够，B站粉丝建了一个微博，每天会检查
+<a href="http://weibo.com/yamanasion?refer_flag=1001030201_&amp;is_hot=1">今天B站炸了吗</a>，
+他只能告诉我们炸没炸，不能给工程师带来实际的用处。
+在科学的发展历史上，我们可以发现在亚里士多德的著作里没有任何数据公式。
+他对现象只有描述，只是定性分析，通过描述性状来阐述定理。
+这个定性的研究方式到了伽利略那里才出现了突破。
+这里我们可以引入第二个关键词是  Quantifier，量化。
+伽利略率先使用定量分析的方法，并将其运用到动力学和天文学，从而开创了近代科学。</p>
+<p>如果我们以定量的方式来描述网站挂没挂，就会变成：网站的响应耗时在 30s，基本无法使用。
+描述线程池出问题，就会变成：active 线程数量是 200，已经到达 maxCount 数量，无法进行分配。
+你看，通过这样的描述，我们一下子就能发现问题出在哪里。</p>
+<h2>USE 💡</h2>
+<p>现在我们已经了解了「监控哪些对象？」，以及尝试用「量化」这个法宝来「识别故障」。
+那有没有一些最佳实践帮助大家高效的识别故障呢？这里我推荐 Brend Gregg 大神的 <a href="http://www.brendangregg.com/usemethod.html">USE 方法</a>。
+Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.com/sysperfbook.html">Systems Performance Book</a>，
+目前已经出版中文版 <a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B0140I5WPK">性能之巅:洞悉系统、企业与云计算</a>。</p>
+<p>USE 分别是三个单词的首字母缩写：</p>
+<ul>
+<li>Utilization：使用率，CPU running percent，硬盘的 IO </li>
+<li>Saturation：饱和度，一般偏存储型资源，内存使用，硬盘使用</li>
+<li>Error：错误数</li>
+</ul>
+<p>我们可以为每个资源找到各自的 USE 度量指标，具体的 Check List 清单可以参考
+<a href="http://www.brendangregg.com/USEmethod/use-rosetta.html">USE Method: Rosetta Stone of Performance Checklists</a>。</p>
+<p>这里举个例子，前段时间在设计 MySQL HA 方案时候，同时关注了 MySQL 的监控方案，
+那么针对 MySQL，我们要做哪些监控呢？下面是使用 USE 方法设计出来的 SLI：</p>
+<ul>
+<li>Business<ul>
+<li>Questions：语句计总，Throughput</li>
+<li>Slow_queries：慢查询计总，Error</li>
+<li>Com_select：查询语句计总，Throughput</li>
+<li>Com_insert：插入语句计总，Throughput</li>
+<li>Com_update：更新语句计总，Throughput</li>
+</ul>
+</li>
+<li>Threads &amp; Connections<ul>
+<li>Threads_connected：当前连接数，Utilization</li>
+<li>Threads_running：当前使用中连接数，Utilization</li>
+<li>Aborted_connects：尝试连接失败数，Error</li>
+<li>Connection_errors_max_connections：由于连接数超标从而失败的连接数，Error</li>
+</ul>
+</li>
+<li>Buffer<ul>
+<li>Innodb_buffer_pool_pages_total：内存使用页数，Utilization</li>
+<li>Innodb_buffer_pool_read_requests：读请求数计总，Utilization</li>
+</ul>
+</li>
+</ul>
+<h2>完 🏁</h2>
+<p>如果你对我上面描述的还意犹未尽，建议你可以看 <a href="https://book.douban.com/subject/19992841/">Effective Monitoring and Alerting</a>。
+虽然本书没有中文版，但是关于监控、报警的原理解析很到位，值得一看。
+另外还有一本 <a href="https://book.douban.com/subject/26875239/">SRE: Google运维解密</a>，
+里面有不少篇幅在讲「SLA」，也是和监控、报警息息相关的。</p>
+<p>这次讲了一些概念性的内容，期望对大家有帮助，下一次我再分享一篇文章，聊聊 Metrics。</p>
+<hr />
+<div>
+<div>
+   原文链接: <a href="https://blog.alswl.com/2017/06/monitoring-introducing/">https://blog.alswl.com/2017/06/monitoring-introducing/</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
+   3a1ff193cee606bd1e2ea554a16353ee
+</div>
+</div>]]></content>
+        
+        <summary type="html">
+            
+            最近在团队中给大家做了一个分享，泛泛地聊了一些有关「监控」的话题。 其实做分享对分享者的作用往往大于参与者。 这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。    目的 🎯 我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？ 传统意义上的监
+            
+        </summary>
+        
+        <category term="Monitoring"/>
+        
+    </entry>
     
     <entry>
         <title>NetFLOW / sFLOW 流量报告：FastNetMon + InfluxDB + Grafana</title>
@@ -185,7 +373,7 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2017/05/xss/">https://blog.alswl.com/2017/05/xss/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -874,7 +1062,7 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2017/01/prophecy/">https://blog.alswl.com/2017/01/prophecy/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -1050,7 +1238,7 @@ TPS 、Latency 和 Capacity。
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2017/01/spring-cleaning/">https://blog.alswl.com/2017/01/spring-cleaning/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -1303,7 +1491,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/12/https-2/">https://blog.alswl.com/2016/12/https-2/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -1421,7 +1609,7 @@ Indicator 的含义是建立一系列评价指标，比如价格、户型、位�
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/12/house/">https://blog.alswl.com/2016/12/house/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -1526,7 +1714,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/11/https-1/">https://blog.alswl.com/2016/11/https-1/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -2812,7 +3000,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/08/api-integration-test/">https://blog.alswl.com/2016/08/api-integration-test/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -2983,7 +3171,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/06/capacity-planning/">https://blog.alswl.com/2016/06/capacity-planning/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -3085,7 +3273,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/06/q-and-a/">https://blog.alswl.com/2016/06/q-and-a/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -3482,7 +3670,7 @@ bled FROM video WHERE $cond &quot; .
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/04/onepiece-startup/">https://blog.alswl.com/2016/04/onepiece-startup/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -3658,7 +3846,7 @@ bled FROM video WHERE $cond &quot; .
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/04/windows-management-for-hacker/">https://blog.alswl.com/2016/04/windows-management-for-hacker/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -3989,7 +4177,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/02/team-geek/">https://blog.alswl.com/2016/02/team-geek/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -4131,7 +4319,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/02/a-timeout-fault/">https://blog.alswl.com/2016/02/a-timeout-fault/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -4255,7 +4443,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2016/01/confluence-upgrade/">https://blog.alswl.com/2016/01/confluence-upgrade/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -4476,7 +4664,7 @@ update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项�
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2015/11/ss-with-haproxy/">https://blog.alswl.com/2015/11/ss-with-haproxy/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -4712,7 +4900,7 @@ May use other licenses for binary package on other distribution sites.</p>
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2015/10/a-security-password/">https://blog.alswl.com/2015/10/a-security-password/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -4806,7 +4994,7 @@ May use other licenses for binary package on other distribution sites.</p>
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2015/10/how-to-log/">https://blog.alswl.com/2015/10/how-to-log/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -4998,7 +5186,7 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2015/07/redis-migration/">https://blog.alswl.com/2015/07/redis-migration/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -5070,7 +5258,7 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2015/07/liu-bi-xie-fu/">https://blog.alswl.com/2015/07/liu-bi-xie-fu/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
@@ -5141,59 +5329,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         <category term="networking"/>
         
         <category term="tcp"/>
-        
-    </entry>
-    
-    <entry>
-        <title>2015 沪港 Hackathon</title>
-        <link href="https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/"/>
-        <id>https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/</id>
-        
-        <author>
-            <name>alswl</name>
-        </author>
-        
-        <published>2015-04-03T18:39:41+02:00</published>
-        <updated>2015-04-03T18:39:41+02:00</updated>
-        
-        <content type="html"><![CDATA[<p>我想参加黑客马拉松很久了，去年就观战过 2014 沪港黑客马拉松。
-但苦于需要连续两天时间，一直没有下定决心参加。</p>
-<p>上周末本来安排了两天的团队会议，后来临时取消，
-给了我充足的时间。于是我在 27 号周五下午，报名参加了 27 号晚上开始的 2015 沪港 Hackathon。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201504/5D3_0001.jpg" /></p>
-
-
-<p>独自作战的我，在现场寻觅了几个小伙伴组了一个队伍，其中有 <a href="http://homeway.me/2015/03/30/play-music-through-senses/">小草</a> / tevin / 女王 / Doris / n1k0。
-小草负责树莓派服务端，tevin 负责传感器取数据，我……负责前端游戏逻辑，哈哈哈，我已经三年没有写前端代码了，为了团队职责分工，只能赶鸭子上架了。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201504/IMG_4467.JPG" /></p>
-<p>经过现场的头脑风暴，我们最后选定了基于树莓派的游戏：
-通过感应玩家的手掌移动距离来玩类似节奏大师的音乐游戏。</p>
-<p>具体的游戏原理，可以在 <a href="http://homeway.me/2015/03/30/play-music-through-senses/">基于树莓派的体感音乐游戏</a> 看到，
-源码也在 <a href="https://github.com/2015-hackathon/hackathon">Github</a> 这里。</p>
-<p>最关键是，我们这支临时凑齐的战队，经过两天一夜的奋战，拿了一等奖（第二名），拥有了去香港参加国际赛资格和一堆乱七八糟的云服务器现金券、折扣券！！！撒花~~撒花~~</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201504/5D3_2087.jpg" /></p>
-<p>第一次参加 Hackathon，就能获得这个奖，觉得自己蛮幸运，
-和队友合作愉快，和队友通宵到三点多调整音乐命中算法，然后在早上 6 点钟被冻醒。五音不全的我花了几个小时将超级玛丽五线谱转化为发音库能够理解的符号描述。</p>
-<p>虽然最后由于时间原因不能和队友去香港参加比赛，但是仍然祝愿他们在香港能够继续加油。各位队友，Have fun。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/">https://blog.alswl.com/2015/04/2015-hk-sh-hackathon/</a><br />
-   欢迎关注我的微信公众号：<a href=" http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>]]></content>
-        
-        <summary type="html">
-            
-            我想参加黑客马拉松很久了，去年就观战过 2014 沪港黑客马拉松。 但苦于需要连续两天时间，一直没有下定决心参加。 上周末本来安排了两天的团队会议，后来临时取消， 给了我充足的时间。于是我在 27 号周五下午，报名参加了 27 号晚上开始的 2015 沪港 Hackathon。
-            
-        </summary>
-        
-        <category term="技术达人"/>
-        
-        <category term="上海"/>
         
     </entry>
     
