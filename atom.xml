@@ -1503,11 +1503,11 @@ Domain Validation / Orgnization Validation / Extented Validation。
             
         </summary>
         
-        <category term="[HTTPS"/>
+        <category term="HTTPS"/>
         
         <category term="HTTPDNS"/>
         
-        <category term="MikroTik]"/>
+        <category term="MikroTik"/>
         
     </entry>
     
@@ -1726,9 +1726,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
             
         </summary>
         
-        <category term="[HTTPS"/>
+        <category term="HTTPS"/>
         
-        <category term="HTTPDNS]"/>
+        <category term="HTTPDNS"/>
         
     </entry>
     
@@ -3012,9 +3012,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
             
         </summary>
         
-        <category term="[Test"/>
+        <category term="Test"/>
         
-        <category term="API]"/>
+        <category term="API"/>
         
     </entry>
     
