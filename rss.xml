@@ -7,8 +7,238 @@
         <link>http://planet.nanjinglug.org</link>
         <atom:link href="http://planet.nanjinglug.org/rss.xml" rel="self" type="application/rss+xml"/>
         <description>寻找南京 Linux 爱好者。每月第二个周末见！</description>
-        <pubDate>Thu, 08 Jun 2017 09:40:41 +0200</pubDate>
+        <pubDate>Fri, 23 Jun 2017 12:32:56 +0200</pubDate>
         <generator>Planet.js (https://github.com/phoenixlzx/planet.js)</generator>
+        
+        <item>
+            <title>由 rc_mksid  引起 pppd 奔溃的一个 bug</title>
+            <link>http://jaseywang.me/2017/06/23/%e7%94%b1-rc_mksid-%e5%bc%95%e8%b5%b7-pppd-%e5%a5%94%e6%ba%83%e7%9a%84%e4%b8%80%e4%b8%aa-bug/</link>
+            
+            <author>jaseywang</author>
+            
+            <guid>http://jaseywang.me/2017/06/23/%e7%94%b1-rc_mksid-%e5%bc%95%e8%b5%b7-pppd-%e5%a5%94%e6%ba%83%e7%9a%84%e4%b8%80%e4%b8%aa-bug/</guid>
+            <pubDate>Fri, 23 Jun 2017 12:32:56 +0200</pubDate>
+            <description>
+                
+                  最近手贱想把手头的几台玩具机器统一下标准，其中一个标准是将 kernel.pid_max 增加到了 512000，结果就在当天的凌晨，一台跑着 pptp 的 VPS 崩溃了:    Jun 20 22:53:09 jaseywang vps pptpd: ======= B
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>
+	最近手贱想把手头的几台玩具机器统一下标准，其中一个标准是将 kernel.pid_max 增加到了 512000，结果就在当天的凌晨，一台跑着 pptp 的 VPS 崩溃了:
+</p>
+<p>
+	Jun 20 22:53:09 jaseywang vps pptpd: ======= Backtrace: =========<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(__fortify_fail+0x37)[0x7fdba6416047]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(+0x10d200)[0x7fdba6414200]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(+0x10c709)[0x7fdba6413709]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(_IO_default_xsputn+0xbc)[0x7fdba637f60c]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(_IO_vfprintf+0xb0d)[0x7fdba634ec3d]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(__vsprintf_chk+0x88)[0x7fdba6413798]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(__sprintf_chk+0x7d)[0x7fdba64136ed]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/lib/../lib64/pppd/2.4.5/radius.so(rc_mksid+0x43)[0x7fdba4272763]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/lib/../lib64/pppd/2.4.5/radius.so(+0x48f0)[0x7fdba426d8f0]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/sbin/pppd(notify+0x27)[0x562eaeb64847]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/sbin/pppd(+0x1cfff)[0x562eaeb6cfff]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/sbin/pppd(fsm_input+0x671)[0x562eaeb669a1]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/sbin/pppd(main+0xbe7)[0x562eaeb63317]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(__libc_start_main+0xf5)[0x7fdba6328b35]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: /usr/sbin/pppd(+0x1393d)[0x562eaeb6393d]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: ======= Memory map: ========<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 562eaeb50000-562eaeba6000 r-xp 00000000 fd:01 1510143                    /usr/sbin/pppd<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 562eaeda6000-562eaeda7000 r–p 00056000 fd:01 1510143                    /usr/sbin/pppd<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 562eaeda7000-562eaedad000 rw-p 00057000 fd:01 1510143                    /usr/sbin/pppd<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 562eaedad000-562eaedf9000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 562eb07ef000-562eb0810000 rw-p 00000000 00:00 0                          [heap]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba28a0000-7fdba28af000 r-xp 00000000 fd:01 1508183                    /usr/lib64/libbz2.so.1.0.6<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba28af000-7fdba2aae000 —p 0000f000 fd:01 1508183                    /usr/lib64/libbz2.so.1.0.6<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2aae000-7fdba2aaf000 r–p 0000e000 fd:01 1508183                    /usr/lib64/libbz2.so.1.0.6<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2aaf000-7fdba2ab0000 rw-p 0000f000 fd:01 1508183                    /usr/lib64/libbz2.so.1.0.6<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2ab0000-7fdba2ad5000 r-xp 00000000 fd:01 1507951                    /usr/lib64/liblzma.so.5.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2ad5000-7fdba2cd4000 —p 00025000 fd:01 1507951                    /usr/lib64/liblzma.so.5.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2cd4000-7fdba2cd5000 r–p 00024000 fd:01 1507951                    /usr/lib64/liblzma.so.5.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2cd5000-7fdba2cd6000 rw-p 00025000 fd:01 1507951                    /usr/lib64/liblzma.so.5.2.2<br />
+	Jun 20 22:53:09 jaseywang vps charon: 05[KNL] interface ppp1 deactivated<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2cd6000-7fdba2ceb000 r-xp 00000000 fd:01 1508207                    /usr/lib64/libelf-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2ceb000-7fdba2eea000 —p 00015000 fd:01 1508207                    /usr/lib64/libelf-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2eea000-7fdba2eeb000 r–p 00014000 fd:01 1508207                    /usr/lib64/libelf-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2eeb000-7fdba2eec000 rw-p 00015000 fd:01 1508207                    /usr/lib64/libelf-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2eec000-7fdba2ef0000 r-xp 00000000 fd:01 1508224                    /usr/lib64/libattr.so.1.1.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba2ef0000-7fdba30ef000 —p 00004000 fd:01 1508224                    /usr/lib64/libattr.so.1.1.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba30ef000-7fdba30f0000 r–p 00003000 fd:01 1508224                    /usr/lib64/libattr.so.1.1.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba30f0000-7fdba30f1000 rw-p 00004000 fd:01 1508224                    /usr/lib64/libattr.so.1.1.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba30f1000-7fdba3106000 r-xp 00000000 fd:01 1510624                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3106000-7fdba3305000 —p 00015000 fd:01 1510624                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3305000-7fdba3306000 r–p 00014000 fd:01 1510624                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3306000-7fdba3307000 rw-p 00015000 fd:01 1510624                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3307000-7fdba334c000 r-xp 00000000 fd:01 1508259                    /usr/lib64/libdw-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba334c000-7fdba354b000 —p 00045000 fd:01 1508259                    /usr/lib64/libdw-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba354b000-7fdba354d000 r–p 00044000 fd:01 1508259                    /usr/lib64/libdw-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba354d000-7fdba354e000 rw-p 00046000 fd:01 1508259                    /usr/lib64/libdw-0.163.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba354e000-7fdba3555000 r-xp 00000000 fd:01 1507938                    /usr/lib64/librt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3555000-7fdba3754000 —p 00007000 fd:01 1507938                    /usr/lib64/librt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3754000-7fdba3755000 r–p 00006000 fd:01 1507938                    /usr/lib64/librt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3755000-7fdba3756000 rw-p 00007000 fd:01 1507938                    /usr/lib64/librt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps charon: 14[KNL] 10.8.0.1 disappeared from ppp1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3756000-7fdba3856000 r-xp 00000000 fd:01 1507916                    /usr/lib64/libm-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3856000-7fdba3a56000 —p 00100000 fd:01 1507916                    /usr/lib64/libm-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3a56000-7fdba3a57000 r–p 00100000 fd:01 1507916                    /usr/lib64/libm-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3a57000-7fdba3a58000 rw-p 00101000 fd:01 1507916                    /usr/lib64/libm-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3a58000-7fdba3a5c000 r-xp 00000000 fd:01 1508228                    /usr/lib64/libcap.so.2.22<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3a5c000-7fdba3c5b000 —p 00004000 fd:01 1508228                    /usr/lib64/libcap.so.2.22<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3c5b000-7fdba3c5c000 r–p 00003000 fd:01 1508228                    /usr/lib64/libcap.so.2.22<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3c5c000-7fdba3c5d000 rw-p 00004000 fd:01 1508228                    /usr/lib64/libcap.so.2.22<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3c5d000-7fdba3c62000 r-xp 00000000 fd:01 1507924                    /usr/lib64/libnss_dns-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3c62000-7fdba3e61000 —p 00005000 fd:01 1507924                    /usr/lib64/libnss_dns-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3e61000-7fdba3e62000 r–p 00004000 fd:01 1507924                    /usr/lib64/libnss_dns-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3e62000-7fdba3e63000 rw-p 00005000 fd:01 1507924                    /usr/lib64/libnss_dns-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3e63000-7fdba3e64000 r-xp 00000000 fd:01 1517634                    /usr/lib64/pptpd/pptpd-logwtmp.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba3e64000-7fdba4063000 —p 00001000 fd:01 1517634                    /usr/lib64/pptpd/pptpd-logwtmp.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4063000-7fdba4064000 r–p 00000000 fd:01 1517634                    /usr/lib64/pptpd/pptpd-logwtmp.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4064000-7fdba4065000 rw-p 00001000 fd:01 1517634                    /usr/lib64/pptpd/pptpd-logwtmp.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4065000-7fdba4066000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4066000-7fdba4067000 r-xp 00000000 fd:01 1565616                    /usr/lib64/pppd/2.4.5/radattr.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4067000-7fdba4267000 —p 00001000 fd:01 1565616                    /usr/lib64/pppd/2.4.5/radattr.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4267000-7fdba4268000 r–p 00001000 fd:01 1565616                    /usr/lib64/pppd/2.4.5/radattr.so<br />
+	Jun 20 22:53:09 jaseywang vps charon: 08[KNL] interface ppp1 deleted<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4268000-7fdba4269000 rw-p 00002000 fd:01 1565616                    /usr/lib64/pppd/2.4.5/radattr.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4269000-7fdba4275000 r-xp 00000000 fd:01 1565617                    /usr/lib64/pppd/2.4.5/radius.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4275000-7fdba4474000 —p 0000c000 fd:01 1565617                    /usr/lib64/pppd/2.4.5/radius.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4474000-7fdba4475000 r–p 0000b000 fd:01 1565617                    /usr/lib64/pppd/2.4.5/radius.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4475000-7fdba4476000 rw-p 0000c000 fd:01 1565617                    /usr/lib64/pppd/2.4.5/radius.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4476000-7fdba4478000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4478000-7fdba4484000 r-xp 00000000 fd:01 1507926                    /usr/lib64/libnss_files-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4484000-7fdba4683000 —p 0000c000 fd:01 1507926                    /usr/lib64/libnss_files-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4683000-7fdba4684000 r–p 0000b000 fd:01 1507926                    /usr/lib64/libnss_files-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4684000-7fdba4685000 rw-p 0000c000 fd:01 1507926                    /usr/lib64/libnss_files-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4685000-7fdba468b000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba468b000-7fdba46eb000 r-xp 00000000 fd:01 1508069                    /usr/lib64/libpcre.so.1.2.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba46eb000-7fdba48ea000 —p 00060000 fd:01 1508069                    /usr/lib64/libpcre.so.1.2.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba48ea000-7fdba48eb000 r–p 0005f000 fd:01 1508069                    /usr/lib64/libpcre.so.1.2.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba48eb000-7fdba48ec000 rw-p 00060000 fd:01 1508069                    /usr/lib64/libpcre.so.1.2.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba48ec000-7fdba4910000 r-xp 00000000 fd:01 1508068                    /usr/lib64/libselinux.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4910000-7fdba4b0f000 —p 00024000 fd:01 1508068                    /usr/lib64/libselinux.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4b0f000-7fdba4b10000 r–p 00023000 fd:01 1508068                    /usr/lib64/libselinux.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4b10000-7fdba4b11000 rw-p 00024000 fd:01 1508068                    /usr/lib64/libselinux.so.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4b11000-7fdba4b13000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4b13000-7fdba4b2a000 r-xp 00000000 fd:01 1507934                    /usr/lib64/libpthread-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4b2a000-7fdba4d29000 —p 00017000 fd:01 1507934                    /usr/lib64/libpthread-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4d29000-7fdba4d2a000 r–p 00016000 fd:01 1507934                    /usr/lib64/libpthread-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4d2a000-7fdba4d2b000 rw-p 00017000 fd:01 1507934                    /usr/lib64/libpthread-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4d2b000-7fdba4d2f000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4d2f000-7fdba4d45000 r-xp 00000000 fd:01 1507936                    /usr/lib64/libresolv-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4d45000-7fdba4f45000 —p 00016000 fd:01 1507936                    /usr/lib64/libresolv-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4f45000-7fdba4f46000 r–p 00016000 fd:01 1507936                    /usr/lib64/libresolv-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4f46000-7fdba4f47000 rw-p 00017000 fd:01 1507936                    /usr/lib64/libresolv-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4f47000-7fdba4f49000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4f49000-7fdba4f4c000 r-xp 00000000 fd:01 1508495                    /usr/lib64/libkeyutils.so.1.5<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba4f4c000-7fdba514b000 —p 00003000 fd:01 1508495                    /usr/lib64/libkeyutils.so.1.5<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba514b000-7fdba514c000 r–p 00002000 fd:01 1508495                    /usr/lib64/libkeyutils.so.1.5<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba514c000-7fdba514d000 rw-p 00003000 fd:01 1508495                    /usr/lib64/libkeyutils.so.1.5<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba514d000-7fdba515a000 r-xp 00000000 fd:01 1508745                    /usr/lib64/libkrb5support.so.0.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba515a000-7fdba535a000 —p 0000d000 fd:01 1508745                    /usr/lib64/libkrb5support.so.0.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba535a000-7fdba535b000 r–p 0000d000 fd:01 1508745                    /usr/lib64/libkrb5support.so.0.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba535b000-7fdba535c000 rw-p 0000e000 fd:01 1508745                    /usr/lib64/libkrb5support.so.0.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba535c000-7fdba5377000 r-xp 00000000 fd:01 1508093                    /usr/lib64/libaudit.so.1.0.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5377000-7fdba5577000 —p 0001b000 fd:01 1508093                    /usr/lib64/libaudit.so.1.0.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5577000-7fdba5578000 r–p 0001b000 fd:01 1508093                    /usr/lib64/libaudit.so.1.0.0<br />
+	Jun 20 22:53:09 jaseywang vps pppd[88951]: Exit.<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5578000-7fdba5579000 rw-p 0001c000 fd:01 1508093                    /usr/lib64/libaudit.so.1.0.0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5579000-7fdba5583000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5583000-7fdba5585000 r-xp 00000000 fd:01 1507867                    /usr/lib64/libfreebl3.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5585000-7fdba5784000 —p 00002000 fd:01 1507867                    /usr/lib64/libfreebl3.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5784000-7fdba5785000 r–p 00001000 fd:01 1507867                    /usr/lib64/libfreebl3.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5785000-7fdba5786000 rw-p 00002000 fd:01 1507867                    /usr/lib64/libfreebl3.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5786000-7fdba579b000 r-xp 00000000 fd:01 1507927                    /usr/lib64/libz.so.1.2.7<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba579b000-7fdba599a000 —p 00015000 fd:01 1507927                    /usr/lib64/libz.so.1.2.7<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba599a000-7fdba599b000 r–p 00014000 fd:01 1507927                    /usr/lib64/libz.so.1.2.7<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba599b000-7fdba599c000 rw-p 00015000 fd:01 1507927                    /usr/lib64/libz.so.1.2.7<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba599c000-7fdba59cb000 r-xp 00000000 fd:01 1508733                    /usr/lib64/libk5crypto.so.3.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba59cb000-7fdba5bca000 —p 0002f000 fd:01 1508733                    /usr/lib64/libk5crypto.so.3.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5bca000-7fdba5bcc000 r–p 0002e000 fd:01 1508733                    /usr/lib64/libk5crypto.so.3.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5bcc000-7fdba5bcd000 rw-p 00030000 fd:01 1508733                    /usr/lib64/libk5crypto.so.3.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5bcd000-7fdba5bce000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5bce000-7fdba5bd1000 r-xp 00000000 fd:01 1508119                    /usr/lib64/libcom_err.so.2.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5bd1000-7fdba5dd0000 —p 00003000 fd:01 1508119                    /usr/lib64/libcom_err.so.2.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5dd0000-7fdba5dd1000 r–p 00002000 fd:01 1508119                    /usr/lib64/libcom_err.so.2.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5dd1000-7fdba5dd2000 rw-p 00003000 fd:01 1508119                    /usr/lib64/libcom_err.so.2.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5dd2000-7fdba5ea8000 r-xp 00000000 fd:01 1508743                    /usr/lib64/libkrb5.so.3.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba5ea8000-7fdba60a8000 —p 000d6000 fd:01 1508743                    /usr/lib64/libkrb5.so.3.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd[88950]: GRE: read(fd=6,buffer=55afa3981480,len=8196) from PTY failed: status = -1 error = Input/output error, usually caused by unexpected termination of pppd, check option syntax and pppd logs<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba60a8000-7fdba60b6000 r–p 000d6000 fd:01 1508743                    /usr/lib64/libkrb5.so.3.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba60b6000-7fdba60b9000 rw-p 000e4000 fd:01 1508743                    /usr/lib64/libkrb5.so.3.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba60b9000-7fdba6104000 r-xp 00000000 fd:01 1508729                    /usr/lib64/libgssapi_krb5.so.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6104000-7fdba6304000 —p 0004b000 fd:01 1508729                    /usr/lib64/libgssapi_krb5.so.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6304000-7fdba6305000 r–p 0004b000 fd:01 1508729                    /usr/lib64/libgssapi_krb5.so.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6305000-7fdba6307000 rw-p 0004c000 fd:01 1508729                    /usr/lib64/libgssapi_krb5.so.2.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6307000-7fdba64bd000 r-xp 00000000 fd:01 1507908                    /usr/lib64/libc-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba64bd000-7fdba66bd000 —p 001b6000 fd:01 1507908                    /usr/lib64/libc-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba66bd000-7fdba66c1000 r–p 001b6000 fd:01 1507908                    /usr/lib64/libc-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba66c1000-7fdba66c3000 rw-p 001ba000 fd:01 1507908                    /usr/lib64/libc-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba66c3000-7fdba66c8000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba66c8000-7fdba6706000 r-xp 00000000 fd:01 1508723                    /usr/lib64/libpcap.so.1.5.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6706000-7fdba6905000 —p 0003e000 fd:01 1508723                    /usr/lib64/libpcap.so.1.5.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6905000-7fdba6907000 r–p 0003d000 fd:01 1508723                    /usr/lib64/libpcap.so.1.5.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6907000-7fdba6908000 rw-p 0003f000 fd:01 1508723                    /usr/lib64/libpcap.so.1.5.3<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6908000-7fdba6909000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6909000-7fdba690b000 r-xp 00000000 fd:01 1507914                    /usr/lib64/libdl-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba690b000-7fdba6b0b000 —p 00002000 fd:01 1507914                    /usr/lib64/libdl-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6b0b000-7fdba6b0c000 r–p 00002000 fd:01 1507914                    /usr/lib64/libdl-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6b0c000-7fdba6b0d000 rw-p 00003000 fd:01 1507914                    /usr/lib64/libdl-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6b0d000-7fdba6b1a000 r-xp 00000000 fd:01 1508738                    /usr/lib64/libpam.so.0.83.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd[88950]: CTRL: PTY read or GRE write failed (pty,gre)=(6,7)<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6b1a000-7fdba6d1a000 —p 0000d000 fd:01 1508738                    /usr/lib64/libpam.so.0.83.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6d1a000-7fdba6d1b000 r–p 0000d000 fd:01 1508738                    /usr/lib64/libpam.so.0.83.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6d1b000-7fdba6d1c000 rw-p 0000e000 fd:01 1508738                    /usr/lib64/libpam.so.0.83.1<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6d1c000-7fdba6d24000 r-xp 00000000 fd:01 1507912                    /usr/lib64/libcrypt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6d24000-7fdba6f23000 —p 00008000 fd:01 1507912                    /usr/lib64/libcrypt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6f23000-7fdba6f24000 r–p 00007000 fd:01 1507912                    /usr/lib64/libcrypt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6f24000-7fdba6f25000 rw-p 00008000 fd:01 1507912                    /usr/lib64/libcrypt-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6f25000-7fdba6f53000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba6f53000-7fdba7113000 r-xp 00000000 fd:01 1508751                    /usr/lib64/libcrypto.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba7113000-7fdba7313000 —p 001c0000 fd:01 1508751                    /usr/lib64/libcrypto.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba7313000-7fdba732d000 r–p 001c0000 fd:01 1508751                    /usr/lib64/libcrypto.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba732d000-7fdba7339000 rw-p 001da000 fd:01 1508751                    /usr/lib64/libcrypto.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba7339000-7fdba733d000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba733d000-7fdba73a1000 r-xp 00000000 fd:01 1508753                    /usr/lib64/libssl.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba73a1000-7fdba75a0000 —p 00064000 fd:01 1508753                    /usr/lib64/libssl.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba75a0000-7fdba75a4000 r–p 00063000 fd:01 1508753                    /usr/lib64/libssl.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba75a4000-7fdba75ab000 rw-p 00067000 fd:01 1508753                    /usr/lib64/libssl.so.1.0.1e<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba75ab000-7fdba75ad000 r-xp 00000000 fd:01 1507942                    /usr/lib64/libutil-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba75ad000-7fdba77ac000 —p 00002000 fd:01 1507942                    /usr/lib64/libutil-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba77ac000-7fdba77ad000 r–p 00001000 fd:01 1507942                    /usr/lib64/libutil-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba77ad000-7fdba77ae000 rw-p 00002000 fd:01 1507942                    /usr/lib64/libutil-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba77ae000-7fdba77ce000 r-xp 00000000 fd:01 1507901                    /usr/lib64/ld-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba7998000-7fdba79a5000 r-xp 00000000 fd:01 1512314                    /usr/lib64/libnss_myhostname.so.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79a5000-7fdba79a8000 r–p 0000c000 fd:01 1512314                    /usr/lib64/libnss_myhostname.so.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79a8000-7fdba79a9000 rw-p 0000f000 fd:01 1512314                    /usr/lib64/libnss_myhostname.so.2<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79b5000-7fdba79c0000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79c9000-7fdba79ca000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79ca000-7fdba79cc000 rw-s 00000000 00:16 19496                      /run/ppp/pppd2.tdb<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79cc000-7fdba79cd000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79cd000-7fdba79ce000 r–p 0001f000 fd:01 1507901                    /usr/lib64/ld-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79ce000-7fdba79cf000 rw-p 00020000 fd:01 1507901                    /usr/lib64/ld-2.17.so<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7fdba79cf000-7fdba79d0000 rw-p 00000000 00:00 0<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7ffc6d3db000-7ffc6d3fc000 rw-p 00000000 00:00 0                          [stack]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7ffc6d3fc000-7ffc6d3fe000 r–p 00000000 00:00 0                          [vvar]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: 7ffc6d3fe000-7ffc6d400000 r-xp 00000000 00:00 0                          [vdso]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd: ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]<br />
+	Jun 20 22:53:09 jaseywang vps pptpd[88950]: CTRL: Client 117.73.146.179 control connection finished
+</p>
+<p>
+	现象就是 pptp VPN 连接失败，每次连接都会报上面的错误，寻着关键词找到了这个 15 年发现的 bug:<br />
+	https://nvd.nist.gov/vuln/detail/CVE-2015-3310
+</p>
+<p>
+	简而言之就是 2.4.6 版本之前的 ppp 进程每次 fork 的时候产生 PID 的时候，一旦大于 65535，plugins/radius/util.c 里面的函数 rc_mksid 就 overflow 了，只能重启机器解决。<a href="https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2015-3310">最坑的是</a>，Ubuntu/Debain/OpenSuse 都更新了相应的补丁，但是 RedHat 没有，没有，并且对于 5/6/7 三个大版本都不会修复<br />
+	<img src="https://dl.dropboxusercontent.com/u/4919408/tec/blog/vpn/ppp-cve-2015-3310.png" />
+</p>
+<p>
+	这么大的影响，尤其对于一台生产的服务器，pid_max 设置超过 65535 是件很正常的事情，不知道 Redhat 是怎么考虑这件事情的。<br />
+	临时的解决办法要将 pid_max 设置成 65535 以下，要么定期设置 /proc/sys/kernel/ns_last_pid 的值，指定接下来新生成的 PID 获得比较低的值，后者在 3.3 以上的内核才支持。</p>
+<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2014/07/03/1000-%e5%a4%a9%e7%9a%84%e6%97%a5%e6%97%a5%e5%a4%9c%e5%a4%9c/">1000 天的日日夜夜</a></li><li><a href="http://jaseywang.me/2015/05/13/how-we-migrate-pbs-data-from-beijing-to-shanghai/">How We Migrate PBs Data from Beijing to Shanghai</a></li><li><a href="http://jaseywang.me/2015/01/12/venta-%e6%b0%b4%e6%b4%97%e6%9c%ba%e5%8d%8a%e5%ae%9a%e9%87%8f%e4%bd%bf%e7%94%a8%e6%b5%8b%e8%af%84/">venta 水洗机半定量使用测评</a></li><li><a href="http://jaseywang.me/2015/02/16/umeng-operations-infrastructure-practice/">Umeng Operations Infrastructure &amp; Practice</a></li><li><a href="http://jaseywang.me/2015/01/02/resolv-conf-%e7%9a%84%e8%b6%85%e6%97%b6timeout%e4%b8%8e%e9%87%8d%e8%af%95attempts%e6%9c%ba%e5%88%b6/">resolv.conf 的超时(timeout)与重试(attempts)机制</a></li></ul><div></div></div>]]></content:encoded>
+            
+        </item>
         
         <item>
             <title>当我们在聊监控，我们在聊什么？</title>
@@ -4611,54 +4841,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
 </div>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>Router Matters</title>
-            <link>http://jaseywang.me/2015/07/05/router-matters/</link>
-            
-            <author>jaseywang</author>
-            
-            <guid>http://jaseywang.me/2015/07/05/router-matters/</guid>
-            <pubDate>Sun, 05 Jul 2015 15:05:24 +0200</pubDate>
-            <description>
-                
-                  We are transfering PBs of our HDFS data from one data center to another via a router, we never thought the performance of a router will b
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>
-	We are transfering PBs of our HDFS data from one data center to another via a router, we never thought the performance of a router will becomes the bottleneck until we find the below statistic:
-</p>
-<p>
-	#show interfaces Gi0/1<br />
-	GigabitEthernet0/1 is up, line protocol is up<br />
-	  Hardware is iGbE, address is 7c0e.cece.dc01 (bia 7c0e.cece.dc01)<br />
-	  Description: Connect-Shanghai-MSTP<br />
-	  Internet address is 10.143.67.18/30<br />
-	  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,<br />
-	     reliability 255/255, txload 250/255, rxload 3/255<br />
-	  Encapsulation ARPA, loopback not set<br />
-	  Keepalive set (10 sec)<br />
-	  Full Duplex, 1Gbps, media type is ZX<br />
-	  output flow-control is unsupported, input flow-control is unsupported<br />
-	  ARP type: ARPA, ARP Timeout 04:00:00<br />
-	  Last input 00:00:06, output 00:00:00, output hang never<br />
-	  Last clearing of &quot;show interface&quot; counters 1d22h<br />
-	  Input queue: 0/75/0/6 (size/max/drops/flushes); Total output drops: 22559915<br />
-	  Queueing strategy: fifo<br />
-	  Output queue: 39/40 (size/max)
-</p>
-<p>
-	The output queue is full, hence the txload is obviously high.
-</p>
-<p>
-	How awful it is. At the beginning, we found there were many failures or retransmissions during the transfer between two data centers. After adding some metrics, everything is clear, the latency between two data centers is quite unstable, sometimes around 30ms, and sometimes reaches 100ms or even more which is unacceptable for some latency sensitive application. we then ssh into the router and found the above result.
-</p>
-<p>
-	After that, we drop it and replace it with a more advanced one, now, everything returns to normal, latency is around 30ms, packet drop is below 1%.</p>
-<div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2015/06/04/how-many-non-persistent-connections-can-nginxtengine-support-concurrently/">How Many Non-Persistent Connections Can Nginx/Tengine…</a></li><li><a href="http://jaseywang.me/2015/04/27/tcp_keepalive_time-and-rst-flag-in-nat-environment/">tcp_keepalive_time and rst Flag in NAT Environment</a></li><li><a href="http://jaseywang.me/2014/08/16/ifconfig-%e4%b8%8b%e9%9d%a2%e7%9a%84%e4%b8%80%e4%ba%9b%e5%ad%97%e6%ae%b5errors-dropped-overruns/">ifconfig 下面的一些字段(errors, dropped, overruns)</a></li><li><a href="http://jaseywang.me/2014/11/15/%e4%b8%8d%e8%a6%81%e4%b9%b1%e7%94%a8-tcp-enc-flag/">不要乱用 TCP ECN flag</a></li><li><a href="http://jaseywang.me/2015/05/13/how-we-migrate-pbs-data-from-beijing-to-shanghai/">How We Migrate PBs Data from Beijing to Shanghai</a></li></ul><div></div></div>]]></content:encoded>
             
         </item>
         
