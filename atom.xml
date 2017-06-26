@@ -3539,7 +3539,8 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         <published>2016-05-14T11:29:09+02:00</published>
         <updated>2016-05-14T11:29:09+02:00</updated>
         
-        <content type="html"><![CDATA[<p>我折腾过不少家用NAS方案，包括最早的<a href="https://www.freemindworld.com/blog/2009/090305_my_book_world_edition_hack.shtml">WD My Book World Edition</a>，后来的<a href="https://www.freemindworld.com/blog/2010/101121_o2_joggler.shtml">Joggler</a>，再到后来的Raspberry Pi，这些方案除了性能存在一些问题以外，最大的缺点就是易用性存在问题，不但非“专业”人士用起来存在困难，就连我自己也对土法泡制的照片管理功能感到不满。直到两年前入了<a href="http://www.synology.com/" target="_blank">群晖</a>（Synology）的家用NAS DS214play，事情才变得安逸起来。</p>
+        <content type="html"><![CDATA[<p><strong>本文的内容已经过时，6.7.0以上的Photo Station已经没有严重的性能问题了。</strong></p>
+<p>我折腾过不少家用NAS方案，包括最早的<a href="https://www.freemindworld.com/blog/2009/090305_my_book_world_edition_hack.shtml">WD My Book World Edition</a>，后来的<a href="https://www.freemindworld.com/blog/2010/101121_o2_joggler.shtml">Joggler</a>，再到后来的Raspberry Pi，这些方案除了性能存在一些问题以外，最大的缺点就是易用性存在问题，不但非“专业”人士用起来存在困难，就连我自己也对土法泡制的照片管理功能感到不满。直到两年前入了<a href="http://www.synology.com/" target="_blank">群晖</a>（Synology）的家用NAS DS214play，事情才变得安逸起来。</p>
 <p>平心而论，Synology的系统虽然功能强大，体验也还不错，但细节上做得其实真是挺糙的。最近就发现了它的照片管理软件PhotoStation出现了严重的性能问题，在照片库里只存了8万余张照片的情况下，打开首页要花费的时间已经超过了20秒，每打开一个文件夹都需要等待10秒以上，几乎不可用了。</p>
 <p>以下分析以DSM 6.0为例，PhotoStation版本为6.4-3166。PhotoStation的安装路径为/volume1/@appstore/PhotoStation。</p>
 <p>Synology的<a href="https://www.synology.cn/en-global/dsm/6.0/features" target="_blank">DSM</a>系统，后台使用<a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a>数据库，前端是PHP页面。简单推理一下就可以知道，PhotoStation的性能瓶颈主要是在对照片索引数据库的访问上。性能调优的第一步就是先要找到哪些SQL查询占用了太多的时间。打开PostgreSQL记录SQL查询的开关，并查看所有SQL执行情况：</p>
@@ -3734,7 +3735,7 @@ bled FROM video WHERE $cond &quot; .
         
         <summary type="html">
             
-            我折腾过不少家用NAS方案，包括最早的WD My Book World Edition，后来的Joggler，再到后来的Raspberry Pi，这些方案除了性能存在一些问题以外，最大的缺点就是易用性存在问题，不但非“专业”人士用起来存在困难，就连我自己也对土法泡制的照片管理功
+            本文的内容已经过时，6.7.0以上的Photo Station已经没有严重的性能问题了。 我折腾过不少家用NAS方案，包括最早的WD My Book World Edition，后来的Joggler，再到后来的Raspberry Pi，这些方案除了性能存在一些问题以外，最大的缺
             
         </summary>
         
@@ -4923,6 +4924,124 @@ update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项�
     </entry>
     
     <entry>
+        <title>fHash 2.0.0 for Mac OS X</title>
+        <link href="http://www.sunjw.us/blog/fhash-2-0-0-for-mac-os-x/"/>
+        <id>http://www.sunjw.us/blog/fhash-2-0-0-for-mac-os-x/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2015-11-11T06:09:16+01:00</published>
+        <updated>2015-11-11T06:09:16+01:00</updated>
+        
+        <content type="html"><![CDATA[<p>fHash 2.0.0 for Mac OS X is available on Mac App Store now!<br />
+<a href="https://itunes.apple.com/us/app/fhash/id1055555711?mt=12" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/Download_on_the_Mac_App_Store_Badge_US-UK_165x40.png" /></a></p>
+<p>fHash is an open source files’ hash calculator for Windows and Mac OS X</p>
+<ul>
+<li>MD5, SHA1, SHA256 and CRC32.</li>
+<li>Drag &amp; drop.</li>
+<li>Integrated with context menu in Explorer/Finder.</li>
+<li>Support multiple files.</li>
+<li>Support 10.10 and later Mac OS X.</li>
+<li>English and Simplified Chinese UI.</li>
+</ul>
+<p>The icon “希” is from hash in Chinese “哈希”.<br />
+Thanks for Trend Micro Mobile Club’s support.</p>
+<p>Project Site <a href="https://github.com/sunjw/fhash" target="_blank">https://github.com/sunjw/fhash</a></p>
+<p><span></span></p>
+<p>LICENSE<br />
+GPL 2.0 for codes hosted on GitHub.<br />
+May use other licenses for binary package on other distribution sites.</p>
+<p><a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_ui.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_ui.jpg" /></a><br />
+<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_about.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_about.jpg" /></a><br />
+<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_context_menu_item.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_context_menu_item.jpg" /></a><br />
+<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_one_start.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_one_start.jpg" /></a><br />
+<a href="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_multi_finish.jpg" target="_blank"><img src="https://raw.githubusercontent.com/sunjw/fhash/master/doc/mac_calc_multi_finish.jpg" /></a></p>]]></content>
+        
+        <summary type="html">
+            
+            fHash 2.0.0 for Mac OS X is available on Mac App Store now!  fHash is an open source files’ hash calculator for Windows and Mac OS X  MD5, 
+            
+        </summary>
+        
+        <category term="fHash"/>
+        
+        <category term="OS X"/>
+        
+        <category term="小软件"/>
+        
+    </entry>
+    
+    <entry>
+        <title>JSToolNpp 1.16.10 Released</title>
+        <link href="http://www.sunjw.us/blog/jstoolnpp-1-16-10-released/"/>
+        <id>http://www.sunjw.us/blog/jstoolnpp-1-16-10-released/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2015-11-11T05:57:44+01:00</published>
+        <updated>2015-11-11T05:57:44+01:00</updated>
+        
+        <content type="html"><![CDATA[<p>What’s New in JSToolNpp:</p>
+<ul>
+<li>1.16.10
+<ul>
+<li>Fix configuration saving bug.</li>
+</ul>
+</li>
+<li>1.16.8
+<ul>
+<li>Fix regex related bug.</li>
+</ul>
+</li>
+<li>1.16.6
+<ul>
+<li>Fix negative number bug.</li>
+<li>Fix some expression format bug.</li>
+</ul>
+</li>
+<li>1.16.5
+<ul>
+<li>Fix regex detection.</li>
+<li>Fix some crash bugs.</li>
+</ul>
+</li>
+</ul>
+<p>Project site:<br />
+<a href="http://www.sunjw.us/jstoolnpp/" target="_blank">http://www.sunjw.us/jstoolnpp/</a></p>
+<p>Download links:<br />
+<a href="http://sourceforge.net/projects/jsminnpp/files/Uni/JSToolNPP.1.16.10.uni.zip/download" target="_blank">SourceForget.net </a></p>]]></content>
+        
+        <summary type="html">
+            
+            What’s New in JSToolNpp:  1.16.10  Fix configuration saving bug.   1.16.8  Fix regex related bug.   1.16.6  Fix negative number bug. Fix so
+            
+        </summary>
+        
+        <category term="JSToolNpp"/>
+        
+        <category term="javascript"/>
+        
+        <category term="jsformat"/>
+        
+        <category term="JsToolNpp"/>
+        
+        <category term="notepad++"/>
+        
+        <category term="npp"/>
+        
+        <category term="plugin"/>
+        
+        <category term="小软件"/>
+        
+        <category term="开发"/>
+        
+    </entry>
+    
+    <entry>
         <title>Can Venta Airwasher Effectively Reduce PM2.5 or PM10?</title>
         <link href="http://jaseywang.me/2015/11/01/can-venta-airwasher-effectively-reduce-pm2-5-or-pm10/"/>
         <id>http://jaseywang.me/2015/11/01/can-venta-airwasher-effectively-reduce-pm2-5-or-pm10/</id>
@@ -5497,6 +5616,55 @@ $ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br 
     </entry>
     
     <entry>
+        <title>Build CyanogenMod 12 for Nexus 5</title>
+        <link href="http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/"/>
+        <id>http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2015-02-11T05:41:39+01:00</published>
+        <updated>2015-02-11T05:41:39+01:00</updated>
+        
+        <content type="html"><![CDATA[<p>工作之后好久不写博客了，这里都要长草了。。。</p>
+<p>之前写过一篇 <a href="http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/">Build CyanogenMod 10.2 for Nexus 4</a>，现在手机换成 Nexus 5 了，系统也升级到 CM 12 了，写一篇 How to 总结一下。</p>
+<p>1. 你还是要准备一台机器（虚拟机也行），装上 Ubuntu，Ubuntu 14 LTS 是个不错的选择，LTS 会有很长时间的软件更新支持。硬盘分的大一些，100GB 起步吧，内存 3G 起，其他随意。</p>
+<p>2. 系统装好之后，按照 CM 官方的指导 <a href="http://wiki.cyanogenmod.org/w/Build_for_hammerhead?setlang=en#Install_the_Build_Packages" target="_blank">How To Build CyanogenMod Android for Google Nexus 5 (“hammerhead”)</a> 安装必要的软件。需要注意的是，编译 CM 12 需要 OpenJDK 7，所以安装时，将 openjdk-6-jdk openjdk-6-jre 换成 openjdk-7-jdk openjdk-7-jre，另外 Ubuntu 14 已经没有 ia32-libs 这个包了，需要安装 lib32z1 lib32ncurses5 lib32bz2-1.0 作为 32 位兼容运行时。</p>
+<p>3. 之后就可以按照手册准备 repo，使用 repo init -u https://github.com/CyanogenMod/android.git -b cm-12.0 初始化 repo。</p>
+<p>4. repo sync</p>
+<p>5. breakfast hammerhead</p>
+<p>6. 这里建议在 breakfast 之后再 repo sync 一次</p>
+<p>7. Nexus 5 的私有库在这里有 <a href="https://github.com/TheMuppets/proprietary_vendor_lge" target="_blank">https://github.com/TheMuppets/proprietary_vendor_lge</a>，可以将其添加到本地 repo，打开同步好的源码目录，进入 .repo/local_manifests 目录，在其中创建 lge.xml，内容如下：</p>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;manifest&gt;
+  &lt;project name=&quot;TheMuppets/proprietary_vendor_lge.git&quot; path=&quot;vendor/lge&quot; remote=&quot;github&quot; /&gt;
+&lt;/manifest&gt;
+</pre>
+<p>之后再 repo sync 一次。</p>
+<p>8. 到这里源码同步完成，可以 brunch hammerhead 啦。</p>
+<p>需要注意的是，请使用多种方法科学上网。</p>]]></content>
+        
+        <summary type="html">
+            
+            工作之后好久不写博客了，这里都要长草了。。。 之前写过一篇 Build CyanogenMod 10.2 for Nexus 4，现在手机换成 Nexus 5 了，系统也升级到 CM 12 了，写一篇 How to 总结一下。 1. 你还是要准备一台机器（虚拟机也行），装上 U
+            
+        </summary>
+        
+        <category term="计算机"/>
+        
+        <category term="Android"/>
+        
+        <category term="CyanogenMod"/>
+        
+        <category term="nexus"/>
+        
+        <category term="nexus5"/>
+        
+    </entry>
+    
+    <entry>
         <title>我的 MBP SSD 优化过程</title>
         <link href="https://glacjay.info/post/2015-01-17/%E6%88%91%E7%9A%84-mbp-ssd-%E4%BC%98%E5%8C%96%E8%BF%87%E7%A8%8B/"/>
         <id>https://glacjay.info/post/2015-01-17/%E6%88%91%E7%9A%84-mbp-ssd-%E4%BC%98%E5%8C%96%E8%BF%87%E7%A8%8B/</id>
@@ -6021,6 +6189,356 @@ while (1)
             今天才发现，这里已经两年多没有被照看过了，估计连树都要长出来了吧。    在用 Windows 的 WSAEventSelect 模式进行网络编程时，比较固定的一个模式是这样的：  ... WSAEventSelect(sock, events[0], FD_READ); ..
             
         </summary>
+        
+    </entry>
+    
+    <entry>
+        <title>Notepad++ plugin local exploit</title>
+        <link href="http://www.sunjw.us/blog/npp-plugin-exploit/"/>
+        <id>http://www.sunjw.us/blog/npp-plugin-exploit/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-12-01T07:00:15+01:00</published>
+        <updated>2013-12-01T07:00:15+01:00</updated>
+        
+        <content type="html"><![CDATA[<p>前段时间，在用 npp 分析一个 html 文件时，准备把其中的混合在一起的 js 分离出来，在 js 前后换行时 npp 崩溃了，感觉是哪里 bug 了，重试了几次都能很稳定的重现。本着张银奎老师的精神，上调试器。用 windbg 附加到 npp 进程，重现这个 crash 后，停到调试器内，看了下栈。</p>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p1.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p1-1024x598.png" /></a></p>
+<p>很明显栈溢出了，返回地址都是文本中的字符，溢出发生在 NotepadSharp.dll 也就是 Notepad# 插件中。Npp 上的插件基本都是开源的，那就把代码搞下来，用 VS 编译了个 debug 版，放进去再次触发崩溃，发现 PluginDefinition.cpp 的 void Newline() 函数中</p>
+<p><span></span></p>
+<p>char line[9999];</p>
+<p>::SendMessage(curScintilla, SCI_GETLINE, line_number – 1 , (LPARAM)line);</p>
+<p>将当前光标上一行的文本内容拷贝到 char line[9999] 这个 buffer 中，所以很自然，当文本行内容很长，就栈溢出了。</p>
+<p>既然溢出在栈上，通过覆盖返回地址和栈指针，在 XP 上应该可以轻松控制程序执行流。不过这个插件的 release 版是在 VS2010 上编译的，打开了 /GS 参数，所以在函数中有 security cookie 检查，而且 security cookie 是随机值。</p>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p2.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p2-1024x435.png" /></a></p>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p3.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p3-1024x458.png" /></a></p>
+<p>试图覆盖返回地址时，也会将 security cookie 覆盖，所以导致函数返回之前就出错。</p>
+<p>在 Yuki 的指点下，加长文本行的内容，向后继续覆盖，试图覆盖到 exception handler。再次触发后，eip的确变成了覆盖的内容，不过并非覆盖了 exception handler ，而是覆盖了某个窗口消息循环中的回调函数指针。</p>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p4.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p4.png" /></a></p>
+<p>这是原始的 0x000da8dc 开始的内容，后面会看到 0x000da8dc 存储的是 edi，0x000da8f4 存储的则是回调函数指针，原始的内容是 User32.dll 的 CallWindowProcW 函数指针。经测试，这里应该是 Explorer 插件的回调函数，其实没有Explorer 插件也可以在附近的位置覆盖到其它窗口回调。当按回车后，::SendMessage 不仅拷贝了字符串，还触发了多个插件注册的回调函数。所以在 NotepadSharp 的 Newline 函数还未返回前，其他插件，例如 Explorer 之前注册的窗口回调就被调用了。于是通过很长的溢出，覆盖了其他的栈空间，避开了 security cookie 检查，从而能控制 eip。通过覆盖，在 html 文件对应位置填写 0x7E47B533，也就是 Windows XP SP3 en 上的 jmp edi 指令。</p>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p5.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p5.png" /></a></p>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p6.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/11/p6.png" /></a></p>
+<p>并且在 0x000da8dc 填上 EB1C，短跳转 1C 个字节。之所以要跳转是因为 edi 在之前覆盖的函数指针前方，如果需要执行更多的代码，空间似乎有点不太够，通过跳转来到指针位置的后方。在跳转目标地址填上 int 3 也就是 CC。触发漏洞后，成功的停在 windbg里面。后面就可以用 shellcode 弹个计算器什么的了，不过查看寄存器，发现 ebp 指向的地址不可写，就把 esp 的值赋给 ebp，当作新的栈。最终，贴上一段 metasploit 的 shellcode，成功的在 npp 中按一下回车，导致 npp 崩溃，并弹出了计算器。</p>
+<p>这个问题已经报告给 npp 的插件管理者，也报告给了 Notepad# 的作者，不过似乎该插件作者已经很久不更新该插件，也没有留下有效的联系地址，似乎一直对该问题没有响应。如果已经安装了 Notepad# 插件，最好将其卸载，虽然被攻击的可能性不大，但是崩溃什么的也不好。</p>]]></content>
+        
+        <summary type="html">
+            
+            前段时间，在用 npp 分析一个 html 文件时，准备把其中的混合在一起的 js 分离出来，在 js 前后换行时 npp 崩溃了，感觉是哪里 bug 了，重试了几次都能很稳定的重现。本着张银奎老师的精神，上调试器。用 windbg 附加到 npp 进程，重现这个 crash 
+            
+        </summary>
+        
+        <category term="计算机"/>
+        
+        <category term="debug"/>
+        
+        <category term="exploit"/>
+        
+        <category term="notepad++"/>
+        
+        <category term="npp"/>
+        
+        <category term="安全"/>
+        
+        <category term="调试"/>
+        
+    </entry>
+    
+    <entry>
+        <title>JSToolNpp 1.16 Released</title>
+        <link href="http://www.sunjw.us/blog/jstoolnpp-1-16-released/"/>
+        <id>http://www.sunjw.us/blog/jstoolnpp-1-16-released/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-10-20T11:25:03+02:00</published>
+        <updated>2013-10-20T11:25:03+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>What’s New in JSToolNpp 1.16:</p>
+<ul>
+<li>Performance improvement.</li>
+<li>Move download back to SourceForge.net.</li>
+</ul>
+<p>Download links:<br />
+<a href="http://sourceforge.net/projects/jsminnpp/files/Uni/JSToolNPP.1.16.uni.zip/download" target="_blank">SourceForget.net Download</a><br />
+<a href="http://jstoolnpp.googlecode.com/files/JSToolNPP.1.16.uni.zip" target="_blank">Google Code Download</a></p>]]></content>
+        
+        <summary type="html">
+            
+            What’s New in JSToolNpp 1.16:  Performance improvement. Move download back to SourceForge.net.  Download links: SourceForget.net Download G
+            
+        </summary>
+        
+        <category term="JSToolNpp"/>
+        
+        <category term="javascript"/>
+        
+        <category term="jsformat"/>
+        
+        <category term="JsToolNpp"/>
+        
+        <category term="notepad++"/>
+        
+        <category term="npp"/>
+        
+        <category term="plugin"/>
+        
+        <category term="小软件"/>
+        
+        <category term="开发"/>
+        
+    </entry>
+    
+    <entry>
+        <title>Build CyanogenMod 10.2 for Nexus 4</title>
+        <link href="http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/"/>
+        <id>http://www.sunjw.us/blog/build-cyanogenmod-10-2-for-nexus-4/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-09-08T04:40:16+02:00</published>
+        <updated>2013-09-08T04:40:16+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>一直想尝试着自己编译 CM，毕竟如果想修改系统 Apk，就有可能需要编译整个系统。于是在开了一台 Ubuntu x86_64 虚拟机（这是一个大坑，等会儿说）作为编译机器，参考的主要是 CM 官方 wiki：<a href="http://wiki.cyanogenmod.org/w/Build_for_mako?setlang=en" target="_blank">http://wiki.cyanogenmod.org/w/Build_for_mako?setlang=en</a>。根据 wiki 指示准备好基础环境后，开始 repo sync，总共下载了 6GB 多的工程代码。总的来说，一直到 wiki 的 “Start the build” 一节，都没有问题，照着做就好了。不过当执行 brunch mako 之后，坑就一个个冒出来了。</p>
+<p>第一个坑是磁盘空间，一开始给虚拟机分配的磁盘小了些，明显不足以完成整个编译，于是又加了个 40GB 的虚拟磁盘，并且在该磁盘上编译。40GB 似乎够了，不过最后的事实证明其实 40GB 几乎不够，最终完成编译后只剩 400MB 了！所以编译 Android 还是分配一个大一点的磁盘吧。</p>
+<p>第二个坑就是 x86_64，ARM 处理器目前还是 32 位的，包括编译使用的 repo 好像也是 32 位的，所以首先需要安装 32 位 c/c++ 运行库。之后真正的坑在于 JDK，wiki 中没有明确说明 JDK 应该安装 32 位还是 64 位的，我一开始想 java 部分应该和架构没什么关系，就装了个 64 位 JDK，结果开始使用 javadoc 编译 Droiddoc 时，make 出错了，显示错误 45，一开始在论坛上查了一下，说是应该使用 Oracle JDK，于是尝试安装了 64 位的 Oracle JDK，结果还是一样出错。后来仔细看了论坛，发现其实问题是 64 位 JDK。也不知道为什么，64 位 JDK 的 javadoc 就是会导致编译错误，但是之前的 jar 包都编译正常。通过 apt-get 安装了 32 位 Open JDK 后，问题解决了。</p>
+<p>第三个坑是内存，一开始只给虚拟机分配了 1GB 内存，结果在编译 framework 时，malloc.c 中的 assert 出错了。。。关机，调整到 2GB，编译终于继续下去了。</p>
+<p>第四个坑是 CM 加入的 Focal，在编译 external/Focal 中的链接库时总是出错，论坛上说 Focal 不太稳定，可以不编译。好吧，暴力一点，直接把 external/Focal 和 apps/Focal 删掉了，编译继续。</p>
+<p>最终花了一个下午+半个晚上（不包括 repo sync 的时间，这个根据网速会有所不同，可以自己算算下载 6GB 需要多久），终于编译出来了。好了，能编译了，下一步就是准备尝试修改了。</p>
+<p> </p>]]></content>
+        
+        <summary type="html">
+            
+            一直想尝试着自己编译 CM，毕竟如果想修改系统 Apk，就有可能需要编译整个系统。于是在开了一台 Ubuntu x86_64 虚拟机（这是一个大坑，等会儿说）作为编译机器，参考的主要是 CM 官方 wiki：http://wiki.cyanogenmod.org/w/Build
+            
+        </summary>
+        
+        <category term="计算机"/>
+        
+        <category term="Android"/>
+        
+        <category term="build"/>
+        
+        <category term="CyanogenMod"/>
+        
+        <category term="Ubuntu"/>
+        
+        <category term="程序"/>
+        
+    </entry>
+    
+    <entry>
+        <title>fHash 1.8 Released</title>
+        <link href="http://www.sunjw.us/blog/fhash-1-8-released/"/>
+        <id>http://www.sunjw.us/blog/fhash-1-8-released/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-09-03T16:42:27+02:00</published>
+        <updated>2013-09-03T16:42:27+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>增加 Shell Extension 实现的高级右键菜单支持<br />
+修正其他 bug</p>
+<p>Use Shell Extension to implement context menu shortcut<br />
+Fix other bugs</p>
+<p>Download:<br />
+<a href="https://code.google.com/p/fhash/downloads/list" target="_blank">https://code.google.com/p/fhash/downloads/list</a><br />
+<a href="http://sourceforge.net/projects/fhash/files/1.8/" target="_blank">http://sourceforge.net/projects/fhash/files/1.8/</a></p>]]></content>
+        
+        <summary type="html">
+            
+            增加 Shell Extension 实现的高级右键菜单支持 修正其他 bug Use Shell Extension to implement context menu shortcut Fix other bugs Download: https://code.google
+            
+        </summary>
+        
+        <category term="fHash"/>
+        
+        <category term="计算机"/>
+        
+        <category term="小软件"/>
+        
+        <category term="开发"/>
+        
+        <category term="程序"/>
+        
+        <category term="编程"/>
+        
+    </entry>
+    
+    <entry>
+        <title>用 WinDbg 调试符号不全的程序</title>
+        <link href="http://www.sunjw.us/blog/windbg-debug-fhash/"/>
+        <id>http://www.sunjw.us/blog/windbg-debug-fhash/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-08-22T16:47:12+02:00</published>
+        <updated>2013-08-22T16:47:12+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>其实也就是记录一下用 WinDbg 调试 fHash 的一次过程，这个 bug 是由于没好好看文档造成的，我需要让 fHash 知道当前运行的操作系统是 32 位还是 64 位的，之后好去选择正确的 shell extension 文件。查文档看到了这个函数 <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684139%28v=vs.85%29.aspx" target="_blank">IsWow64Process</a> ，之后错误的以为 kernel32 中有这个函数就是 64 位操作系统，结果就已这个逻辑写下了错误的 64 位系统判断函数，和错误文件读取逻辑。</p>
+<pre>
+
+tstring tstrExeDirPath(pszExeFullPath);
+tstring::size_type idx = tstrExeDirPath.rfind(_T(&quot;\\&quot;));
+tstrExeDirPath = tstrExeDirPath.substr(0, idx);
+
+tstring tstrShlExtDll = tstrExeDirPath;
+tstrShlExtDll.append(_T(&quot;\\fHashShlExt&quot;));
+if(IsWindows64())
+    tstrShlExtDll.append(_T(&quot;64&quot;));
+tstrShlExtDll.append(_T(&quot;.dll&quot;));
+
+WIN32_FIND_DATA ffData;
+HANDLE hFind = FindFirstFile(tstrShlExtDll.c_str(), &amp;ffData);
+
+bool bRet = (hFind != INVALID_HANDLE_VALUE);
+
+if(bRet)
+{
+#if defined(UNICODE) || defined(_UNICODE)
+    wcscpy_s(pszShlDllPath, MAX_PATH, tstrShlExtDll.c_str());
+#else
+    strcpy_s(pszShlDllPath, MAX_PATH, tstrShlExtDll.c_str());
+#endif
+
+   FindClose(hFind);
+}
+
+return bRet;
+</pre>
+<p>结果很自然，在 32 位的 Windows XP 上没有执行正确。但是测试环境没有 VisualStudio，而且用的是 Release 编译，也没有带着符号文件，这怎么调试呢。Windows XP 上装有 WinDbg，那么就用它来调试。</p>
+<p><span></span></p>
+<p>启动 fHash 和 WinDbg，附加到 fHash 进程，由于没有 fHash 的符号，于是考虑在 FindFirstFile 函数上下断点：</p>
+<pre>bp kernel32!FindFirstFileW</pre>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/08/1.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/08/1-300x187.png" /></a></p>
+<p>Go，开始运行，点击“添加右键菜单”，WinDbg 停在 FindFirstFile 断点上，回到 Call Stack 的上一层：</p>
+<pre>.frame 01</pre>
+<p>看到 call 之前第二次压栈 push eax，检查 eax 对应内存地址的数据：</p>
+<pre>
+
+r eax
+db 003b7ed0
+</pre>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/08/2.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/08/2-300x187.png" /></a></p>
+<p>看到指针指向的字符串是 …/fHashShlExt64.dll，说明之前 IsWindows64() 返回的 true。也就是说 kernel32 中有 IsWow64Process 函数，我们来看一下。</p>
+<p>在 GetProcAddress 函数上下断点：</p>
+<pre>bp kernel32!GetProcAddress</pre>
+<p>再次尝试添加右键菜单，WinDbg 停在 GetProcAddress 断点，我们让它 Step Out，之后停在 IsWindows64() 函数里面，看看返回值 eax：</p>
+<pre>
+
+r eax
+u 7c81f2b9
+</pre>
+<p><a href="http://www.sunjw.us/blog/wp-content/uploads/2013/08/3.png"><img src="http://www.sunjw.us/blog/wp-content/uploads/2013/08/3-300x187.png" /></a></p>
+<p>可以看到反编译该内存地址就是 IsWow64Process。</p>]]></content>
+        
+        <summary type="html">
+            
+            其实也就是记录一下用 WinDbg 调试 fHash 的一次过程，这个 bug 是由于没好好看文档造成的，我需要让 fHash 知道当前运行的操作系统是 32 位还是 64 位的，之后好去选择正确的 shell extension 文件。查文档看到了这个函数 IsWow64Pr
+            
+        </summary>
+        
+        <category term="计算机"/>
+        
+        <category term="fHash"/>
+        
+        <category term="kernel32"/>
+        
+        <category term="shell extension"/>
+        
+        <category term="WinDbg"/>
+        
+    </entry>
+    
+    <entry>
+        <title>JSToolNpp 1.15 Released</title>
+        <link href="http://www.sunjw.us/blog/jstoolnpp-1-15-released/"/>
+        <id>http://www.sunjw.us/blog/jstoolnpp-1-15-released/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-07-09T18:10:18+02:00</published>
+        <updated>2013-07-09T18:10:18+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>What’s New in JSToolNpp 1.15:</p>
+<ul>
+<li>Change name to JSTool.</li>
+<li>Added simple search in Json Viewer.</li>
+<li>Fixed Json Viewer and editor linkin bug.</li>
+<li>Fixed Json Viewer utf-8 bug.</li>
+<li>Other tweaks.</li>
+</ul>
+<p>Download links:</p>
+<p><a href="http://jstoolnpp.googlecode.com/files/JSMinNPP.1.15.uni.zip" target="_blank">http://jstoolnpp.googlecode.com/files/JSMinNPP.1.15.uni.zip</a></p>
+<p><a href="http://sourceforge.net/projects/jsminnpp/files/latest/download" target="_blank">http://sourceforge.net/projects/jsminnpp/files/latest/download</a></p>]]></content>
+        
+        <summary type="html">
+            
+            What’s New in JSToolNpp 1.15:  Change name to JSTool. Added simple search in Json Viewer. Fixed Json Viewer and editor linkin bug. Fixed Js
+            
+        </summary>
+        
+        <category term="JSToolNpp"/>
+        
+        <category term="javascript"/>
+        
+        <category term="jsformat"/>
+        
+        <category term="jsmin"/>
+        
+        <category term="JsTool"/>
+        
+        <category term="JsToolNpp"/>
+        
+        <category term="notepad++"/>
+        
+        <category term="npp"/>
+        
+        <category term="开发"/>
+        
+    </entry>
+    
+    <entry>
+        <title>Apple WWDC 2013 Keynote 全场视频下载</title>
+        <link href="http://www.sunjw.us/blog/apple-wwdc-2013-keynote-video-download/"/>
+        <id>http://www.sunjw.us/blog/apple-wwdc-2013-keynote-video-download/</id>
+        
+        <author>
+            <name>sunjw</name>
+        </author>
+        
+        <published>2013-06-11T07:48:19+02:00</published>
+        <updated>2013-06-11T07:48:19+02:00</updated>
+        
+        <content type="html"><![CDATA[<p>刚刚 Apple 放出了下载地址，各位猛击即可：</p>
+<p><a href="http://itstreaming.apple.com/podcasts/apple_keynotes/wwdc2013_ipod.m4v" target="_blank">http://itstreaming.apple.com/podcasts/apple_keynotes/wwdc2013_ipod.m4v</a></p>]]></content>
+        
+        <summary type="html">
+            
+            刚刚 Apple 放出了下载地址，各位猛击即可： http://itstreaming.apple.com/podcasts/apple_keynotes/wwdc2013_ipod.m4v
+            
+        </summary>
+        
+        <category term="计算机"/>
+        
+        <category term="Apple"/>
+        
+        <category term="download"/>
+        
+        <category term="keynote"/>
+        
+        <category term="wwdc"/>
         
     </entry>
     
