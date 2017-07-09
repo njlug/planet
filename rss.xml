@@ -4853,6 +4853,9 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <span># 4.552 g db1</span>
 <span>17</span><span>:</span><span>38</span><span>:</span><span>36</span><span>,</span><span>422</span> <span>-</span> <span>__main__</span> <span>-</span> <span>INFO</span> <span>-</span> <span>v</span><span>,</span> <span>dumps</span> <span>keys</span> <span>1392</span><span>/</span><span>7711834</span><span>/</span><span>...,</span> <span>time</span><span>:</span> <span>3076.41647506</span>
 </pre></div>
+
+
+<p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
 <hr />
 <div>
 <div>
