@@ -1339,6 +1339,43 @@ TPS 、Latency 和 Capacity。
         </item>
         
         <item>
+            <title>2017新年好</title>
+            <link>https://www.freemindworld.com/blog/2017/170101_2017_happy_new_year.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2017/170101_2017_happy_new_year.shtml</guid>
+            <pubDate>Sun, 01 Jan 2017 16:13:04 +0100</pubDate>
+            <description>
+                
+                2016年，我做了这些事： – 写了8篇博客 博客空间总访问量61198 PageView（Google Analytics数据），比前一年稍有下降，但是实际的访问量应该还没有这么多，因为发现Google Analytics结果中出现了相当数量的Spam数据，暂时还没研究怎么能
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p><strong>2016年，我做了这些事：</strong></p>
+<p>– 写了8篇博客</p>
+<p>博客空间总访问量61198 PageView（Google Analytics数据），比前一年稍有下降，但是实际的访问量应该还没有这么多，因为发现Google Analytics结果中出现了相当数量的Spam数据，暂时还没研究怎么能去过滤掉。跟去年一样，首页、<a href="http://www.freemindworld.com/blog/2013/131010_360_wifi_in_linux.shtml">在Linux下使用“360随身WiFi 2”</a>、<a href="http://www.freemindworld.com/blog/2010/101022_calibre_tips_and_faq.shtml">calibre常见问题</a>、<a href="http://www.freemindworld.com/blog/2015/150312_complie_kernel_module_for_raspberry_pi_2.shtml">为Raspberry Pi 2编译内核模块</a>这几个页面的PV占去了总PV的50%多。饭否发消息85条，包括照片17张。</p>
+<p>– 自由软件相关</p>
+<p>接手了一个网站：<a href="http://www.remword.com/kps_result/">Linux Kernel Patch Statistics</a>。这个网站的内容是按人、公司、国家等维度的指标去统计各Linux内核版本中Patch的数量。我很偶然地看到有人在<a href="https://lkml.org/">LKML</a>中吐槽说这个网站的域名过期了。这个网站的作者是我以前的同事，于是我联系他提醒他，没想到他表示说不打算继续维护这个网站了。我觉得就这么放弃一个在社区有一定影响力的网站有点可惜，所以在征得他同意的前提下，把这个网站接了过来，并且还请朋友帮忙把过期的域名给抢注了回来。</p>
+<p>网站恢复运行的不到一个月时间中，我已经收到各种数据订正、添加功能和Bug报告的邮件，看来这个网站的的价值比我想象的还大一些。不过这个网站的后台代码确实是经久失修，所以目前数据统计的精准度非常糟糕（因为根据邮件地址把数据按公司、国别来归类，这里面的映射关系绝大部分是需要人肉来维护的，一旦没有及时维护，归类为Unknown的数据就会越来越多，也就失去了统计的意义），而且每天一次全量数据产出过程需要占用大量的CPU、IO和内存资源。所以后面需要优先先维护一下基础数据，保证统计数据质量，然后再考虑下整体的重构问题。</p>
+<p>给<a href="http://www.calibre-ebook.com">calibre</a>贡献了一点点代码，改写了一下从Amazon获取书籍元信息的插件，使之可以支持中国亚马逊网站。给<a href="https://hbase.apache.org/">HBase</a>和<a href="https://flink.apache.org/">Flink</a>的代码/文档各修正了一处Typo，其实只是为了实践一下给这两个项目Contribute的流程，不过后来由于工作内容的变化，没有再深入关注过这两个项目。给C++异步框架<a href="https://github.com/scylladb/seastar">Seastar</a>修正了一处Bug。<a href="https://github.com/lifanxi/train-graph/">train-graph</a>合并了一些其它人贡献的代码和数据，发布了一个3.0版本。</p>
+<p>– 几个IT产品</p>
+<p><a href="https://s.click.taobao.com/IMumHFx">群晖DS916+</a> NAS：淘汰了原来用的DS214play，主要是出于盘位和性能的考虑。不过新的机器的性能依然很让人捉鸡。不过出于对DSM系统版权的尊重，我还是没有选择自己买机器组黑群晖的方案。我的群晖系统的评价依然是：轻度使用很不错，重度使用时细节缺失很多、问题也很多。但是市面上已经找不出更好的了。</p>
+<p>Macbook Air：公司提供的工作电脑，我的第二台苹果设备（<a href="https://www.freemindworld.com/blog/2009/090718_help_unix_center_net.shtml">N年前</a>得到过一个iPod Nano）。这样的电脑用来做开发机实在是性能捉鸡，尤其是为了编译Linux程序再启一个Docker的情况下。公认的优点就不说了，缺点就是有些Windows能做的事情它还是不能做，而有些Linux能做的事情它也不能做。对于我这种已经被Linux虐了十年的人来说，不能做Windows能做的事是很容易接受的，但现在不能做的事的又变多了，所以还有点不爽，于是有了下面的Dell 7040m。</p>
+<p><a href="https://s.click.taobao.com/eEphHFx">Dell 7040m微型台式机</a>：为了更有效的开发Linux C++程序，买了这个微型台式机当工作机。配置成i7 6700T的CPU，16G内存，SM951的SSD，装Arch Linux。实际用下来整体能满意，但是就编译大型C++程序来说，单核性能仍然不是非常出色。另有同事买了相似配置的Intel的Skull Canoyo，也是差不多的体验。我也知道我的应用场景下应该买个标准台式机才能配置更好性能的CPU，但是谁让我这个机器的外型的毒呢？</p>
+<p>华硕AC68U路由器：其实去年买的AC66U完全够用了，不过还是因为一次特价剁手了更高端一点的AC68U。整体使用体验与AC66U相仿。不过从外观来说，我反而还更喜欢AC66U一点，AC66U给人的感觉是做工精致、用料实足。AC68U其实也一样，但给我的感觉却是：傻大笨粗。</p>
+<p><a href="https://s.click.taobao.com/SNbbHFx">Raspberry Pi 3</a>：没啥说的，我是树莓派的脑残粉，出一个买一个。相对2来说，主要就是64位、内置蓝牙和Wi-Fi，性能稍有提高，别的就没有了。树莓派是吃灰神器是名不虚传的，这个现在已经吃灰。还买了一个Sense HAT传感器模块，做了一个贪吃蛇游戏后也吃灰了。有了3以后，我用以前吃灰的2和Camera Module做了一个网络摄像头，配合群晖做监控，效果勉强凑合。</p>
+<p>Pebble 2：本来是在Kickstarter预定了Pebble Time 2，但因为正在用的Pebble花屏越来越严重，等不及就先收了一个Pebble 2，没想到次日Pebble就宣布被fitbit收购了（我觉得与其说是收购，不如就当是破产了更合适），Time 2也没有机会再问世了。Pebble 2的使用体验与Pebble高度一致，我很满意，只可惜这已经是绝唱了。希望在它坏掉以前，能有更出色的产品出现。</p>
+<p>二手Kindle Paperwhite 2：跟以前用的Paperwhite比，差别并不大，只不过因为Paperwhite被老妈重度使用中，所以自己重买一个。没买3是因为性价比，毕竟我也不是重度使用。而且看书这个单一需求来说，我并不觉得Paperwhite 1/2/3/Kindle Voyage有多大的差别。</p>
+<p>二手Intel Compute Stick：我需要一台常开的Windows机器来满足把NAS上的照片上传到 Google Photos的需求，这个东西很符合我的要求，功耗不到5W，直接由路由器USB口供电就可以了。性能对于我来说也完全够用，有了它不但解决了Google Photos上传的问题，甚至我的电脑上已经不再需要安装Windows虚拟机了，偶而需要用Windows的时候，直接远程桌面连上去用就可以了。</p>
+<p>– 出行</p>
+<p>南京*3、合肥、西安。对南京的感情依然不变、合肥真不是一个旅游城市、第二次去陕西省历史博物馆已找不回第一次去时惊艳的感觉。</p>
+<p><strong>展望2017年：</strong></p>
+<p>谈点工作，在用Java写了4年业务代码后，2016年，我终于又回归了技术开发。在短暂地用了一段时间Scala后，还回归到了C++开发。说是“回归”，其实还是更大的挑战，因为需要用C++ 14来写一些高性能的分布式程序，对于我来说也仍然是一个全新的课题。期待2017年可以在这个方面能有所收获。</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
             <title>重新迁移回 GCP</title>
             <link>https://blog.phoenixlzx.com/2016/12/12/infinite-zheteng-switch-to-gcp/</link>
             
@@ -1738,6 +1775,56 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
 </div>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>关注2017维也纳新年音乐会</title>
+            <link>https://www.freemindworld.com/blog/2016/161128_2017_viena_new_year_concert.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/161128_2017_viena_new_year_concert.shtml</guid>
+            <pubDate>Mon, 28 Nov 2016 16:50:41 +0100</pubDate>
+            <description>
+                
+                曾经关注过的那些维也纳新年音乐会：关注维也纳新年音乐会，2017年将是我第22次收看维也纳新年音乐会的直播。 2017维也纳新年音乐会CD封面  01 Franz Lehár – Nechledil Marsch aus der Operette Wiener Frauen –
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>曾经关注过的那些维也纳新年音乐会：<a href="http://www.freemindworld.com/blog/tag/%E7%BB%B4%E4%B9%9F%E7%BA%B3%E6%96%B0%E5%B9%B4%E9%9F%B3%E4%B9%90%E4%BC%9A">关注维也纳新年音乐会</a>，2017年将是我第22次收看维也纳新年音乐会的直播。</p>
+<div><a href="https://www.freemindworld.com/blog/wp-content/uploads/2016/11/161128a.jpg"><img src="https://www.freemindworld.com/blog/wp-content/uploads/2016/11/161128a.jpg" /></a><p>2017维也纳新年音乐会CD封面</p></div>
+<ul>
+<li>01 Franz Lehár – Nechledil Marsch aus der Operette Wiener Frauen – 内西雷迪尔进行曲（选自喜歌剧《维也纳的妇女》）</li>
+<li>02 Èmile Waldteufel – Les Patineurs; Walzer; op. 183 – 溜冰者圆舞曲</li>
+<li>03 Johann Strauss II – ‘s gibt nur Kaiserstadt, ‘s gibt nur Wien!; Polka; op. 291 – 只有帝国之都，只有维也纳(皇城)波尔卡 – 1997</li>
+<li>04 Josef Strauss – Winterlust; Polka schnell; op. 121 – 冬趣快速波尔卡 – 2005</li>
+<li>05 Johann Strauss II – Mephistos Hollenrufe; Walzer; op. 101 – 梅菲斯特的地狱圆舞曲 – 1995</li>
+<li>06 Johann Strauss II – So angstlich sind wir nicht!, op. 413 – 我们决不畏惧波尔卡 – 2009</li>
+</ul>
+<ul>
+<li>07 Franz von Suppé – Ouvertüre zu Pique Dame – 黑桃皇后序曲</li>
+<li>08 Carl Michael Ziehrer – Hereinspaziert!; Walzer; op. 518 – 闲庭信步圆舞曲 – 1979</li>
+<li>09 Otto Nicolai – Die lustigen Weiber von Windsor, Moon Choir – 月升小合唱（选自轻歌剧《愉快的温沙妇人》）</li>
+<li>10 Johann Strauss II – Pepita-Polka; op. 138 – 细花纹方格波尔卡</li>
+<li>11 Johann Strauss II – Rotunde-Quadrille; op. 360 – 圆形大厅四对舞</li>
+<li>12 Johann Strauss II – Die Extravaganten; Walzer; op. 205 – 奢靡圆舞曲</li>
+<li>13 Johann Strauss I – Indianer-Galopp; op. 111 – 印度人加洛普 – 2004</li>
+<li>14 Josef Strauss – Die Nasswalderin; Polka mazur; op. 267 – 纳斯瓦尔德的女孩玛祖卡波尔卡 – 1996</li>
+<li>15 Johann Strauss II – Auf zum Tanze!; Polka schnell; op. 436 – 跳舞吧快速波尔卡</li>
+<li>16 Johann Strauss II – Tausend und eine Nacht; Walzer; op. 346 – 一千零一夜圆舞曲 – 1992, 2005</li>
+<li>17 Johann Strauss II – Tik-Tak; Polka schnell; op. 365 – 提塔快速波尔卡 – 1979, 2002, 2012</li>
+</ul>
+<ul>
+<li>18 Eduard Strauss ? – ?</li>
+<li>19 Johann Strauss II – An der schönen blauen Donau, Walzer, op. 314 – 蓝色多瑙河圆舞</li>
+<li>20 Johann Strauss I – Radetzky-Marsch, op. 228 – 拉德茨基进行曲</li>
+</ul>
+<p>2017年维也纳新年音乐会即将迎来首次登上该音乐盛事指挥台的指挥家古斯塔沃·杜达梅尔。做为当代最为杰出的指挥家之一，80后的杜达梅尔也将成为有史以来新年音乐会上最年轻的指挥。</p>
+<p>年轻的指挥家为这传统古老的音乐会带来了新的气息，这次音乐会正式演出的17个曲目中，有8首是第一次在新年音乐会上与乐迷见面，剩下的9首中也有7首是只在新年乐会上演出过一次的“冷门”曲目。加演的第一个曲目目前还没有公布，如果“路边社”消息属实，加演的是爱德华的一首快速波尔卡，那么这次音乐会的曲目单中就将史无前例地出现九位作曲家的名字，新年音乐会在演绎施特劳斯家族音乐的传统之上，越来越多的融入了更多其他作曲家的作品。</p>
+<p>维也纳音乐之友协会合唱团将第一次加入新年音乐会的演出行列，在下半场与爱乐乐团一同演绎“月升小合唱”。</p>
+<p>中央电视台从1987年开始转播维也纳新年音乐会，到现在已经有30年。我从1996年开始收看新年音乐会，到现在已经超过了20年。经历了刚开始的陌生和新奇以及中间的狂热，新年音乐会如今已经成为了一种习惯。我用上面的文字列举完了音乐会曲目单的各项“技术参数”以后，惊讶地发现，对于每一个具体的曲目，我竟然写不出任何文字再去深入的点评它们。那些曾经演出过的曲目，在脑海中的印象似乎也变得越来越模糊。不过我也不打算像以前那样把曲目单上的曲子都找出来复习+预习一遍了，我相信在新年到来的时候，乐团的演绎会让我回忆起那些曾经熟悉旋律，那种与老朋友相见的感觉想必是非常美好的。</p>
+<p>期待新年音乐会，也期待新的一年。</p>]]></content:encoded>
             
         </item>
         
@@ -2351,6 +2438,43 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         </item>
         
         <item>
+            <title>十年（中）</title>
+            <link>https://www.freemindworld.com/blog/2016/160918_ten_years_2.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160918_ten_years_2.shtml</guid>
+            <pubDate>Sun, 18 Sep 2016 17:16:50 +0200</pubDate>
+            <description>
+                
+                这文章已经快烂尾了，努努力，先补个中段出来。 TL;DR 其实我已经不太想写后面的内容了，写这篇文章时我已经仔细地想过我所希望在文章中表达出来的内容。总结到最后，我觉得这十年中让我自己受益最大的一点就是：突破自我，走出舒适区，积极、主动地多走一步。 对于我自己来说，即使到现在，
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>这文章已经快烂尾了，努努力，先补个中段出来。</p>
+<h1><a href="https://en.wikipedia.org/wiki/Wikipedia:Too_long;_didn't_read" target="_blank"><b>TL;DR</b></a></h1>
+<p>其实我已经不太想写后面的内容了，写这篇文章时我已经仔细地想过我所希望在文章中表达出来的内容。总结到最后，我觉得这十年中让我自己受益最大的一点就是：<strong>突破自我，走出舒适区，积极、主动地多走一步。</strong></p>
+<p>对于我自己来说，即使到现在，我也常常很难主动去打破自己的舒适区，积极地多走一步。但是回首过去的十年，但凡我多走了一步，无论是主动还被迫，最终都得到了超越预期的结果。</p>
+<p>这里说的多走一步，还不仅仅局限于自己的事。在跟别人合作的时候或者打交道时，多走一步，或者帮助别人多走一步，都是非常有益的。</p>
+<h1>2009年</h1>
+<p>产品维护的工作比想象中的更难做，尤其是换到了一个全新的产品线后，对于一个完全不了解的产品，需要同时去给客户解决多个平台上N个版本产品中出现的各种疑难杂症，实在是一件非常有挑战的事情。</p>
+<p>有两个Case印象深刻：</p>
+<ol>
+<li>有个Case我完全无从下手，只好开始“忽悠”，说了自己的一些怀疑点，让核心技术支持部门协助客户去收集更多的日志，趁收集日志的时间我就可以在后台更进一步地分析问题。有一天突然就发现，美国开发团队以前开发这个产品的一位Principal Engineer（首席工程师？反正级别很高，是个传奇人物）跳进了这个Case。他不但详细的分析了问题的原因，给出解决思路和方案，还“顺手”把代码改好、打好补丁包。后来我向他致谢的时候，他说：这个产品就像是我的孩子，我有责任把它照顾好。</li>
+<li>有位客户发现产品界面上的CPU占用率曲线在产品连续运行了两个月左右后就会显示成持续占用100%，但实际CPU占用率并没有这么高。我从前台Java Script一直到后台程序及内核代码全部分析了一遍以后终于发现，是因为程序中用32位无符号整形数来表示开机后到当前时间的毫秒数，所以每过49.7天，这个整形数就会溢出，造成问题。我修掉了这个问题，并且定制了一个Linux内核，可以在启动时指定uptime的初始值用于快速重现这个Bug，把Patch和这个测试用内核一起提交给QA。QA后来表示非常感激，因为如果没有这个测试用内核，要Mock出一个很大的uptime值是一件很麻烦的事情。</li>
+</ol>
+<p>这两个Case说的都是<strong>Ownership</strong>，说的都是怎么在尽职的前提下再<strong>多走一步</strong>。在一个人人都很优秀的环境下，“尽职”只能算是一个基本要求，想要有额外的收获，你必须有主动的额外的付出。</p>
+<p>有了前两年“脱宅”的积累，2009年全年的每个休息日我基本上都在南京城里逛来逛去，与南京这座城市的感情也越发深厚。尤其是在经历了一些事情后，让我对人的情感有了更为深入的理解，这对我后面的生活产生了很多积极的影响。很多事情，即使不能多走一步，也应该<strong>多想一点。</strong>多想一点，也许就能让一个原本优秀的人变得更为卓越。</p>
+<p>除了没事逛来逛去，我也把很多很多时间放在了南京图书馆。这一年看了很多闲书，包括铁路、艺术、建筑、地理、文学、数学、摄影、设计等领域。现在回想起来，真是怀念这段时间，可以肆无忌惮地把大块时间花在“不务正业”的事情上。看了这么多闲书，并不可能帮助我在这些领域中有所建树，但是对于我来说，人生的乐趣就在于不断地学习、不断地探索未知。有时候，时间就是用来浪费的。</p>
+<h1><strong>2010年</strong></h1>
+<p>我的第三位Manager是一个爱憎分明的人，我有幸成为他比较喜欢的下属之一，所以他给了我充分自主发挥的空间，也为我争取了很多很多的机会，甚至为了帮我争取一个去美国参加会议的机会，“强迫”另一位Manager退掉了去美国的机票，把参会的名额留给我。当然，更重要的是他在工作中给我创造的机会和对我的各种想法的重视和支持。那时公司也很鼓励微创新，我的各种微创新在他的帮助下都得以在团队内或产品中落地生根，这给了我极大的自信，也帮助我在部门内找到了属于我的位置。</p>
+<p>机遇和挑战总是并存的，在这个开发团队，我负责了这个产品两个大版本中最重要的两个大Feature，从前期方案调研到最后开发实现，统统要搞定。还是得益于公司完善的流程和管理， 这两个版本软件做完以后，我完整了实践了两遍软件从需求到发布的完整流程，从中学到了很多的东西。同时，这两个Feature也涉及到很多跟美国开发团队以及国外一些第三方公司的打交道的事，所以又进一步提高了我跟老外们打交道的能力。这一段经历，不但让我在技术上有所收获，更重要的是让我学到了做事的方法，很多事情并不会自动朝着你想象的方向去发展，怎么才能推动事情往前迈步，既需要努力，也需要很多的技巧。其中最基本的技巧就是要<strong>合理计划、分解任务制定小的里程碑、踏实实践</strong>。</p>
+<p>这一年的业余时间花了很多在自由软件上，更多的参与到一些简单自由软件项目中去。再次提起Ownership一词，在自由软件世界里，你可以既是软件用户，也是软件的主人。当你以软件主人的心态去使用自由软件时，才会真正理解自由软件背后的理念，也才能从中收获更多的价值。</p>
+<p> </p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
             <title>Big transaction and MySQL replication lag</title>
             <link>http://jaseywang.me/2016/09/09/big-transaction-and-mysql-replication-lag/</link>
             
@@ -2735,6 +2859,46 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
         </item>
         
         <item>
+            <title>十年（上）</title>
+            <link>https://www.freemindworld.com/blog/2016/160706_ten_years_1.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160706_ten_years_1.shtml</guid>
+            <pubDate>Wed, 06 Jul 2016 17:32:14 +0200</pubDate>
+            <description>
+                
+                上周末是参加工作十周年，回南京与同一年进入公司的老同事们聚了聚，很开心，也有颇多感想。 对于我在Trend Micro的第一份工作，一直以来，我是心存感激的。从学校走向社会，从稚嫩变得慢慢成熟，回头去看，有很多人、很多事都值得感激。 总结一下过去的十年，顺便熬一锅心灵鸡汤。 2
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>上周末是参加工作十周年，回南京与同一年进入公司的老同事们聚了聚，很开心，也有颇多感想。</p>
+<p>对于我在<a href="http://www.trendmicro.com">Trend Micro</a>的第一份工作，一直以来，我是心存感激的。从学校走向社会，从稚嫩变得慢慢成熟，回头去看，有很多人、很多事都值得感激。</p>
+<p>总结一下过去的十年，顺便熬一锅心灵鸡汤。</p>
+<h1>2006年</h1>
+<p>离开学校，走进公司。<a href="https://www.freemindworld.com/blog/2005/051112_trendmicro_job_hunting.shtml">趋势科技应聘经历</a>里提到的那位在一面时给了我很多自信的面试官成了我的第一位Manager。放到现在，也许我不会说事无巨细、无微不至的Manager是一位足够Professional的Manager，但是作为职场新人，这样的Manager给了我足够的帮助。他对我的<strong>信任</strong>、给我提供的<strong>机会</strong>和帮助，都为我的成长提供了一个良好的环境。后来，我做过新人的Mentor、也带过小项目，践行了很多从他身上学到的东西。</p>
+<p>公司提供的培训，帮助我理解了Development Process、Design Documents、Technical Writing、Internationalize &amp; Localization、User Centered Design、Writing Secure Code相关的知识，并在短时间内都在工作中得到了实践，这些经验一直受用至今。虽然互联网公司并不适合照搬传统软件公司的开发流程，但是很多<strong>方法</strong>和<strong>思路</strong>依然值得借鉴。</p>
+<p>技术方面，虽然1999年我就装过玩过Linux，但一直到工作前对Linux都还处于基本不懂的状态。工作的前半年，我学习了Linux下的各种开发工具，从无到有独立完成了产品中一个GTK程序的开发，学会了修改了内核模块的代码和内核调试的基本工具。后面五年中用到的各种知识和技能中的一大半都是在这半年中积累起来的。学东西最快的途径就是看书加<strong>实践</strong>，学而不思则罔，学而不实践则很难真正把书上的东西变成自己的。</p>
+<div><a href="https://www.freemindworld.com/blog/wp-content/uploads/2016/07/160706a.gif"><img src="https://www.freemindworld.com/blog/wp-content/uploads/2016/07/160706a.gif" /></a><p>我参与开发的第一个产品ServerProtect for Linux 3.0（图片来自网络）</p></div>
+<p>公司让大家考了托业（TOEIC），并开始上英语课，还推行了一段时间英文会议。于是原先只出现在邮件交流中的各种“洋泾浜”英语，开始出现在日常的会议中，挂在了每个人的嘴边。这些并不完美的英语，却真正的帮助到了我，从这以后，基本上我就摆脱了“哑巴英语”的困境 。</p>
+<p>英语课上，老师推荐了一部电影《<a href="https://www.freemindworld.com/blog/2006/061202_dead_poets_society.shtml">Dead Poet Society</a>》，在这部电影里，我看到了自己的影子，这部电影让我改变了很多。以<a href="https://en.wikipedia.org/wiki/Carpe_diem" target="_blank"><strong>Carpe diem</strong></a>的理由，我开始努力摆脱曾经自己给自己定下的条条框框，去尝试更多的“不可能”。</p>
+<h1>2007年</h1>
+<p>年初，我的Mentor也许是因为偷懒，让我帮他去上原本属于他的Effective Presentation培训。没有想到，短短一天培训中学到的一些基础的演讲技能、对“紧张”的正确认识以及对演讲前<strong>充分准备</strong>的重要性的认识，就帮助我从一个不敢在公开场合发言的人，变成了一个不太惧怕公开演讲的人。培训导师通过理论和实践帮助我建立了自信。</p>
+<p>为了开源产品中的内核模块，我深入理解了GNU工程及自由软件哲学，研究了各种自由软件/开源许可证，并开始积极参与到自由软件社区中。</p>
+<p>为了实践Customer Insight，生平第一次出差、第一次坐飞机。我一直以为那时自己做的产品其实没有太多实用价值，当看到自己的产品在客户的环境中真正发挥着作用时，<strong>自豪感</strong>优然而生。</p>
+<p>因为“Carpe diem”，这一年，我的行为举止发生了很多变化。发展了不少的小众爱好：<a href="https://www.freemindworld.com/blog/2007/070916_walking_long_distance_ham.shtml">暴走</a>、<a href="https://www.freemindworld.com/blog/2007/070612_train_fans_hasea_railway.shtml">火车</a>、<a href="https://www.freemindworld.com/blog/2007/071206_travel_november.shtml">地铁</a>、<a href="https://www.freemindworld.com/blog/2007/071014_qsl_card_crh2.shtml">无线电</a>，并因此结交了几位挚友。自己去参加<a href="https://www.freemindworld.com/blog/2007/070409_csdn_hero_7_year_beijing.shtml">CSDN的技术大会</a>，开始关注Web 2.0。通过开发“<a href="https://www.freemindworld.com/blog/2007/070726_birth_of_doufan.shtml">豆饭</a>”，开始与互联网开发结下不解之缘。通过参与<a href="https://www.freemindworld.com/blog/2007/071216_ham_qso_ucdchina.shtml">UCDChina</a>的活动，与本地互联网公司的设计师们建立了良好的关系。我的社交圈子在这一年中，扩大了很多，并且很多时候都是我自己<strong>主动出击</strong>，这在以前，我是绝对做不到的。</p>
+<h1>2008年</h1>
+<p>由于参与开发的产品已经在前一年完成并发布，工作角色从产品开发转为产品维护。这段日子是我的工作经历中最为灰暗的日子。首先，产品维护需要在有限的时间内解决客户的问题，我在学会了“沟通技巧”和“做事方法”的同时，放弃了对技术精益求精的追求。为了降低Resolution Time，我学会了忽悠，而不是去寻找Root Cause。其次，新的Manager强调学习做事方法高于技术追求，他让我在各种挫折中自己去学会在职场中生存下来的技能，但是各种挫折不断地打击着我刚刚积累起来的一点点自信心。</p>
+<p>然而，这种种不如意，却只是<strong>成长的代价</strong>。我这一年的技术积累没有前两年那么多，但依靠那些被逼迫着学到的职场技能，加上各种机缘巧合，反而倒奠定了我在团队中的地位。然而“捷径”只是加速达到某些目标的一种手段，真正起作用的，依然是踏踏实实的每一步。</p>
+<p>公司开始强调<a href="https://www.freemindworld.com/blog/2008/080201_mental_models.shtml">文化建设</a>，难听的说法叫“洗脑”。也许是那个时候还比较Simple和Naive，这次文化建设的培训让我受益非浅。直到现在，我依然认同那时被灌输的思想：你需要让你<strong>个人变得更加优秀</strong>，才能发挥出更大的价值。</p>
+<p>参加了公司的Home Building Project，这是公司与一个公益组织<a href="http://www.gk1world.com/home" target="_blank">Gawad Kalinga</a>合作进行的公益项目，去菲律宾盖房子（这个翻译其实不对，这是Home Building，不是House Building，盖房子只是一种行为，目的是帮助那里的人们拥有更美好的家）。第一次走出国门、第一次与来自不同国家和地区的同事合作、第一次与这么多小朋友近距离接触、第一次与生活在贫穷与自然灾害面前的人们面对面交流。过去了这么多年，当初的震撼已经慢慢的淡去，但留在内心深处的东西，也许会影响一个人的一生。</p>
+<div><a href="https://www.freemindworld.com/blog/wp-content/uploads/2016/07/160706b.jpg"><img src="https://www.freemindworld.com/blog/wp-content/uploads/2016/07/160706b.jpg" /></a><p>Home Building Project的合影</p></div>
+<p>那时公司组织各种活动很多，加上那段时间我自己也参与了不少线下的活动，从中自己<strong>积累和总结</strong>了很多组织线下活动的技能。3月底自告奋勇为当时的Unix-Center网站成立一周年组织了南京地区的线下活动，活动虽然规模不大，但很成功，甚至还吸引了上海、无锡等周边城市的自由软件爱好者。这次活动也为后来成立Nanjing Linux User Group埋下了种子。</p>
+<div><a href="https://www.freemindworld.com/blog/wp-content/uploads/2016/07/160706c.jpg"><img src="https://www.freemindworld.com/blog/wp-content/uploads/2016/07/160706c.jpg" /></a><p>Unix-Center周年庆</p></div>]]></content:encoded>
+            
+        </item>
+        
+        <item>
             <title>搞定暴涨的流量</title>
             <link>https://blog.alswl.com/2016/06/capacity-planning/</link>
             
@@ -2946,6 +3110,254 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
 </div>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>Synology PhotoStation性能优化</title>
+            <link>https://www.freemindworld.com/blog/2016/160514_optimize_synology_photostation.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160514_optimize_synology_photostation.shtml</guid>
+            <pubDate>Sat, 14 May 2016 11:29:09 +0200</pubDate>
+            <description>
+                
+                本文的内容已经过时，6.7.0以上的Photo Station已经没有严重的性能问题了。 我折腾过不少家用NAS方案，包括最早的WD My Book World Edition，后来的Joggler，再到后来的Raspberry Pi，这些方案除了性能存在一些问题以外，最大的缺
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p><strong>本文的内容已经过时，6.7.0以上的Photo Station已经没有严重的性能问题了。</strong></p>
+<p>我折腾过不少家用NAS方案，包括最早的<a href="https://www.freemindworld.com/blog/2009/090305_my_book_world_edition_hack.shtml">WD My Book World Edition</a>，后来的<a href="https://www.freemindworld.com/blog/2010/101121_o2_joggler.shtml">Joggler</a>，再到后来的Raspberry Pi，这些方案除了性能存在一些问题以外，最大的缺点就是易用性存在问题，不但非“专业”人士用起来存在困难，就连我自己也对土法泡制的照片管理功能感到不满。直到两年前入了<a href="http://www.synology.com/" target="_blank">群晖</a>（Synology）的家用NAS DS214play，事情才变得安逸起来。</p>
+<p>平心而论，Synology的系统虽然功能强大，体验也还不错，但细节上做得其实真是挺糙的。最近就发现了它的照片管理软件PhotoStation出现了严重的性能问题，在照片库里只存了8万余张照片的情况下，打开首页要花费的时间已经超过了20秒，每打开一个文件夹都需要等待10秒以上，几乎不可用了。</p>
+<p>以下分析以DSM 6.0为例，PhotoStation版本为6.4-3166。PhotoStation的安装路径为/volume1/@appstore/PhotoStation。</p>
+<p>Synology的<a href="https://www.synology.cn/en-global/dsm/6.0/features" target="_blank">DSM</a>系统，后台使用<a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a>数据库，前端是PHP页面。简单推理一下就可以知道，PhotoStation的性能瓶颈主要是在对照片索引数据库的访问上。性能调优的第一步就是先要找到哪些SQL查询占用了太多的时间。打开PostgreSQL记录SQL查询的开关，并查看所有SQL执行情况：</p>
+<pre>$ sudo su postgres
+$ vi ~/postgresql.conf
+log_statement = 'all'
+$ psql photo postgres
+# SELECT pg_reload_conf();
+# \q
+$ exit
+$ sudo tail -f /var/log/postgresql.log</pre>
+<p>通过查看SQL执行记录，很容易发现几个明显的慢查询：</p>
+<p>1.</p>
+<pre>SELECT COUNT(*) as total FROM photo_image; 
+SELECT COUNT(*) as total FROM video;</pre>
+<p>2.</p>
+<pre>SELECT COUNT(logid), MAX(logid) FROM photo_log;</pre>
+<p>3.</p>
+<pre>SELECT * FROM (
+    SELECT path AS filename, timetaken AS takendate, 
+        create_time AS createdate, 'photo' AS type
+    FROM photo_image
+    WHERE path LIKE '/volume1/photo/%'
+        AND path NOT LIKE '/volume1/photo/%/%' AND disabled = 'f'
+    UNION
+    SELECT path AS filename, mdate AS takendate,
+        date AS createdate, 'video' AS type
+    FROM video
+    WHERE path LIKE '/volume1/photo/%'
+        AND path NOT LIKE '/volume1/photo/%/%'
+        AND disabled = 'f'
+    ) AS totalCount; </pre>
+<p>4.</p>
+<pre>SELECT path, resolutionx, resolutiony, version FROM (
+    SELECT path, resolutionx, resolutiony, version,
+        create_time, privilege_shareid, disabled
+    FROM photo_image WHERE privilege_shareid IN (
+        SELECT shareid FROM photo_share WHERE ref_shareid = (
+            SELECT shareid FROM photo_share WHERE sharename = '2016'))
+    AND disabled = 'f'
+    UNION ALL
+    SELECT path, resolutionx, resolutiony, 0 AS version, 
+        date AS create_time, privilege_shareid, disabled
+    FROM video WHERE privilege_shareid IN (
+        SELECT shareid FROM photo_share WHERE ref_shareid = (
+            SELECT shareid FROM photo_share WHERE sharename = '2016'))
+    AND disabled = 'f') temp
+ORDER BY create_time DESC LIMIT 1; </pre>
+<p>优化的思路很简单，由于PhotoStation在正常情况下访问数据库所需要的读性能是远远大于写性能的，所以就通过牺牲写性能来逐一击破上面这些慢查询：</p>
+<p>1. 程序的目的就是想知道系统中有多少张照片和多少个视频（而且其实并不需要精确知道，差不多就行），可惜对于PostgreSQL来说，由于它采用<a href="https://wiki.postgresql.org/wiki/MVCC" target="_blank">MVCC</a>来解决并发问题，SELECT COUNT(*)是一个需要进行全表扫描的慢操作。解决方案就是用另外用一张表来存这两个表的总记录条数，并在原表上添加触发器来更新记录数。</p>
+<pre>
+CREATE TABLE photo_count (table_oid Oid PRIMARY KEY, count int);
+ALTER TABLE photo_count OWNER TO &quot;PhotoStation&quot;;
+CREATE FUNCTION count_increment() RETURNS TRIGGER AS $_$
+BEGIN
+  UPDATE photo_count SET count = count + 1 WHERE table_oid = TG_RELID;
+  RETURN NEW;
+END $_$ LANGUAGE 'plpgsql';
+CREATE FUNCTION count_decrement() RETURNS TRIGGER AS $_$
+BEGIN
+  UPDATE photo_count SET count = count - 1  WHERE table_oid = TG_RELID;
+  RETURN NEW;
+END $_$ LANGUAGE 'plpgsql';
+CREATE TRIGGER photo_image_increment_trig AFTER INSERT ON photo_image 
+  FOR EACH ROW EXECUTE PROCEDURE count_increment();
+CREATE TRIGGER photo_image_decrement_trig AFTER DELETE ON photo_image 
+  FOR EACH ROW EXECUTE PROCEDURE count_decrement();
+CREATE TRIGGER video_increment_trig AFTER INSERT ON video 
+  FOR EACH ROW EXECUTE PROCEDURE count_increment();
+CREATE TRIGGER video_decrement_trig AFTER DELETE ON video 
+  FOR EACH ROW EXECUTE PROCEDURE count_decrement();
+INSERT INTO photo_count VALUES 
+  ('photo_image'::regclass, (SELECT COUNT(*) FROM photo_count));
+INSERT INTO photo_count VALUES 
+  ('video'::regclass, (SELECT COUNT(*) FROM video));
+</pre>
+<p>然后在PHP程序中修改需要统计表数记录数的逻辑，在这里可以看到似乎同一个Session中只会查一次，但即使就是这一次，也已经慢得让人不开心了：</p>
+<pre>
+diff --git a/photo/include/file.php b/photo/include/file.php
+index 541c5cb..7caa5de 100755
+--- a/photo/include/file.php
++++ b/photo/include/file.php
+@@ -536,8 +536,11 @@ class File {
+ 		if ($key &amp;&amp; isset($_SESSION[SYNOPHOTO_ADMIN_USER][$key])) {
+ 			return $_SESSION[SYNOPHOTO_ADMIN_USER][$key];
+ 		}
+-		$query = &quot;SELECT count(*) as total FROM $table&quot;;
+-
++		if ('photo_image' == $table || 'video' == $table) {
++			$query = &quot;SELECT count as total FROM photo_count where table_oid='$table'::regclass&quot;;
++		} else {
++		    $query = &quot;SELECT count(*) as total FROM $table&quot;;
++		}
+ 		$result = PHOTO_DB_Query($query);
+ 		if (!$result) {
+ 			// db query fail, won't update session value
+</pre>
+<p>2. 其实可以用跟前一个问题类似的方法去解决。但是这个其实只是一个没太多用处的操作日志表，所以我用更为简单粗暴的方法去解决这个问题：减少在数据库中保留日志的条数。直接修改PHP程序：</p>
+<pre>
+diff --git a/photo/include/log.php b/photo/include/log.php
+index 1c982af..56385db 100644
+--- a/photo/include/log.php
++++ b/photo/include/log.php
+@@ -1,8 +1,8 @@
+ &lt;?php
+ 
+ class PhotoLog {
+-	const LIMIT = 100000;
+-	const PURGECOUNT = 10000;
++	const LIMIT = 1000;
++	const PURGECOUNT = 100;
+ 	public static $SupportFormat = array(&quot;html&quot;, &quot;csv&quot;);
+ 
+ 	public static function Debug($msg)
+</pre>
+<p>3. 第三个问题主要体现在对照片路径的处理上，为了选出位于某个路径下（不含子目录）的照片，程序采用了path LIKE ‘/path/%’ AND path NOT LIKE ‘/path/%/%’这样的查询条件。其实PostgreSQL在一定程度上是可以利用path字段上的索引来很好的优化这个查询的，但是实际运行中发现（通过在PostgreSQL的客户端中用explain和explain analyze分析查询）在某些情况下索引会失效，造成非常差的查询性能。解决方案还是用写性能来换读性能，先在表上加一个dirname字段并建立索引，按path算好文件所在的目录名写入dirname，然后把查询条件改为对dirname的查询，避免使用通配符和LIKE运算即可：</p>
+<pre>
+ALTER TABLE photo_image ADD COLUMN dirname TEXT NOT NULL DEFAULT '';
+UPDATE photo_image 
+    SET dirname = LEFT(path,LENGTH(path)-STRPOS(REVERSE(path),'/')+1);
+ALTER TABLE video ADD COLUMN dirname TEXT NOT NULL DEFAULT '';
+UPDATE video SET dirname = LEFT(path,LENGTH(path)-STRPOS(REVERSE(path),'/')+1);
+CREATE INDEX dirname_index ON photo_image USING btree(dirname);
+CREATE INDEX dirname_index ON video USING btree(dirname);
+CREATE OR REPLACE FUNCTION set_dirname()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  NEW.dirname := LEFT(NEW.path,LENGTH(NEW.path)-STRPOS(REVERSE(NEW.path),'/')+1);
+  RETURN NEW;
+END $function$
+CREATE TRIGGER set_dirname_trigger 
+BEFORE INSERT OR UPDATE ON photo_image 
+FOR EACH ROW 
+  EXECUTE PROCEDURE set_dirname();
+CREATE TRIGGER set_dirname_trigger 
+BEFORE INSERT OR UPDATE ON video 
+FOR EACH ROW 
+  EXECUTE PROCEDURE set_dirname();
+</pre>
+<p>同时修改PHP程序：</p>
+<pre>
+diff --git a/photo/include/photo/synophoto_csPhotoDB.php b/photo/include/photo/synophoto_csPhotoDB.php
+index ac8f932..43e58ee 100755
+--- a/photo/include/photo/synophoto_csPhotoDB.php
++++ b/photo/include/photo/synophoto_csPhotoDB.php
+@@ -1607,10 +1607,8 @@ class csSYNOPhotoDB {
+ 		} else {
+ 			$albumRealPath = self::EscapeLikeParam(SYNOPHOTO_SERVICE_REAL_DIR_PATH.&quot;{$albumName}/&quot;);
+ 		}
+-		$cond = &quot;path LIKE ? {$this-&gt;escapeStr} AND path NOT LIKE ? {$this-&gt;escapeStr} AND disabled = 'f' &quot;;
+-		array_push($pathSqlParam, &quot;{$albumRealPath}%&quot;);
+-		array_push($pathSqlParam, &quot;{$albumRealPath}%/%&quot;);
+-
++		$cond = &quot;dirname = ? {$this-&gt;escapeStr} AND disabled = 'f' &quot;;
++		array_push($pathSqlParam, &quot;{$albumRealPath}&quot;);
+ 		if (!$removePhoto) {
+ 			$photoQuery = &quot;SELECT path as filename, timetaken as takendate, create_time as createdate, 'photo' as type
+ FROM photo_image WHERE $cond&quot;;
+ 			$sqlParam = array_merge($sqlParam, $pathSqlParam);
+</pre>
+<p>4. 这个查询只是为了查询一个目录及其所有子目录中最新一个照片或视频，用其缩略图来作为目录的封面图片。群晖的工程师自己也知道这个查询很慢，所以还在程序中加了个逻辑，当照片视频数量大于200000时，放弃按日期排序，直接随机选一张。然而，这个查询实际上是可以简单优化的，明明不需要把所有的照片视频UNION到一起后再找出最新的一个，可以直接分别找出最新的照片和最新的视频，然后再到这两个中去取一个相对更新的就可以了。直接修改PHP代码实现：</p>
+<pre>
+diff --git a/photo/include/photo/synophoto_csPhotoAlbum.php b/photo/include/photo/synophoto_csPhotoAlbum.php
+index ca128f0..f0e57e7 100755
+--- a/photo/include/photo/synophoto_csPhotoAlbum.php
++++ b/photo/include/photo/synophoto_csPhotoAlbum.php
+@@ -145,9 +145,11 @@ class csSYNOPhotoAlbum {
+ 		$cond .= &quot; AND disabled = 'f'&quot;;
+ 
+ 		$table = &quot;(&quot; .
+-				&quot;SELECT path, resolutionx, resolutiony, version, create_time, privilege_shareid, disabled FROM pho
+to_image WHERE $cond &quot; .
++				&quot;(SELECT path, resolutionx, resolutiony, version, create_time, privilege_shareid, disabled FRO
+M photo_image WHERE $cond &quot; .
++				&quot;ORDER BY create_time DESC LIMIT 1)&quot; .
+ 				&quot;UNION ALL &quot; .
+-				&quot;SELECT path, resolutionx, resolutiony, 0 as version, date as create_time, privilege_shareid, disa
+bled FROM video WHERE $cond &quot; .
++				&quot;(SELECT path, resolutionx, resolutiony, 0 as version, date as create_time, privilege_shareid,
+ disabled FROM video WHERE $cond &quot; .
++				&quot;ORDER BY create_time DESC LIMIT 1)&quot; .
+ 		&quot;) temp&quot;;
+ 
+ 		// this may cost lots of time, so it won't sort by create_time if the total count exceeds the threshold (200,000)
+
+</pre>
+<p>做完以上优化，我的PhotoStation已经基本可以做到点进文件夹秒开了，至少我自己已经比较满意了。声明一下，其实我并不太懂数据库相关理论和技术，以上“优化”只能说是在我自己的实验中起到了优化的效果，也许其中一些并不太科学，希望这篇文章能起到抛砖引玉的作用。</p>
+<p>重新安装PhotoStation或升级DSM系统会造成我们对程序所作的修改丢失，所以在修改完成后，务必做好备份。</p>
+<p>另外，适时对PostgreSQL数据库进行VACUUM操作似乎可以起到提高访问性能的目的，尤其是在做过大量照片更新后。</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>一个网络访问故障的排查</title>
+            <link>https://www.freemindworld.com/blog/2016/160507_troubleshooting_a_weird_network_problem.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160507_troubleshooting_a_weird_network_problem.shtml</guid>
+            <pubDate>Sat, 07 May 2016 16:26:59 +0200</pubDate>
+            <description>
+                
+                故障描述： 一个Python程序，在我的Macbook Air上使用Gearman库访问Gearman服务器时始终报错： Found no valid connections in list: [&amp;lt;GearmanConnection 111.111.111.111:80 
+                
+            </description>
+            
+            <content:encoded><![CDATA[<h1>故障描述：</h1>
+<p>一个Python程序，在我的Macbook Air上使用<a href="http://gearman.org/" target="_blank">Gearman</a>库访问Gearman服务器时始终报错：<br />
+<code>Found no valid connections in list:<br />
+[&lt;GearmanConnection 111.111.111.111:80 connected=True&gt;]</code></p>
+<h1>问题排查过程：</h1>
+<ol>
+<li>我的另一台电脑的Linux系统下运行这个程序是正常的，所以证明Gearman服务器本身是好的，程序也是对的。</li>
+<li>别人的Macbook Air/Macbook Pro上运行这个程序也是正常的，系统中的Python版本是一致的，证明这个程序在Mac OS X下并不存在兼容性问题。</li>
+<li>111.111.111.111:80这个是一个从开发环境访问生产环境服务器的虚拟IP/端口，把Gearman服务安装到开发环境网络中222.222.222.222:4730，程序运行正常。</li>
+<li>由于访问开发环境正常、访问生产环境异常，所以怀疑是网络原因。使用ping/traceroute命令访问111.111.111.111，都正常。用telnet 111.111.111.111 80尝试TCP连接，也正常。</li>
+<li>在无线/有线之间切换网络物理连接方式，测试结果一样：本机与目标服务器之间网络通畅，TCP连接正常，但Gearman连接无法正常建立。并且同处于同一个网络中的其它电脑上运行一样程序都访问正常。</li>
+<li>怀疑Gearman的Python库在某些特殊情况下有Bug，在里面加了很多print来打印日志，发现客户端在与服务器建立完连接后，在真正要通信时，连接又变成了断开状态。但由于不太了解Gearman库的实现细节，再要进一步Debug，存在一定困难，暂时放弃这个思路。</li>
+<li>为了排查Gearman连接断开的原因，用<a href="https://www.wireshark.org/" target="_blank">Wireshark</a>进行抓包。抓包的结果非常令人惊讶：在程序运行的整个过程中，没有抓到任何客户端与服务器之间通信的数据包。但是程序打印出来的日志却明明显示出连接是先建立再断开的。</li>
+<li>至此，问题已经快要查清楚了：本机有个程序劫持了本机发起的网络通信，实施中间人攻击，造成Gearman连接异常。</li>
+<li>用Python写socket程序尝试向不同目标发起各种TCP连接（后来意识到其实用telnet就可以了），同时用Wireshark抓包，发现本机发起的所有目标为80端口的连接都会被劫持。劫持的效果是如果通过80端口进行HTTP通信，劫持的程序就会充当一个代理服务器的功能，正常完成通信过程。但是一开始出问题的程序是在80端口跑Gearman的通信协议，所以这个劫持程序无法正确处理，造成了通信异常。</li>
+<li>最后就是要找出是哪个程序实施了劫持，用了一个很土的方法：下载一个大文件，同时用netstat -na查出与服务器80端口通信的本地端口号（谁叫Mac OS X的netstat命令没有-p参数直接看是哪个进程的连接呢？），然后用sudo lsof -i :&lt;local port&gt;命令查出这个本地端口号的使用者。</li>
+</ol>
+<h1>真相大白：</h1>
+<p><a href="http://www.cisco.com/c/en/us/support/security/anyconnect-secure-mobility-client/tsd-products-support-series-home.html" target="_blank">Cisco AnyConnect Secure Mobility Client</a>中自带了一个进程名为acwebsecagent的Web安全模块，这个安全模块不管VPN是否在使用，都会劫持本机所有的发往80端口的通信，具体它做了什么好事坏事就不得而知了。</p>
+<p>找到了问题所在，网上搜一搜就能查到很多吐槽这个Web Security模块的贴子了，它会随着AnyConnect默认安装到你的电脑上（我的电脑系统是IT预装的，不然我装AnyConnect时肯定会手工把这个勾勾去掉）。解决问题的方法也很简单 ，一行命令卸载它：<br />
+<code> sudo /opt/cisco/anyconnect/bin/websecurity_uninstall.sh</code></p>]]></content:encoded>
             
         </item>
         
@@ -3276,6 +3688,154 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>最后的最后，既然是通过书签功能来保存和同步的，那如果 Firefox Android 的书签功能能再给点儿力就好了，让我可以直接把网址保存到指定的分组下面，这样就不用先发送到电脑上再（能用电脑时）TooManyTabs 了（再加上 Firefox Android 的发送标签功能有时还会丢标签）。</p>
 
 <p>以上</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>最好的简谱编辑排版软件JP-Word</title>
+            <link>https://www.freemindworld.com/blog/2016/160311_the_best_jianpu_software.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160311_the_best_jianpu_software.shtml</guid>
+            <pubDate>Fri, 11 Mar 2016 12:50:21 +0100</pubDate>
+            <description>
+                
+                本文是一则硬广告。 上大学时跟同学一起办过一份音乐小报，名为《白桦林》，虽然只办了一期就夭折了，不过在这期小报上试图排版朴树那首《白桦林》的简谱（附带吉他和弦）的经历让人难以忘怀。我那时坚信自己用Word排版复杂版面的水平已经到了出神入化的程度，但还是被这个简谱排版工作打败了。
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>本文是一则硬广告。</p>
+<p>上大学时跟同学一起办过一份音乐小报，名为《白桦林》，虽然只办了一期就夭折了，不过在这期小报上试图排版朴树那首《白桦林》的简谱（附带吉他和弦）的经历让人难以忘怀。我那时坚信自己用Word排版复杂版面的水平已经到了出神入化的程度，但还是被这个简谱排版工作打败了。Word虽然是“所见即所得”，但是那排版好的谱子打印出来时，总是会有那么些对不齐或者走样。那时学校打印店打印一页A4纸的价格是1.5元，不舍得反复打印试验，最终还是通过剪刀胶水才把这个排版任务搞定的。</p>
+<div><a href="https://www.freemindworld.com/blog/wp-content/uploads/2016/03/Screenshot-from-2016-03-11-19-11-53.png"><img src="https://www.freemindworld.com/blog/wp-content/uploads/2016/03/Screenshot-from-2016-03-11-19-11-53.png" /></a><p>《白桦林》小报第三版。由于Word版本和字体的原因，现在看到的跟当年排出来的效果有差别。</p></div>
+<p>上大学时，经常玩一个叫<a href="http://www.happyeo.com" target="_blank">HappyEO</a>的电脑键盘模拟电子琴的软件——强势插入，再打个广告，HappyEO是用电脑键盘（也可以接MIDI键盘）模拟电子琴的最好的软件，没有之一。因为对这个软件的喜爱，我跟HappyEO的作者有着较多的交流，一路见证着HappyEO电子琴和后来的iDreamPiano模拟钢琴等软件的诞生。2003年时，他告诉我他做了一个简谱排版软件，叫<a href="http://www.happyeo.com/intro_jpw.htm" target="_blank">JP-Word</a>。</p>
+<p>实话说，1.0的JP-Word一点也不诱人，粗糙的界面、鸡肋的图片输出和打印功能、封闭专有的文件格式实在不能让我提起太大的兴趣。加上对于我来说，平时几乎没有简谱排版的需求，所以对这个软件并没有太高的热情。接下来两三年时间，JP-Word慢慢升级到了3.0，功能丰富了一些，但没有什么本质的变化。</p>
+<p>一下过了十年，JP-Word的作者突然告诉我，JP-Word出了4.0的新版本。这个脱胎换骨的新版本，着实可以用“惊艳”来形容。</p>
+<div><a href="https://www.freemindworld.com/blog/wp-content/uploads/2016/03/150311_B.png"><img src="https://www.freemindworld.com/blog/wp-content/uploads/2016/03/150311_B.png" /></a><p>JP-Word 4.0界面预览</p></div>
+<p>不像五线谱打谱有自由的<a href="http://www.lilypond.org" target="_blank">Lilypond</a>，还有Overture、Encore等强大的商业软件。市面上简谱音乐软件并不多，优秀打谱软件更是少之又少。之所以我敢在文章标题上把JP-Word说成是“最好的”，个人认为主要有以下几点：</p>
+<ul>
+<li>独创的的“切换音符时值组合”功能。常见音符的时值组合不用一个个手工调整，音符输入后按几下空格键就自动组合好了。</li>
+<li>强大的歌词编辑功能。支持歌词自动对位，谱打完，歌词一打上去就自动对齐到它该去的地方。</li>
+<li>支持矢量PDF的输出。而且排版结果不管是布局还是字体，都非常美观，放到专业环境下用也毫无压力。</li>
+<li>开放的JPW-ABC格式。一改以前用专有格式的方式，新版本用了开放的纯文本来描述乐谱，为二次开发提供了便利。</li>
+</ul>
+<p>JP-Word简谱编辑软件不是完全免费的，免费的版本只提供了部分主要的功能集，但折腾党可以通过手工写JPW-ABC的方式实现几乎全部收费版本的功能。</p>
+<p>缺点也是有的，比如目前不支持直接播放乐谱和MIDI导出。不过Thanks to开放的JPW-ABC格式，完全可以写个简单的脚本，把JPW-ABC文件转换为MIDI文件。我正在尝试写个简单Python脚本，把JPW-ABC转换为Lilypond格式，然后借助Lilypond，可以直接生成对应的五线谱和MIDI文件。有兴趣可以关注我的Github项目<a href="https://github.com/lifanxi/jpw2lilypond" target="_blank">jpw2lilypond</a>，不过目前上面还只有一个很垃圾的Prototype（对象建模建错了，虽然基本功能在，但已经没办法往下写了），而且现在每天的时间都不够用，开发进度一定不会很快。</p>
+<p>JP-Word 4.0的功能介绍与使用说明：<a href="http://www.happyeo.com/intro_jpw.htm" target="_blank">http://www.happyeo.com/intro_jpw.htm</a></p>
+<p>下载JP-Word 4.0免费版的地址：<a href="http://www.happyeo.com/downloads_jpw.htm" target="_blank">http://www.happyeo.com/downloads_jpw.htm</a></p>
+<p>注册JP-Word的方法：<a href="http://www.happyeo.com/register_jpw4.htm" target="_blank">http://www.happyeo.com/register_jpw4.htm</a></p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>实践个人网站迁移HTTPS与HTTP/2</title>
+            <link>https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml</guid>
+            <pubDate>Wed, 02 Mar 2016 02:26:22 +0100</pubDate>
+            <description>
+                
+                赶个时髦，把自己的博客进行了全站HTTPS改造，并升级支持了HTTP/2，总结在此，当作备忘。 很惭愧，虽然曾经做过几年Web安全产品，其实我自己并没有非常深入的去理解和思考Web安全更多内在的东西，所以可能文中的部分描述并不完全准确。很多内容参考了Jerry Qu的博客上的内
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>赶个时髦，把自己的博客进行了全站HTTPS改造，并升级支持了HTTP/2，总结在此，当作备忘。</p>
+<p>很惭愧，虽然曾经做过几年Web安全产品，其实我自己并没有非常深入的去理解和思考Web安全更多内在的东西，所以可能文中的部分描述并不完全准确。很多内容参考了<a href="https://imququ.com/">Jerry Qu</a>的博客上的内容，都以参考文献的方式列在文章中，我这里只写结论，技术细节可以参考他的原文。</p>
+<h1>动因</h1>
+<p>HTTPS改造的好处当然是更安全。虽然对于一个博客网站来说，“安全”似乎并不是一个非常重要的因素，但是以国内现实的情况来说，使用HTTPS提供网站服务有一个好处就是可以避免网络运营商篡改网页内容（比如插入弹出广告）——其实吧，HTTPS以后，Chrome浏览器地址栏显示的绿色小锁才是吸引我迁移的真正原因，挺好看的。</p>
+<p>HTTP/2从协议层面消除了传统HTTP的一些不足和缺陷，对我来说，直接的好处就是可以大幅度提高网页载入的速度。有关HTTP/2的前世今生，可以参考以下文章[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE1">1</a>]。</p>
+<h1>HTTPS改造</h1>
+<h2>证书</h2>
+<p>HTTPS改造的一个基本要素就是证书，在传统上有很多认证机构（CA）可以收费签发证书，比如大名鼎鼎的<a href="https://www.verisign.com/" target="_blank">Verisign</a>。现在也有很多公司可以提供免费或者廉价的证书，比如有名的<a href="https://www.startssl.com/" target="_blank">StartSSL</a>，以及最近很火的<a href="https://letsencrypt.org/" target="_blank">Let’s Encrypt</a>。</p>
+<p>我先是尝试了StartSSL的免费证书，但是它只能签发有效期一年的免费证书，每年都得手动去更新证书是一件很让人头痛的事情。所以后来选定了使用Let’s Encrypt，虽然Let’s Encrypt的证书有效期只有三个月，但是可以方便的通过脚本来实现自动更新。</p>
+<p>使用Let’s Encrypt的证书有两种方式，一种是使用他的提供的工具脚本，另一种是使用ACME协议。我目前使用的是ACME协议方式，参考[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE2">2</a>]。如果用Let’s Encrypt的工具，参考[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE3">3</a>]。我个人比较喜欢ACME协议方式，因为很轻量级，Let’s Encrypt自己的工具太过“全家桶”了，不够简洁明了。</p>
+<p>主要的步骤如下：</p>
+<ol>
+<li>生成一个帐号私钥<br />
+<code>$ openssl genrsa 4096 &gt; account.key</code></li>
+<li>生成一个域名私钥<br />
+<code>$ openssl genrsa 4096 &gt; domain.key</code></li>
+<li>生成证书签名请求CSR文件，通常至少包含祼域名和带www主机名的两个域名。<br />
+<code>$ openssl req -new -sha256 -key domain.key -subj &quot;/&quot;<br />
+    -reqexts SAN -config &lt;(cat /etc/ssl/openssl.cnf &lt;(printf<br />
+    &quot;[SAN]\nsubjectAltName=DNS:yoursite.com,DNS:www.yoursite.com&quot;)) &gt;<br />
+    domain.csr</code></li>
+<li>在自己网站上配置一个可以从外部访问的目录，用来完成challenge。Let’s Encrypt会生成一个文件，你把它放在这个目录里，然后Let’s Encrypt如果能访问到这个文件，就证明了这个域名是属于你的。nginx配置类似于如下，配在80端口的Server里面：<br />
+<code>location ^~ /.well-known/acme-challenge/<br />
+{<br />
+    alias /home/xxx/www/challenges/;<br />
+    try_files $uri =404;<br />
+}</code></li>
+<li>下载acme_tiny脚本，并运行，里面用到了帐号私钥（account.key）、域名私钥（domain.key）、CSR文件（domain.csr）和ACME challenge的路径，生成签发的证书（signed.crt）。<br />
+<code>$ wget https://raw.githubusercontent.com/diafygi/acme-tiny/master/acme_tiny.py<br />
+$ python acme_tiny.py --account-key ./account.key --csr ./domain.csr<br />
+    --acme-dir /home/xxx/www/challenges/ &gt; ./signed.crt</code></li>
+<li>最后合并Let’s Encrypt的中间证书和我们自己的证书：<br />
+<code>$ wget -O - https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem<br />
+    &gt; intermediate.pem<br />
+$ cat signed.crt intermediate.pem &gt; chained.pem</code></li>
+</ol>
+<h2>Web服务器</h2>
+<p>我使用nginx作为Web服务器，启用HTTPS服务，只需要在原来的HTTP服务上加几行配置就可以了：</p>
+<p><code>listen 443 ssl;<br />
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;<br />
+ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:<br />
+  EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:<br />
+  EECDH+3DES:RSA+3DES:!MD5;<br />
+ssl_prefer_server_ciphers on;<br />
+ssl_certificate /home/user/path/to/your/chained.pem;<br />
+ssl_certificate_key /home/user/path/to/your/domain.key;<br />
+ssl_session_timeout 5m;</code></p>
+<p>其中需要用到你自己网站的私钥domain.key，还有Let’s Encrypt给你签发并合并了中间证书的证书文件chained.pem。</p>
+<h2>SSL协议版本与加密算法</h2>
+<p>我上面的配置用的是CloudFlare推荐的配置，详细的讨论可以参考[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE4">4</a>]。我这么配基本上放弃了对Windows XP + IE6的支持，但可以让<a href="https://www.ssllabs.com/ssltest/" target="_blank">Qualys SSL Labs</a>给出的评分提高到A级。</p>
+<h2>WordPress</h2>
+<p>我的博客是用WordPress构建的，WordPress在很多地方都会把带协议的网站URL给存下来，造成无法透明的把HTTP改成HTTPS。暴力解决方法就是去它的数据库做全文替换[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE5">5</a>]。</p>
+<p>先把WordPress设置-&gt;常规中的两个URL设置改为https，然后去WordPress的数据库对已有的文章进行全局字符串替换：</p>
+<p><code>UPDATE `&lt;wordpress_prefix&gt;_posts` SET post_content=<br />
+    (REPLACE (post_content, 'http://[domain name]',<br />
+    'https://[domain name]'));</code></p>
+<h2>其它页面嵌入内容</h2>
+<p>如果在HTTPS的页面上嵌入了非HTTPS的内容，比如跨站的HTTP图片，浏览器上的绿色小锁就会变成灰色了。如果是跨站的CSS或者JavaScript，在现代浏览器上可能会直接被禁止加载[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE6">6</a>]。</p>
+<p>解决的方案就是把src的协议去掉，直接写成//domain.com/path/to/image这样的形式，可以兼容HTTP和HTTPS。</p>
+<p>但是有些源站根本就不支持HTTPS，或者虽然提供了HTTPS服务，但证书不合法，这么做就行不通了。比如我的页面右侧的饭否的图片，虽然饭否有HTTPS服务，但证书过期了，直接嵌入就会有问题。</p>
+<p>我的解决方案也是简单粗暴的，直接在nginx里为这些网站相关URL做一个反向代理。比如，为了解决饭否图片的问题，我在我的nginx里加了以下配置，然后把饭否图片的域名换成我自己的域名：</p>
+<p><code>location /u {<br />
+    proxy_pass http://b.fanfou.com;<br />
+    proxy_set_header Host b.fanfou.com;<br />
+    proxy_redirect off;<br />
+}<br />
+</code></p>
+<h2>自动重定向HTTP请求</h2>
+<p>至此，HTTPS改造已经准备好了，重启nginx后就可以用HTTPS协议来访问网站，检查是否工作正常。主要检查证书是不是正常，另外还有看看有没有混杂非HTTPS资源造成页面加载不正常的。Chrome的Developer Tools可以帮助你排查这些问题。</p>
+<p>如果一切正常，就可以考虑自动重定向所有的HTTP请求了，301跳转通常是最理想的方式。在nginx的80端口http服务器配置中添加以下的内容：</p>
+<p><code>location / {<br />
+    return 301 https://$server_name$request_uri;<br />
+}</code></p>
+<h2>其它要考虑的问题</h2>
+<p>SNI：如果在nginx用server_name实现了单主机的多虚拟站点，那就会出现一个IP地址上对应多个域名的情况，这时服务器和客户端都需要支持SNI，才能在HTTPS的情况下正常工作。较新版本的nginx版本服务器都是支持SNI的，但IE6之类的老旧浏览器不支持。所以如果放弃老旧浏览器支持的话，SNI不是个问题。否则就只能保证在同一个IP上只启用一个域名的HTTPS网站，才能确保客户访问无障碍。</p>
+<p>HSTS：虽然启用了HTTPS，但是用户在访问时如果没有显式输入https协议，现在的浏览器默认还是会先选用http协议，再由服务器进行301/302跳转，这时就有可能被劫持。目前的解决方案是在自己的网站上输出HSTS头，并把自己的域名加入HSTS Preload List列表里[<a href="https://www.freemindworld.com/blog/2016/160301_migrate_to_https_and_http2.shtml#FOOTNOTE6">6</a>]。我没有启用HSTS，因为一但启用没办法撤销，万一以后不能提供HTTPS服务了，想降级为HTTP都没有机会了。</p>
+<p>其它：对于个人小网站来说，也许前面的讨论基本够用。但对稍大的网站来说，要考虑的问题还有更多。比如：CDN支持、各子域名证书的管理模式、SHA1不安全证书与老版本浏览器兼容性、大量非HTTPS外部资源的处理、特殊客户端不支持302引流等等。</p>
+<h1>HTTP/2改造</h1>
+<p>新版的nginx已经内置了对HTTP/2协议的支持，所以完成HTTPS改造后，启用HTTP/2支持是一件相对来说比较简单的事情。</p>
+<p>在nginx里HTTPS的listen配置中加入http2即可，当然不要忘记重新reload nginx：</p>
+<p><code>listen 443 ssl http2;</code></p>
+<p>在Chrome中可以安装一个<a href="https://chrome.google.com/webstore/detail/http2-and-spdy-indicator/mpbpobfflnpcgagjijhmgnchggcjblin" target="_blank">HTTP/2 and SPDY indicator</a>插件，这时打开HTTP/2网站时，地址栏右侧就会出现一个蓝色的闪电标记，证明这个网站已经支持了HTTP/2协议。</p>
+<p>新版的curl也可以用来帮助检查HTTP/2是否工作正常，在curl网站URL时，加上–http2参数即可。别忘了，必须是用HTTPS协议才能支持HTTP/2哦。</p>
+<p>说得这么轻巧，事实上很多系统中的nginx都不是可以支持HTTP/2的新版本，所以还需要手动编译新版的nginx。</p>
+<p>nginx -V可以列出当前nginx编译时使用的configure参数，可以作为重新编译时的参考，在它列出的参数的基础上加上–with-http_v2_module参数，就可以启用HTTP/2功能了。</p>
+<h1>参考文献</h1>
+<p><a name="FOOTNOTE1">[1]</a> <a href="http://www.unclekevin.org/?cat=15" target="_blank">凯文叔叔的网志 – HTTP/2</a></p>
+<p><a name="FOOTNOTE2">[2]</a> <a href="https://imququ.com/post/letsencrypt-certificate.html" target="_blank">Let’s Encrypt，免费好用的 HTTPS 证书</a></p>
+<p><a name="FOOTNOTE4">[3]</a> <a href="http://www.jianshu.com/p/eaac0d082ba2" target="_blank">Let’s Encrypt SSL证书配置<br />
+</a></p>
+<p><a name="FOOTNOTE4">[4]</a> <a href="https://imququ.com/post/sth-about-switch-to-https-2.html" target="_blank">关于启用 HTTPS 的一些经验分享（二）<br />
+</a></p>
+<p><a name="FOOTNOTE5">[5]</a> <a href="https://blog.robotshell.org/2015/migrated-my-wordpress-to-https/">迁移 WordPress 博客至 HTTPS<br />
+</a></p>
+<p><a name="FOOTNOTE6">[6]</a> <a href="https://imququ.com/post/sth-about-switch-to-https.html" target="_blank">关于启用 HTTPS 的一些经验分享（一）</a></p>]]></content:encoded>
             
         </item>
         
@@ -3651,6 +4211,99 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
    3a1ff193cee606bd1e2ea554a16353ee
 </div>
 </div>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>2016新年好</title>
+            <link>https://www.freemindworld.com/blog/2016/160104_happy_new_year_2016.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2016/160104_happy_new_year_2016.shtml</guid>
+            <pubDate>Mon, 04 Jan 2016 11:51:39 +0100</pubDate>
+            <description>
+                
+                2015年，我做了这些事： – 写了3篇博客 博客空间总访问量66949 PageView（Google Analytics数据），出乎意料地比前一年上涨14.7%，但还是没有达到2013年时的水平。首页、在Linux下使用“360随身WiFi 2”、calibre常见问题、为
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p><strong>2015年，我做了这些事：</strong></p>
+<p>– 写了3篇博客</p>
+<p>博客空间总访问量66949 PageView（Google Analytics数据），出乎意料地比前一年上涨14.7%，但还是没有达到2013年时的水平。首页、<a href="http://www.freemindworld.com/blog/2013/131010_360_wifi_in_linux.shtml">在Linux下使用“360随身WiFi 2”</a>、<a href="http://www.freemindworld.com/blog/2010/101022_calibre_tips_and_faq.shtml">calibre常见问题</a>、<a href="http://www.freemindworld.com/blog/2015/150312_complie_kernel_module_for_raspberry_pi_2.shtml">为Raspberry Pi 2编译内核模块</a>这几个页面的PV占总PV的50%，2015年新写的文章中有一篇能排进前50% PV，也算欣慰。饭否发消息118条，包括照片19张。</p>
+<p>– 自由软件相关</p>
+<p>Richard Stallman的传记《<a href="http://www.oreilly.com/openbook/freedom/" target="_blank">Free as in Freedom</a>》第一版中文版翻译工作在经历了各种坎坷和挫折后终于完成了，中文版正式命名为《<a href="http://book.douban.com/subject/26314527/" target="_blank">若为自由故——自由软件之父理查德·斯托曼传</a>》。这本书是与GNU中文翻译小组协调人邓楠共同翻译完成的，我负责部分的翻译质量我个人并不十分满意，一方面因为英文水平的原因，一方面也是因为后期做得确实太过仓促。</p>
+<p>图书出版后，出版社投入了很多资源进行推广，包括通过哲思社区邀请到Stallman本人来中国演讲并签售，不过总体效果还是差强人意。计划出版第二版的事情，目前也因为各种原因暂时搁浅。出乎意料的事情倒是第一版的<a href="http://www.amazon.cn/dp/B00YQRZRZ6" target="_blank">Kindle版本</a>很顺利的上架了，虽然Stallman对此也许不太高兴，因为他说过，<a href="http://www.gnu.org/proprietary/malware-kindle-swindle.en.html" target="_blank">Kindle是Malware</a>。</p>
+<p>值得一提的是，这本书是国内少有的依据GFDL许可证出版的图书，我很用力地推动出版社编辑去完成了这件几乎不可能的事情。当然，因为众所可以理解的原因，这件事做得非常低调，但是如果你仔细看这本书的版权页，除了能看到GFDL的声明外，还能看到一些很微妙的变化。</p>
+<p>– 几个IT产品</p>
+<p>Myo手势控制手环：其实是2014年买的，只不过一直跳票，直到2015年才到货。到手一天就解毒了，直接放到闲鱼上去转让给别人了。这真的只是个实验品，要实现它的官方Demo上那些很炫酷的功能，还有万里长征要走。</p>
+<p>Raspberry Pi 2：跟一代相比，性能提升了很多。很多人批判树莓派系列产品的性能、性价比、实用性，我觉得都用力用错了方向。这东西原本的定位就是个电脑学习机，它的优势在于丰富的资源和强大的社区。如果需要更低的价格、更好的性能，完全可以选择其它的嵌入式设备。</p>
+<p>联想newifi路由器：在最低69元的成交价格上，买到一个802.11AC的路由器，并且还能刷成华硕固件或者OpenWrt固件，而且运行还非常稳定，很值了。虽然它只有百兆的LAN口，虽然它5G信号很弱。当然，它的原生固件实在不忍吐槽。</p>
+<p>华硕AC-66U路由器：曾经的高端路由器，今年最低打折到了不到500元，买回来几乎没有太折腾就扔到角落让它勤勤恳恳的工作去了。这才是一个合格路由器应该具有素质！当然，实际上我还是刷了一次机，改了很多脚本，为了可以顺畅使用Google搜索，还为了实现电信、移动双线接入和策略路由。</p>
+<p>华为荣耀4X（二手，两台）/5X/7手机：今年年内居然买了4台华为手机，除了7以外还都是最低端的机器。实际使用体验还算不错，第一次发现Android手机不root也可以用的好好的。当然，低端就是低端，屏幕色彩很差，外放音质也很差，做工/手感也比较一般，不过日常使用并无大碍，电池续航能力也不错。</p>
+<p>– 旅游</p>
+<p>2015年0出游，铁路运转里程0。</p>
+<p>– 其它</p>
+<p>还有一件很重要的事情，不放在博客上说。</p>
+<p><strong>展望2016年：</strong></p>
+<p>2016年是挺多事的周年纪念的，比如初中毕业20周年、研究生毕业暨工作10周年等等，年纪越大越喜欢怀念过去。当然，怀念是为了总结，为了前进。</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>关注2016维也纳新年音乐会</title>
+            <link>https://www.freemindworld.com/blog/2015/151211_2016_vienna_new_year_concert.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2015/151211_2016_vienna_new_year_concert.shtml</guid>
+            <pubDate>Fri, 11 Dec 2015 15:34:28 +0100</pubDate>
+            <description>
+                
+                曾经关注过的那些维也纳新年音乐会：关注维也纳新年音乐会，2016年将是我第21次收看维也纳新年音乐会的直播。 2016年维也纳新年音乐会将由拉脱维亚指挥家马里斯·杨松斯（Mariss Jansons）执棒，他2006年第一次登上维也纳新年音乐会的指挥台，史无前例的在一场新年音乐
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>曾经关注过的那些维也纳新年音乐会：<a href="http://www.freemindworld.com/blog/tag/%E7%BB%B4%E4%B9%9F%E7%BA%B3%E6%96%B0%E5%B9%B4%E9%9F%B3%E4%B9%90%E4%BC%9A">关注维也纳新年音乐会</a>，2016年将是我第21次收看维也纳新年音乐会的直播。</p>
+<p>2016年维也纳新年音乐会将由拉脱维亚指挥家<a href="http://en.wikipedia.org/wiki/Mariss_Jansons">马里斯·杨松斯</a>（Mariss Jansons）执棒，他2006年第一次登上维也纳新年音乐会的指挥台，史无前例的在一场新年音乐会中演绎了23首乐曲。而他在2012年的再次登台，又打破了这个纪录，达到了24首。</p>
+<p>2016年新年音乐会曲目的单的正式消息来得特别晚，直到上周才在维也纳爱乐乐团的官居网上放出。总共21首。其实一个月前就有小道消息放出了这个曲目单，不过在这个谣言满天飞的时代，我还是等正式消息再来写这篇文章。</p>
+<div><a href="http://www.freemindworld.com/blog/wp-content/uploads/2015/12/20151211a.jpg"><img src="//www.freemindworld.com/blog/wp-content/uploads/2015/12/20151211a.jpg" /></a><p>2016维也纳新年音乐会CD封面</p></div>
+<p>上半场：</p>
+<ul>
+<li>01 – Robert Stolz – UNO Marsch – 国际联合进行曲</li>
+<li>02 – Johann Strauss II – Schatzwalzer; op. 418 – 珍宝圆舞曲 (2003, 2009)</li>
+<li>03 – Johann Strauss II – Violetta-Polka française; op. 404 – 维奥列塔法兰西波尔卡</li>
+<li>04 – Johann Strauss II – Vergnügungszug; Polka schnell; op. 281 – 游览车快速波尔卡 (1970, 1982, 1987, 1992, 2001, 2005)</li>
+<li>05 – Carl Michael Ziehrer – Weana Madl’n; Walzer; op. 288 – 维也纳的少女圆舞曲</li>
+<li>06 – Eduard Strauss – Mit Extrapost; Polka schnell; op. 259 – 特快邮车快速波尔卡 (2000)</li>
+</ul>
+<p>下半场：</p>
+<ul>
+<li>07 – Johann Strauss II – Ouverture zu Eine Nacht in Venedig – 威尼斯之夜序曲 (1994, 2001, 2009)</li>
+<li>08 – Eduard Strauss – Außer Rand und Band-Polka schnell; op.168 – 激动万分快速波尔卡</li>
+<li>09 – Josef Strauss – Sphärenklänge; Walzer; op. 235 – 天体乐声圆舞曲 (1954, 1964, 1979, 1980, 1983, 1987, 1992, 2004, 2009, 2013)</li>
+<li>10 – Johann Strauss II – Sängerlust-Polka française; op. 328 – 快乐的歌手法兰西波尔卡（维也纳童声合唱团）</li>
+<li>11 – Josef Strauss – Auf Ferienreisen; Polka; op. 133 – 假期旅行波尔卡（维也纳童声合唱团） (1988, 1995)</li>
+<li>12 – Johann Strauss II – Fürstin Ninetta – Entr’acte zwischen 2. und 3. Akt 轻歌剧《侯爵夫人尼奈塔》第三幕间奏曲</li>
+<li>13 – Emil Waldteufel – Valse-España; op. 236 – 西班牙圆舞曲</li>
+<li>14 – Joseph Hellmesberger/Vater – Ball-Szene 舞会场景</li>
+<li>15 – Johann Strauss I – Seufzer-Galopp; op. 9 – 叹息加洛普 (1991)</li>
+<li>16 – Josef Strauss – Die Libelle; Polka Mazur; op. 204 – 蜻蜓玛祖卡波尔卡 (1954, 1983, 1989, 2000, 2002, 2008)</li>
+<li>17 – Johann Strauss II – Kaiser Walzer, op.437 – 皇帝圆舞曲 (1975, 1982, 1987, 1991, 1996, 2003, 2008)</li>
+<li>18 – Johann Strauss II – Auf der Jagd; Polka schnell; op. 373 – 在猎场上快速波尔卡 (1954, 1979, 1988, 1993, 2005, 2010)</li>
+</ul>
+<p>加演：</p>
+<ul>
+<li>19 – Johann Strauss II – Im Sturmschritt; Polka schnell; op. 348 – 飞奔快速波尔卡 (1990, 2004)</li>
+<li>20 – Johann Strauss II – An der schönen blauen Donau, Walzer, op. 314 – 蓝色多瑙河圆舞曲</li>
+<li>21 – Johann Strauss I – Radetzky-Marsch, op. 228 – 拉德茨基进行曲</li>
+</ul>
+<p>每次看新一年的曲目单时，总会在脑中冒出两种想法：“又来”、“这是什么鬼”。这恰恰就是对每届新年音乐会不变的期待：期待看到经典曲目的全新演绎，也期待在这个舞台上见到更多新的作曲家、新的作品。</p>
+<p>2016年新年音乐会引入了三位新的作曲家的作品：罗伯特·施托尔茨的《联合国进行曲》、埃米尔·瓦尔德退费尔的《西班牙圆舞曲》以及老约瑟夫·赫尔梅斯伯格的《维也纳的舞会场景》。约瑟夫·赫尔梅斯伯格的舞曲作品在历年的新年音乐会上已经多次出现，而他父亲老约瑟夫·赫尔梅斯伯格的作品还是第一次出现，不知道会带来何种耳目一新的感觉。除此之外，非施氏家族的曲目还选择了齐莱尔的《维也纳的少女圆舞曲》，这也是一个首次在新年音乐会上亮相的节目。</p>
+<p>2016年是爱德华·施特劳斯逝世100周年，指挥和乐团特别选择了两首爱德华的波尔卡舞曲，纪念这位施特劳斯家族最小的成员。不过群众呼声很大希望能听到的爱德华的圆舞曲作品依然没有露面。</p>
+<p>指挥杨松斯在2012年时请来了维也纳童声合唱团的小朋友们，这个拥有500多年历史的合唱团的小歌唱家们，在2016年的元旦将又一次用他们的天籁之声征服全世界的听众。</p>
+<p>2016年的曲目中有几首耳熟能详的“又来”曲目，比如：《游览车》、《天体乐声》、《蜻蜓》、《皇帝》和《在猎场上》，当然这些就算是新年音乐会的经典作品了。看到名字与旋律一样优美的《天体乐声圆舞曲》，又不禁让我想起所谓“天体乐声大魔咒”了：在新年音乐会历史上，波斯科夫斯基、卡拉扬、克莱伯、穆蒂这几位大师在演完这个曲子以后就都没有再上过维也纳新年音乐会的指挥台了。只有马泽尔和巴伦博伊姆破解了这个“魔咒”，但是他们有一个共同点，就是在首次登台新年音乐会时就指挥演奏了这个曲目。扬松斯是我很喜欢的指挥家之一，我可真心希望他不要被这“魔咒”所困。</p>
+<p>2016年是我收看维也纳新年音乐会直播的20周年，对1996年洛林·马泽尔在新年音乐会上第一次用中文“新年好”向全世界问好的场面仍然记忆尤新。十周年的2006年前后，我在QQ的“施特劳斯之声”群和一些论坛认识了Duckula、苏大米、JosefKitty、king_zhd、定定、蓝色多瑙河等很多有相同爱好的朋友，并且花了很多时间通过各种渠道尽可能收集了历年新年音乐会所有录音录像资料，估计是那时在网上可以找到的整理得<a href="http://www.verycd.com/topics/82820/" target="_blank">最完整的一套录音资料</a>了。2015年是维也纳新年音乐会创办的75周年纪念，两个月前SONY为此出版了一套<a href="http://www.amazon.cn/dp/B017LUBK00" target="_blank">维也纳新年音乐会75周年曲目全集CD</a>， 收录所有在新年音乐会上演出过的曲目，还特地补录了所有早年没有录音时演出过的曲目。拿到这套CD，回想起以前一首首曲子的寻找的日子，颇为唏嘘。</p>]]></content:encoded>
             
         </item>
         
@@ -4282,6 +4935,80 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
         </item>
         
         <item>
+            <title>为Raspberry Pi 2编译内核模块</title>
+            <link>https://www.freemindworld.com/blog/2015/150312_complie_kernel_module_for_raspberry_pi_2.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2015/150312_complie_kernel_module_for_raspberry_pi_2.shtml</guid>
+            <pubDate>Thu, 12 Mar 2015 13:32:20 +0100</pubDate>
+            <description>
+                
+                2015-04-21更新：原始的rpi-source项目已经由PeterOGB 接手维护，所以无须再用我下文中提到的我改过的rpi-source脚本，直接用原始的就可以了。其它文中提到的背景知识都仍然有效。 即把第一个命令改为： $ wget https://raw.githu
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p><strong>2015-04-21更新：</strong>原始的<a href="https://github.com/notro/rpi-source" target="_blank">rpi-source</a>项目已经由<a href="https://github.com/PeterOGB">PeterOGB</a> 接手维护，所以无须再用我下文中提到的我改过的rpi-source脚本，直接用原始的就可以了。其它文中提到的背景知识都仍然有效。</p>
+<p>即把第一个命令改为：<code><br />
+$ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br />
+&amp;&amp; chmod a+x rpi-source</code></p>
+<p><strong>2015-07-29更新：</strong>Raspbian的内核版本已经升级到4.x，rpi-source还不能正确处理，需要进行以下额外的工作：</p>
+<p>1. rpi-source需要获取的/proc/config.gz默认不存在了，需要额外加载模块来实现：</p>
+<p><code> $ sudo modprobe configs </code></p>
+<p>2. rpi-source在4.x内核下无法正确检测gcc版本，运行rpi-source时请加–skip-gcc选项。</p>
+<hr />
+<p> </p>
+<p>《<a href="http://www.freemindworld.com/blog/2013/131010_360_wifi_in_linux.shtml">在Linux下使用“360随身WiFi 2”</a>》一文的留言区中，曾经有人问过，为什么编译出来的模块insmod/modprobe时报“Exec format error”，我不假思索的回复，请他检查编译模块时用的内核头文件与实际运行的内核是否完全匹配。这个答案倒也不算错，不过其实并没有解决问题，因为遇到的这个问题的人一般都已经用了“正确”的方式去编译他的模块，就算再重新做几遍，还是会遇到一样的问题。</p>
+<p>最近我给Raspberry Pi 2编译内核模块时，遇到了一样的问题，花了很多时间才真正解决，在这里总结一下。以下描述的方法和内容，对Raspberry Pi （A/A+/B/B+）和Raspberry Pi 2都适用。</p>
+<h1>准备编译模块需要的内核树的方法（适用于Raspbian）：</h1>
+<p>1. 下载我改过的rpi-source脚本<br />
+<code>$ wget https://raw.githubusercontent.com/lifanxi/rpi-source/master/rpi-source<br />
+&amp;&amp; chmod a+x rpi-source</code></p>
+<p>2. 运行rpi-source<br />
+<code>$ ./rpi-source</code></p>
+<p>3. 好了，可以进入模块源代码的目录进行模块编译了。</p>
+<h1>疑难排解：</h1>
+<p>1. rpi-source报gcc版本不一致</p>
+<p>截止2015-03-12，Raspbian最新的内核是用gcc 4.8编译的（可以查看/proc/version确认），而Raspbian中自带的gcc是4.6的，需要升级到4.8。因为4.8的gcc已经backport了，所以可以直接sudo apt-get install gcc-4.8 g++-4.8，然后用update-alternatives设置优先级即可[1]。</p>
+<p>2. 如果用rpi-source –skip-gcc忽略gcc版本检查，并强行用4.6的gcc会编译模块怎么样？</p>
+<p>我的试验结果是模块可以编译，但在加载模块时会造成kernel oops，然后再用insmod/modprobe/rmmod/lsmod等命令时会挂住，只能重启解决。如果你编的模块是会自动加载的，重启前先把它删掉，不然启动时就会挂住。</p>
+<p>3. rpi-source无法正常下载内核代码或Modules.symvers文件</p>
+<p>有可能是你的内核版本太老，rpi-source只支持Raspberry Pi 3.10.37以上的内核。对于Raspberry Pi 2，它只支持3.18.6以上的内核。解决办法是先运行sudo rpi-update更新内核和固件，更新后请重启系统，然后再重新运行rpi-source。</p>
+<p>4. 编译模块时报找不到arch/armv6l或arch/armv7l目录</p>
+<p>尝试在make命令前加ARCH=arm参数，或尝试把/lib/modules/`uname -r`/build/arch中的arm软链为armv6l或armv7l后再编译。</p>
+<h1>背景知识：</h1>
+<p>1. Raspbian的内核包</p>
+<p>不要按照使用Debian的习惯去找什么linux-image、linux-source之类的包，Raspbian的内核包是raspberrypi-bootloader，里面包含了内核、模块和一些启动文件，但没有Module.symvers和头文件。</p>
+<p>2. rpi-update是啥</p>
+<p>rpi-update是Raspbian内置的更新内核和相关固件的脚本，它的逻辑是去<a href="https://github.com/Hexxeh/rpi-firmware" target="_blank">https://github.com/Hexxeh/rpi-firmware</a>这个仓库下载最新的内核和固件，替换现有的版本。更新完成后会更新/boot/.firmware_revision，记下最新版本对应的Git Hash，以后rpi-update或rpi-source都会根据这个Hash去GitHub找对应文件。</p>
+<p>3. Raspberry Pi的官方内核去哪里找</p>
+<p><a href="http://github.com/raspberrypi" target="_blank">http://github.com/raspberrypi</a>，里面的linux对应内核源代码，firmware是编译好的内核和相关文件。而rpi-update用的<a href="https://github.com/Hexxeh/rpi-firmware" target="_blank">https://github.com/Hexxeh/rpi-firmware</a>其实是firmware中部分文件的一个镜像，分出一个镜像仓库可以让rpi-update脚本的实现变得比较简单[2]。</p>
+<p>4. rpi-source做了些啥</p>
+<p>根据rpi-update记录在/boot/.firmware_revision中的内核版本Git Hash（如果没有用rpi-update更新过内核，就从raspberrypi-bootloaderq包的changlog中解析出Hash），去raspberrypi/linux仓库中获取对应的源代码，把/lib/modules/`uname -r`/build和/lib/modules/`uname -r`/source对应的软链建好，从/proc/config.gz获取当前内核配置，去raspberrypi/firmware仓库中获取对应的Modules.symvers跟内核代码放在一起，然后make modules_prepare准备好编译模块所需要的内核树。</p>
+<p>5. 你改的rpi-source改了些啥</p>
+<p>rpi-source的作者已经宣布不再维护这个脚本，并且这个脚本不支持Raspberry Pi 2，所以我在GitHub上<a href="https://github.com/lifanxi/rpi-source" target="_blank">Fork</a>了一份，做了以下改动：</p>
+<ul>
+<li>修改了脚本自动更新URL到我Fork出来的版本；</li>
+<li>检查/proc/cpuinfo，判断当前硬件是Raspberry Pi还是Raspberry Pi 2；</li>
+<li>可以通过-b参数强行指定Raspberry Pi的硬件版本；</li>
+<li>根据不同的硬件，下载不同版本的Modules.symvers；</li>
+<li>如果用参数指定了要求用默认配置来配置内核树，则对不同硬件版本的Raspberry Pi调用不同的命令[3]。</li>
+</ul>
+<p>6. Raspberry Pi和Raspberry Pi 2的内核有啥区别</p>
+<p>Raspberry Pi 2的SOC是BCM2709，基于ARM 7（armv7l），而一代是BCM2708，ARM 6（armv6l），所以二代的内核中用了一些armv7l中特有特性。目前在打包的时候两个版本内核文件是打包在一起的，只是用后缀7或v7来区别，启动的时候会按实际硬件选择。</p>
+<p>7. Module.symvers是干嘛用的？</p>
+<p>一句话讲不清，有兴趣请参考[4]。总之，没有Module.symvers或用错了Module.symvers都可能会造成你加载模块时报Exec format error。如果你遇到了这样的情况，请确认rpi-source的执行过程中有没有失败的步骤。armv7l和armv6l版本的内核用的Module.symvers是不通用的，在raspberrypi/firmware中分别命名为Module.symvers和Modules7.symvers，但放到内核树中使用时需要命名为Module.symvers，如果是你自己准备内核树，务必要小心，我自己在这个问题上犯了错误，浪费了很多时间。当然，如果用我改过的rpi-source，那它已经帮你搞定了这件事。</p>
+<p>8. 我用了rpi-update和rpi-source后编出来的模块还是无法加载。</p>
+<p>目前我用本文描述的方法编译了过天猫魔盘（<a href="http://bbs.yunos.com/read/263281710" target="_blank">rtl8192eu</a>）、360随身WiFi 2（<a href="https://github.com/porjo/mt7601" target="_blank">mt7601u</a>）这两种无线网卡的驱动，都工作正常。如果你遇到了别的问题，不妨在这里留言，可以一起讨论一下。</p>
+<p>另外，终级大法一定是重新完整的编译整个内核，不过如果你想在Raspberry Pi上完成这个工作，那必须等有充分的耐心。所以，最好是在PC上进行交叉编译[3]。</p>
+<p>[1] <a href="https://github.com/notro/rpi-source/wiki" target="_blank">https://github.com/notro/rpi-source/wiki</a></p>
+<p>[2] <a href="https://github.com/Hexxeh/rpi-firmware/blob/master/README.md" target="_blank">https://github.com/Hexxeh/rpi-firmware/blob/master/README.md</a></p>
+<p>[3] <a href="https://github.com/raspberrypi/documentation/blob/master/linux/kernel/building.md" target="_blank">https://github.com/raspberrypi/documentation/blob/master/linux/kernel/building.md</a></p>
+<p>[4] <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-kernelmodules/" target="_blank">http://www.ibm.com/developerworks/cn/linux/l-cn-kernelmodules/</a></p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
             <title>Build CyanogenMod 12 for Nexus 5</title>
             <link>http://www.sunjw.us/blog/build-cyanogenmod-12-for-nexus-5/</link>
             
@@ -4428,6 +5155,91 @@ sudo rm -rf /Users.bak
         </item>
         
         <item>
+            <title>2015新年好</title>
+            <link>https://www.freemindworld.com/blog/2015/150101_happy_new_year_2015.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2015/150101_happy_new_year_2015.shtml</guid>
+            <pubDate>Thu, 01 Jan 2015 16:28:21 +0100</pubDate>
+            <description>
+                
+                2014年，我做了这些事： – (令人发指地只)写了4篇博客 博客空间总访问量58350 PageView(Google Analytics数据)，比前一年下降32%，是最近几年以来首次PV下降，不好好维护就是这样的后果。首页、在Linux下使用“360随身WiFi 2”、ca
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p><strong>2014年，我做了这些事：</strong></p>
+<p>– (令人发指地只)写了4篇博客</p>
+<p>博客空间总访问量58350 PageView(Google Analytics数据)，比前一年下降32%，是最近几年以来首次PV下降，不好好维护就是这样的后果。首页、<a href="http://www.freemindworld.com/blog/2013/131010_360_wifi_in_linux.shtml">在Linux下使用“360随身WiFi 2”</a>、<a href="http://www.freemindworld.com/blog/2010/101022_calibre_tips_and_faq.shtml">calibre常见问题</a>这几个页面的PV占总PV的50%。饭否发消息187条，包括照片50张。</p>
+<p>– 自由软件相关</p>
+<p><a href="http://www.hzgdg.org/" target="_blank">GDG  Hangzhou</a>的活动依然很丰富，但我几乎没有参加什么线下的活动，越来越有变宅的趋势。</p>
+<p>五月份Richard Stallman来中国时，有缘<a href="http://www.freemindworld.com/blog/2014/140531_rms_hangzhou.shtml" target="_blank">相见</a>。他的传记《<a href="http://www.oreilly.com/openbook/freedom/" target="_blank">Free as in Freedom</a>》第一版中文版翻译工作已经完成，中文版正式命名为《若为自由故——自由软件之父理查德·斯托曼传》，目前还在二校阶段，有望在农历春节前出版。由于RMS本人反对出版第一版，希望能出第二版，所以2015内可能会继续整理出版该书的第二版。</p>
+<p>– 几个IT产品</p>
+<p>Synology DS-214play：群晖的NAS最大的特色在于它的配套软件，为了“不折腾”，直接买了白群晖。买了就投入使用，没有太折腾。目前为止很满意。配套软件DS Photo+、DS Video等在深度使用后，感觉有点低于期望值，但依然堪用。</p>
+<p>Pebble Watch：去美国时正好遇到Pebble Watch降价，就入了一个。其实先前已经关注过这个智能手表，感觉它有很多软肋，但其平台的开放性还是对我有一些吸引力的。Pebble日常使用没有问题，但在我的ZTE手机上时常会有蓝牙连接意外断开的情况，目测是手机的问题，稍有困扰。</p>
+<p>GoPro Hero 3：朋友送给我的，我实在不理解这个东西为什么能这么火。作为一个运动相机，它的应用范围实在是太狭窄了，除了在一些极限运动（跳伞、潜水、攀岩）中它有很强的不可替代性外，一般的跑步、登山、骑行用它录下来的视频都没啥可观赏性，可能是我对画质的要求太高了吧。</p>
+<p>元征golo 3/4：元征尝试在“车联网”领域发力之作，通过OBD，对车辆进行检测，同时提供3G Wi-Fi热点、轨迹记录、车辆定位等功能。概念上还是不错的，产品一般般，但其配套软件做得实在不敢让人恭维。</p>
+<p>乐视X60s电视：渣画质、渣音质、屏幕严重漏光，但在没有比较的情况下，这几点一般人都不会关注。片源丰富是它的最大优点，总体性能来说跟电视+乐视盒子差不多，自带的本地高清播放能力一般，放高清还是得专业盒子才好。</p>
+<p>BandwagonHost的VPS：<a href="http://bandwagonhost.com/aff.php?aff=951&amp;pid=19" target="_blank">年付$3.99的VPS</a>，安装Shadowsocks后的访问速度比月付$20的<a href="http://www.linode.com/?r=31556a08866cfa72e0dca17e9893e90a4296c98e" target="_blank">Linode VPS</a>快N倍（当然Linode VPS依然是一个很不错的VPS，从功能、服务、稳定性等角度来说），最快的时候可以跑满我的20M中国电信带宽，在路由器上直接配置了Shadowsocks+iptables，上网各种安逸。</p>
+<p>– 旅游</p>
+<p><a href="https://plus.google.com/photos/101128035604430034036/albums/6073567400851278305" target="_blank">美国十九日游</a>、<a href="https://plus.google.com/photos/101128035604430034036/albums/6059458462422316753" target="_blank">桂林四日游</a>。</p>
+<p>国内铁路运转里程约850公里。体验了纽约地铁、芝加哥地铁。</p>
+<p>2012年时所计划的60km以上暴走杭州计划一直没有实施，不过今年完成了一次环西湖群山毅行，路线为老和山-北高峰-石人岭-天竺山-十里郞当-五云山-林海亭-贵人峰-虎跑-玉皇山-凤皇山-云居山-吴山广场，山路行程25.19千米，耗时9.5小时。总体感受比平地徒步50km还是要轻松一点。</p>
+<p>– 其它</p>
+<p>与其他同事合作翻译出版了《<a href="http://book.douban.com/subject/26275027/" target="_blank">Raspberry Pi创意项目制作</a>》一书。</p>
+<p><strong>展望2015年：</strong></p>
+<p>2014，很多人、很多事都发生了变化。2015会有更多的变化等待着我，每一天都有更多新的东西等待着发现，加油！</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>关注2015维也纳新年音乐会</title>
+            <link>https://www.freemindworld.com/blog/2014/140917_2015_vienna_new_year_concert.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2014/140917_2015_vienna_new_year_concert.shtml</guid>
+            <pubDate>Wed, 17 Sep 2014 02:56:39 +0200</pubDate>
+            <description>
+                
+                曾经关注过的那些维也纳新年音乐会：关注维也纳新年音乐会，2015年将是我第20次收看维也纳新年音乐会的直播。 今年真是破天荒了，往年都是会在11月中下旬由唱片公司或广播公司透露出次年新年音乐会的曲目单，而这次则是在9月中旬就由维也纳爱乐乐团的官方网站公布了新年音乐会的曲目单。 
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>曾经关注过的那些维也纳新年音乐会：<a href="http://www.freemindworld.com/blog/tag/%E7%BB%B4%E4%B9%9F%E7%BA%B3%E6%96%B0%E5%B9%B4%E9%9F%B3%E4%B9%90%E4%BC%9A">关注维也纳新年音乐会</a>，2015年将是我第20次收看维也纳新年音乐会的直播。</p>
+<p>今年真是破天荒了，往年都是会在11月中下旬由唱片公司或广播公司透露出次年新年音乐会的曲目单，而这次则是在9月中旬就由维也纳爱乐乐团的官方网站公布了<a href="http://www.wienerphilharmoniker.at/concerts/concert-detail/event-id/%20585" target="_blank">新年音乐会的曲目单</a>。</p>
+<p><strong>上半场</strong></p>
+<p>01 Franz von Suppé – Ein Morgen, ein Mittag, ein Abend in Wien; Ouvertüre – 维也纳的早中晚序曲 – 1990,2000</p>
+<p>02 Johann Strauss II – Marchen aus dem Orient Walzer, op.444 – 东方童话圆舞曲 – 2009</p>
+<p>03 Josef Strauss – Wiener Leben; Polka francaise; op. 218 – 维也纳的生活法兰西波尔卡</p>
+<p>04 Eduard Strauss – Wo man lacht und lebt; Polka schnell; op. 108 – 我们的欢笑与生活快速波尔卡</p>
+<p>05 Joseph Strauss – Dorfschwalben aus Österreich, Walzer op.164 – 奥地利村燕圆舞曲 – 1963,1992,2001,2008</p>
+<p>06 Johann Strauss II – Zugabe: Vom Donaustrande; Polka schenll; op.356 – 自多瑙河之滨快速波尔卡 – 2000</p>
+<p><strong>下半场</strong></p>
+<p>07 Johann Strauss II – Perpetuum mobile; Polka; op. 257 – 无穷动波尔卡 – 1954,1978,1980,1987,1988,1993,1995,1999,2002,2010</p>
+<p>08 Johann Strauss II – Accelerationen; Walzer; op. 234 – 加速圆舞曲 – 1981,1989,1994,2004</p>
+<p>09 Johann Strauss II – Electro-Magnetische; Polka; op. 110 – 电磁波尔卡</p>
+<p>10 Eduard Strauss – Mit Dampf; Polka schnell; op. 70 – 蒸汽快速波尔卡</p>
+<p>11 Johann Strauss II – An der Elbe; Walzer; op. 477 – 易北河畔圆舞曲</p>
+<p>12 Hans Christian Lumbye – Champagner Galopp – 香槟加洛普 – 2010</p>
+<p>13 Johann Strauss II – Studenten-Polka; Polka francaise; op. 263 – 大学生法兰西波尔卡</p>
+<p>14 Johann Strauss I – Freiheits-Marsch; op. 226 – 自由进行曲</p>
+<p>15 Johann Strauss II – Wein, Weib und Gesang; Walzer; op. 333 – 美酒、女人和歌圆舞曲 – 1979,2000,2010</p>
+<p>16 Eduard Strauss – Mit Chic; Polka schnell; op. 221 – 雅致快速波尔卡 – 1994</p>
+<p>加演曲目尚未公布，按惯例应该是一首波尔卡加上下面这两首雷打不动的曲目（确实是雷打不动，不过2004年底的海啸吹走了2005年新年音乐会上的拉德茨基进行曲）：</p>
+<p>18 Johann Strauss II, An der schönen blauen Donau, Walzer, op. 314 – 蓝色多瑙河圆舞曲</p>
+<p>19 Johann Strauss I, Radetzky-Marsch, op. 228 – 拉德茨基进行曲</p>
+<p>担任2015年维也纳新年音乐会指挥的是印度指挥家祖宾·梅塔，他曾于1990年、1995年、1998年、2007年指挥过维也纳新年音乐会。在2007年新年音乐会上，梅塔在威尼斯狂欢节的梦幻回忆一曲中与乐手们的搞怪互动，给人留下了深刻的印象。</p>
+<p>由于这次不是唱片公司放出的曲目单，所以CD封面还尚未剧透出来。放一些梅塔曾经指挥过的新年音乐会的CD封面吧。</p>
+<div><a href="http://www.freemindworld.com/blog/wp-content/uploads/2014/09/1409171.jpg"><img src="//www.freemindworld.com/blog/wp-content/uploads/2014/09/1409171.jpg" /></a><p>祖宾·梅塔指挥过的维也纳新年音乐会</p></div>
+<p>整理这个曲目单时给我留下的第一印象是：这次选择了好几首爱德华·施特劳斯的作品，细数一下，总共是3首，并且其中两首是第一次在新年音乐会上演奏的曲目（看资料也许在20世纪80年代以前演奏过，但是我不太了解），这应该是史无前例的。2015年是爱德华诞辰180周年，不知道与这个是不是有点关系。</p>
+<p>今年的曲子不算多，19首，应该算是个比较合适的数字。在2012年的新年音乐会中，指挥杨松斯创记录的选了24首曲子，演下来真让人觉得他有点不从心。</p>
+<p>总体来说，这个曲目单虽然颇有炒冷饭的嫌疑，而且大多还炒的是15年前的冷饭，但也算是中规中矩，不像最近几年有些很“出格”的安排。开场的序曲、奥地利村燕等乐曲都很有正统维也纳的气息，相信会很让人陶醉。倒是用无穷动作为下半场开场，让人觉得有点不太搭调。</p>
+<p>2014年，克劳迪奥·阿巴多和洛林·马泽尔这两位曾经指挥过维也纳新年音乐会的指挥大师离开了人世。阿巴多曾经指挥过颇具争议的1988年和1991年维也纳新年音乐会，而马泽尔指挥过1980-1986、1994、1996、1999、2005年新年音乐会，是我最喜欢的指挥家之一。当我写起这篇文章，细数着过去20年多的新年音乐会，才又一次想起大师的离世，感受到遗憾和忧伤。2005年新年音乐会上，为了表达印度洋海啸的遇难者的哀思，取消了拉德茨基进行曲的演出，成了马泽尔一次像是没有画上句号的演出。那一年的演出中，在维也纳森林圆舞曲中小号手还罕见的出现了失误，多少有一些遗憾。虽然知道不太可能，但是我一直幻想着有一天马泽尔可以再次登上这个指挥台，为他在新年音乐会上的指挥生涯画上一个漂亮的句号。 整整10年过去了，幻想最终也破灭了，愿逝者安息，生者前行。</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
             <title>Keepalived 实现双机热备并对关键进程进行监控</title>
             <link>https://glacjay.info/post/2014-06-22/keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87%E5%B9%B6%E5%AF%B9%E5%85%B3%E9%94%AE%E8%BF%9B%E7%A8%8B%E8%BF%9B%E8%A1%8C%E7%9B%91%E6%8E%A7/</link>
             
@@ -4498,6 +5310,171 @@ sudo rm -rf /Users.bak
             <content:encoded><![CDATA[<p>又是惯例的长了好长时间的草，今天先来篇短的。</p>
 
 <p>工作需要，在使用 VS2010 开发调试 IE ActiveX 插件时，默认条件下下的断点不起作用，这是因为选错了调试器，在工程属性 - Debugging 中的 Debugger to launch 项，选择 Web Browser Debugger ，然后在 HTTP URL 项填本地 HTML 文件的绝对路径，以 file:/// 打头就可以了。</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>Richard Stallman杭州行</title>
+            <link>https://www.freemindworld.com/blog/2014/140531_rms_hangzhou.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2014/140531_rms_hangzhou.shtml</guid>
+            <pubDate>Sat, 31 May 2014 15:46:52 +0200</pubDate>
+            <description>
+                
+                我是来给Blog除草的，写个流水账。 5月初，终于磕磕碰碰地把Richard Stallman的传记《Free as in Freedom》翻译完了给出版社交稿了，想找他老人家写个序。他的回答还真是干脆：“没问题，我有空一定写。不过你们别等我的序啊，指不定什么时候能写好。还有，
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>我是来给Blog除草的，写个流水账。</p>
+<p>5月初，终于磕磕碰碰地把Richard Stallman的传记《<a href="http://oreilly.com/openbook/freedom/index.html" target="_blank">Free as in Freedom</a>》翻译完了给出版社交稿了，想找他老人家写个序。他的回答还真是干脆：“没问题，我有空一定写。不过你们别等我的序啊，指不定什么时候能写好。还有，你们能不能把这书在两周内给印出300本来啊，我马上要来中国做6场演讲，我要用！”</p>
+<p>虽然我清楚的知道在两周内把一本刚翻译完连错别字都没改完的书出版出来是不可能的，不过还是马上与徐继哲联系了一下，看看有没有别的变通的方法。徐继哲和<a href="http://www.zeuux.com/" target="_blank">哲思社区</a>是RMS这次中国的行程的策划者。很意外的得知，RMS这次不但要来杭州和南京，还要来阿里巴巴。于是，我联系了公司负责接待RMS来访的同事，争取到了协助组织这次活动的机会。</p>
+<p>所谓协助组织，主要也就是协助审阅活动宣传文案、挑选RMS演讲的提问环节的问题。不过，也别小看这点事情，其实很多人并不了解RMS的自由软件运动，大部分人更是把自由软件运动和“开源”混为一谈。事实上，我<a href="http://www.freemindworld.com/blog/2007/070421_what_is_free_software.shtml">很早以前</a>就说过，我其实不喜欢RMS带有宗教气息的自由软件运动。不过既然是邀请人家来做演讲，那还是投其所好吧。我努力的把所有文案和问题都重新组织了一遍，尽可能避免“开源”等会让RMS情绪激动的词语的出现。</p>
+<p>19日一早接到RMS一行，按活动流程，先带他参观园区并给他简要介绍一下阿里巴巴集团。直接就碰了第一鼻子灰：“介绍要花多久？我不想听，我的时间很宝贵。”不过这倒也给我减轻了不少压力，于是这个参观介绍环节就简化到了不到十分钟时间。</p>
+<p>合个影，RMS表示说，如果在合影中出现公司的名字或Logo，就不能把照片公开发布。我开玩笑说，我们可以把公司的Logo“Photoshop”掉再发布。这话显然激怒了他，“你在说什么？Photoshop？你应该说，GIMP，GIMP，GIMP！”</p>
+<p>途径阿里云的办公区域，我介绍说这是“Alibaba Cloud Computing ”。RMS立马批评说“Cloud Computing”是一个很含糊其辞的词语，我们不能这么说，blah，blah。事后我回忆了一下，19日一天内，他给不同人总共讲了四遍为什么“Cloud Computing”是一个不好的词。</p>
+<p>途经连接两幢楼的连接平台，RMS和他的女朋友被平台上的植物和鲜花所吸引，停下来拍照。我又嘴贱了，我说，过会儿吃完午饭离下午的演讲还有一点时间，可以在园区散散步，还有更多美丽的植物和花。“我有很多工作要做，有很多Email要回复，我没有时间散步！”RMS说。</p>
+<p>早上的小范围圆桌会议后，公司活动组织者开始请RMS在一些T恤和图书上签名，作为下午的演讲活动的礼物。这个事他们先前没有跟我商量，所以我也没想到要提醒他们注意事项，结果就是我意料之中的：RMS拒绝在非自由的图书上签名，也拒绝在印有公司Logo的T恤上签名。</p>
+<p>还好我自己倒是有备而来，事先印刷了几本《Free as in Freedom》中文版草稿。因为这本书使用GFDL许可证，RMS欣然在上面签名，不过他反复强调，请出版原书第二版的中文版，别出第一版，因为第一版中有很多错误。可惜这个事不是我和他可以说了算的，所以就只好先搪塞过去了。RMS的女朋友对这本书很感兴趣，同时她似乎对GNU网站的翻译工作也很关心和了解，希望我们能把GNU网站的翻译工作做得更好，翻译更多RMS的作品。不管怎么说，签名版《Free as in Freedom》到手了。难道我会告诉大家这就是我对这次活动这么积极的原因吗？</p>
+<div><a href="http://www.freemindworld.com/blog/wp-content/uploads/2014/05/140531a.jpg"><img src="//www.freemindworld.com/blog/wp-content/uploads/2014/05/140531a.jpg" /></a><p>RMS的签名和他的Pleasure Card</p></div>
+<p>午餐，RMS真是个吃货。嗯，吃饭时他还把他不离身的龙芯笔记本电脑垫在盘子下面，弄得全是油。</p>
+<p>下午的演讲，参考我另外整理的<a href="http://www.freemindworld.com/blog/2014/140531_rms_speech.shtml">演讲实录</a>，没啥新意。不过拍卖环节气氛还挺热烈，RMS真会卖萌啊，于是一个Baby GNU公仔拍出了550元的价格。提问环节完全没有按流程来，现场提问时不时蹦出“开源”一词，惹得RMS很是生气。他大声说“I am for 自由软件！”，全场大笑。</p>
+<p>与RMS同行的，还有一位日本朋友，Akira Urushibata。2008年我在上海复旦大学召开的哲思自由软件峰会上听过他有关汉字哲学的演讲，记忆犹新。所以，当大家的焦点都在RMS身上，完全无视Akira的存在时，我找到不少机会与他进行了交流。Akira虽然不太会说中文，但他对汉字以及中国文化还是有很深的认识。Akira下午没有进行演讲，而晚上我赶到浙江大学玉泉校区活动现场时，也已经错过了他的演讲，颇为遗憾。浙大的活动现场也很火爆，不过我已经没有兴趣再听一遍RMS的演讲了，所以RMS演讲时，我就在会场外面跟继续跟Akira聊天，他跟我讲了不少中国历史，很多我都不知道，非常汗颜。Akira还送了我一本他的书，签完名，他问我要不要在上面再给我写点什么。我一时语塞，他想了想说，“我给你写个‘庖丁解牛’”。</p>
+<p>接待RMS一行花了我大半天时间，整理演讲内容摘要也花了不少时间，后果就是忙上加忙了。经验告诉我，我总是越忙越写Blog，所以本流水账也诞生了。嗯，这事儿应该就到此为止了。</p>]]></content:encoded>
+            
+        </item>
+        
+        <item>
+            <title>Richard Stallman演讲实录</title>
+            <link>https://www.freemindworld.com/blog/2014/140531_rms_speech.shtml</link>
+            
+            <author>Li Fanxi</author>
+            
+            <guid>https://www.freemindworld.com/blog/2014/140531_rms_speech.shtml</guid>
+            <pubDate>Sat, 31 May 2014 15:20:12 +0200</pubDate>
+            <description>
+                
+                这里收录的是Richard Stallman 2014年5月19日在杭州阿里巴巴西溪园区演讲的内容概要。应活动组织方的原本的期望，是需要完整听译的，但那样实在是一个比较费劲的工作，所以最后决定摘录了这些内容概要。同时我提供了一些参考资料的链接，对于演讲中的大部分主题，GNU网站
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p>这里收录的是Richard Stallman 2014年5月19日在杭州阿里巴巴西溪园区演讲的内容概要。应活动组织方的原本的期望，是需要完整听译的，但那样实在是一个比较费劲的工作，所以最后决定摘录了这些内容概要。同时我提供了一些参考资料的链接，对于演讲中的大部分主题，GNU网站上都可以找到详细阐述相关内容的文章。</p>
+<p>录音下载地址(ogg格式)：<a href="http://pan.baidu.com/s/1bnaRpi3" target="_blank">http://pan.baidu.com/s/1bnaRpi3</a> 密码：mnep</p>
+<h1>开场白</h1>
+<p>如果你拍摄了照片，请不要发布到类似于Facebook的社交媒体上。因为这些网站会监控你的行为。</p>
+<p>如果你录制了演讲的视频，请以ogg或WebM等自由的格式来发布，不要使用任何MP打头的格式，不要以Flash的形式发布，不要以Windows Media或QuickTime的格式发布，也不要发到Youtube上。</p>
+<p>请确保其它人可以使用自由软件而不用额外的私有软件就可以下载这些视频。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/philosophy/whats-wrong-with-youtube.html">http://www.gnu.org/philosophy/whats-wrong-with-youtube.html</a></li>
+<li><a href="https://www.gnu.org/philosophy/why-audio-format-matters.html">https://www.gnu.org/philosophy/why-audio-format-matters.html</a></li>
+</ul>
+<h1>主题演讲</h1>
+<h2>1. 什么是自由软件？</h2>
+<p>自由软件尊重用户和社区的自由。Free Software中的Free的含义是“自由”，而不是“免费”。</p>
+<p>自由软件关乎使用者运行、复制、发布、研究、修改和改进该软件的自由。 更精确地说，自由软件赋予软件使用者四种自由：</p>
+<ul>
+<li>不论目的为何，有运行该软件的自由（自由之零）。</li>
+<li>有研究该软件如何运行，以及按需改写该软件的自由（自由之一）。取得该软件源代码为达成此目的之前提。</li>
+<li>有重新发布拷贝的自由，这样你可以借此来敦亲睦邻（自由之二）。</li>
+<li>有改进该软件，以及向公众发布改进的自由，这样整个社群都可受惠（自由之三）。取得该软件源码为达成此目的之前提。</li>
+</ul>
+<p>所以，自由软件总是一个整体，不会有“部分自由”的软件。你对自由软件所做的修改，也必须是自由的。自由软件不是一个技术问题，而是关乎用户的自由，是一个社交与政治的问题。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/philosophy/free-sw.html">http://www.gnu.org/philosophy/free-sw.html</a></li>
+</ul>
+<h2>2. 为什么私有软件是不好的</h2>
+<p>私有软件在道德和社交上都存在问题，人们应该避免使用。开发一个自由软件是对社区的贡献，贡献的大小取决于这个软件有多有用。但开发私有软件不是对社区的贡献，私有软件限制了人们的自由，是有害的。</p>
+<p>自由软件的运动的目标就是让大家可以自由的分享软件。如果使用了私有软件，你会面临两难的境地。比如，如果有朋友向你要一份私有软件的副本，你就得违反软件使用协议，或者拒绝朋友的请求。这时你应该选择错得太不严重的那个方式：违反软件使用协议。因为开发私有软件本身就是罪恶，必面要犯错时，就先得罪那些犯错在先的人。</p>
+<p>解决这种两难境地的最好办法是避免使用私有软件，你手头没有私有软件，你的朋友也就不会要向你要副本。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/philosophy/proprietary.html">http://www.gnu.org/philosophy/proprietary.html</a></li>
+</ul>
+<h2>3. 为什么我们需要自由软件</h2>
+<p>自由软件可以帮助用户完全掌控自己的电脑，包括电脑本身和上面运行的软件。作为软件开发者，你需要保证你的软件的用户充分享有上面提到的四个维度的自由。</p>
+<p>私有软件开发商常常会在软件中植入一个不好的东西，比如DRM，后门或监控用户行为的功能。所以，私有软件就是恶意软件。比如：Windows是一个恶意软件，因为它内置了DRM、后门和监控用户的程序。尤其是移动设备上的Windows 8，它只允许用户安装指定的应用程序。微软还可以通过Windows在你的电脑上自动安装系统更新程序，就这是一个后门，只有恶意软件才会这么做。</p>
+<p>同样的，苹果的所有“i”系列产品也都是恶意的。开发者试图把用户都关进“监狱”，控制他们的一切，所以才有“越狱”行为的出现。</p>
+<p>Flash Player是恶意软件，因为它有监控用户行为和DRM的功能。</p>
+<p>Android是恶意软件，因为它会把用户位置发送给某些公司。</p>
+<p>Kindle是恶意软件，因为它剥夺了人们阅读图书的自由。它会把阅读进度发送到Amazon，它还限制了你与朋友分享图书的自由。Amazon还留了个后门，可以远程的删除你设备上的图书。</p>
+<p>在乔治·奥威尔的《<a href="http://book.douban.com/subject/4820710/">1984</a>》中描述了人们在无时不刻的监视下生活的故事，非常值得一读。</p>
+<p>请引导你的朋友从一开始就不要犯错，尽可能远离这些充满恶意的软件系统。</p>
+<p>手机也是一种危险的产品，很多运营商可以远程改写手机上所安装的软件，甚至把它变成一个行动跟踪和窃听设备。有些手机甚至关机也是假的，只要电池还在，它就不断会发出信号，更有些手机甚至不允许拆卸、更换电池。运营商可以随时知道你所在的位置。我不用手机，虽然这有点不太方便，但在方便和自由之间，我更珍视自由。</p>
+<p>使用私有软件就可能使用了恶意软件，要保证安全，就应该选择自由软件，因为你可以自己去研究它的实现、改进它，在这个过程中即便真的发现了有恶意的功能，也可以很方便的把这些功能去掉。事实上自由软件作者不会在自由软件中植入恶意的功能，因为自由软件让这样植入无处藏身。</p>
+<p>Ubuntu虽然包含了很多自由软件，但它也存在一些间谍软件的特性。请参考文章：<a href="https://www.gnu.org/philosophy/ubuntu-spyware.html">https://www.gnu.org/philosophy/ubuntu-spyware.html</a></p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/philosophy/opposing-drm.html">http://www.gnu.org/philosophy/opposing-drm.html</a></li>
+</ul>
+<h2>4. 自由软件运动</h2>
+<p>1983自由软件运动发起的时候，那时几乎所有软件都是私有的，所以我决定重新创造一个自由的操作系统，重写所有的软件。作为软件的作者，我可以保证这些软件都是自由的。要保证整个系统都是自由软件，这个工作量很大，所以需要集合各种现有的力量来完成这个任务。保证与Unix的兼容，这样可以用这个自由的系统来替换Unix。</p>
+<p>GNU是一个递归名词，是GNU’s Not Unix!的缩写。创造这个词的时候有两个想法：1.它是一个递归词，并表达了GNU不是Unix这个意思。2.GNU本身就是一个单词，是角马这种动物的名词。不过在说GNU工程时，发音要发为g’noo，而不是new。因为这个工程已经有20多年历史了，它不再“new”了（幽默）。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/gnu/gnu.html">http://www.gnu.org/gnu/gnu.html</a></li>
+<li><a href="http://www.gnu.org/pronunciation/pronunciation.html">http://www.gnu.org/pronunciation/pronunciation.html</a></li>
+</ul>
+<h2>5. GNU/Linux</h2>
+<p>Linux这个词常常被错用，正确的用法是在讨论这个操作系统时把它叫作“GNU/Linux”，因为Linux只是操作系统的内核，加上各种GNU的程序后，才构成了完整的操作系统。这种错用从1992就开始了，那时GNU还在开发自己的Hurd内核，但是Hurd的野心太大，一时半会儿完成不了。1992年Linus把Linux以GPL发布后，Linux就成了自由软件，所以GNU选择Linux作为系统的内核。因此，在讨论整个系统时，需要同时提到GNU和Linux，它们缺一不可。</p>
+<p>GNU必须的是自由的，Linux则是Linus创造的，Linus本人并不反对私有软件，但他不应该误导人们只看到Linux而忽视GNU工程。应该让人们清楚的知道，GNU是一个自由的操作系统，GNU/Linux并不是Linus一个人的成果。</p>
+<p>GNU的未来取决于我们的价值观，所以我们需要向所有人宣传我们的价值观。我们必须强调自由的和重要性，不然我们就无法告诉人们为什么我们要为GNU工程而努力。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/gnu/linux-and-gnu.html">http://www.gnu.org/gnu/linux-and-gnu.html</a></li>
+<li><a href="http://www.gnu.org/gnu/gnu-linux-faq.html">http://www.gnu.org/gnu/gnu-linux-faq.html</a></li>
+</ul>
+<h2>6. 开源</h2>
+<p>“开源”是一个会误导人的词语，它是1998年时自由软件社区中一个不乐意宣传自由软件运动精神的人创造的（指的是Eric Raymond），它们不乐意传播自由的理念，把我们的作品与我们的价值观分离。开源不讲自由的理念，自由软件关乎人们的道德，开源只管利益。</p>
+<p>我不是“开源”的支持者。我们必须珍视我们崇尚自由的理念，向人们宣传我们的理念。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/philosophy/open-source-misses-the-point.html">http://www.gnu.org/philosophy/open-source-misses-the-point.html</a></li>
+</ul>
+<h2>7. 我们应该怎么做</h2>
+<p>大部分GNU/Linux发行版都包含了一些非自由的软件，它们引导用户去使用非自由的软件，这是不对的。我们应该使用真正自由的GNU/Linux发行版。比如：gNewSense。虽然使用完全自由的发行版可能会带来一些使用上的不方便，但是我们在方便和自由之间应该选择自由。自由和公正比方便更重要，这是我们应有的价值观和选择。</p>
+<p>作为一个自由的操作系统，就应该保证系统的每个组件都是自由的。很多时候仅仅“开源”是不够的。Linux内核其实也不是完全自由的，因为它里面带有一些二进制的BLOB，虽然它们也是以“源代码”的形式出现，但它们本质上并不是自由的，Linus在“自由”和“方便”之间错误的选择了“方便”。所以GNU也有一个自由的Linux分支，名为Linux Libre去掉了Linux中那些不自由的东西。</p>
+<p>Mozilla是开源的，但也不是完全自由的。因为它支持一些非自由的组件，包括DRM。大家应该联合起来谴责这种行为。</p>
+<p>很多网页中也有非自由的JavaScript代码，JavaScript总是“开源”的，但是开发者仍然应该在代码中包含软件许可证，明确表明它们是自由的。我们有一个名为LibreJS的浏览器插件，可以自动阻止非自由的JavaScript代码运行（其中可能包含很多恶意的JavaScript代码），同时这个插件还可以帮你向网站开发者发出抱怨邮件，促使他们把JavaScript换成是自由的代码。所以，当你开发JavaScript代码时，请带上一个自由软件许可证。不要使用非自由的JavaScript库，如果必须要用，你可以考虑自己重写一个自由的版本。</p>
+<p>避免使用SAAS服务，因为你没办法控制你的程序在什么样的系统上运行。</p>
+<p>虽然Linux使用了GPLv2许可证，但这只是因为Linus本人想对代码有更多的控制权。但是我们应该使用“either version 3 of the License, or (at your option) any later version”，这样当有新版本GPL许可证发布时，你的代码就可以和自动允许其它人使用更新的许可证。你应该对自由软件基金会有充分的信任，如果你不信任自由软件基金会会维护人们的自由的权利，那也没有别的什么机构更值得信任了。</p>
+<p>我们支持反向工程，因为这样可以创造出更多的自由软件。</p>
+<p>如果要了解更多相关的信息，访问以下网站：<a href="http://www.gnu.org" target="_blank">www.gnu.org</a>、<a href="http://www.fsf.org" target="_blank">www.fsf.org</a>。</p>
+<p>如果想帮助GNU工程，请访问：<a href="http://www.gnu.org/help" target="_blank">www.gnu.org/help</a>。可以先从以下小事做起：用GNU/Linux来称呼使用Linux内核的发行版；避免使用“开源”一词，使用“自由软件”。加入自由软件基金会，成为一名准会员。</p>
+<p>参考阅读：</p>
+<ul>
+<li><a href="http://www.gnu.org/software/librejs/">http://www.gnu.org/software/librejs/</a></li>
+<li><a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/">http://www.fsfla.org/ikiwiki/selibre/linux-libre/</a></li>
+<li><a href="http://www.gnu.org/distros/free-distros.html">http://www.gnu.org/distros/free-distros.html</a></li>
+</ul>
+<h1>问答</h1>
+<p><em>Q：</em> 在中国，阿里巴巴在开源和自由软件事业上做了很多工作。但其它一些公司并不重视这个。如何来更好的提升自由软件的影响力。</p>
+<p><em>A：</em> 可以关注一下GNU AGPL许可证。这个许可证保证了Copyleft许可证在Web上运行时的适用条款。通过它可以推动更多的厂商开放他们的代码，向自由软件做出贡献。</p>
+<p>参考阅读：<a href="http://www.gnu.org/licenses/why-affero-gpl.html">http://www.gnu.org/licenses/why-affero-gpl.html</a></p>
+<p><em>Q：</em> 有些软件用“抽象层”的方式来隔离自己与“开源”软件，怎么看这个问题？</p>
+<p><em>A：</em> 我不是“开源”的支持者。抽象层的做法并不奏效，只要你的程序与自由软件是一个整体，GPL就能对你的程序产生约束，整个 程序都得是自由的。除非你的程序跟另一个自由软件只是在系统中同时运行，相互之间没有联系，这才可以对你的程序使用不同的许可证。但这种情况下，也不需要“抽象层”这个东西了。</p>
+<p><em>Q：</em> 开源软件一样可以让我们拥有“自由之一”，有啥不好的。</p>
+<p><em>A：</em> 开源会带来误解，开源会限制你的自由。开源只是让你可以看到源代码，在具体的使用条款上可能会有各种限制。</p>
+<p><em>Q：</em> “云计算”是恶意软件吗？</p>
+<p><em>A：</em> 请不要使用“云计算”这个词，因为它很不准确，得具体情况具体分析。如果是说“虚拟机租用”，只要服务商不限制你在虚拟机运行自由软件，那就是没有问题的。如果是说“SAAS”，那是一件不好的事情，前面已经提过。如果是说“云存储”，那就是不好的，因为你不应该把自己的东西存到别人那里，他们可能会滥用你的私人文件。除此以外，云计算这个词可能还有更多的应用场景，请不要使用这么含糊的词语。</p>
+<p>参考阅读：<a href="http://www.gnu.org/philosophy/who-does-that-server-really-serve.html">http://www.gnu.org/philosophy/who-does-that-server-really-serve.html</a></p>
+<p><em>Q：</em> 硬件很多不是自由的，怎么办？</p>
+<p><em>A：</em> 目前没什么办法。我们只能尽量支持按自由理念来设计的硬件，但毕竟硬件需要工厂去生产，我们对此没有足够的控制力。</p>
+<p><em>Q：</em> 如果微软和苹果也开源的话……</p>
+<p><em>A：</em> 我不再回答有关开源的问题，我们不应该宣传“开源”这个词汇。我是为“自由软件”而生。你可以重新组织一下你的问题吗？</p>
+<p><em>Q：</em> 如果微软和苹果能把他们的软件变为自由软件的话……</p>
+<p><em>A：</em> 那我们当然可以使用。</p>
+<p><em>Q：</em> 为什么自由软件与非自由软件不能和谐相处，人们各取所需呢？有些私有软件也做得非常出色。</p>
+<p><em>A：</em> 曾经，奴隶与农场主也是“和谐”相处的。我不用私有软件，我会躲开他们，如果我用私有软件，他们会夺去我的自由。自由软件做得再差，也比没有好。私有软件做得再好，也比没有不好。所以我选择没有。</p>
+<p>自由软件运动的目标就是让软件都变成自由的，GNU不希望你使用任何私有软件。现在我们已经取得了很多的成就，要实现完全自由计算的愿景，我们需要更多的自由软件。</p>
+<p>也许私有软件能做不少有用的工作，但是开发私有软件依然是不对的。</p>
+<p>参考阅读：<a href="http://www.gnu.org/philosophy/when_free_software_isnt_practically_better.html">http://www.gnu.org/philosophy/when_free_software_isnt_practically_better.html</a></p>
+<p><em>Q：</em> 现在跟上世纪80年代相比，对于自由软件有何不同？</p>
+<p><em>A：</em> 1980年代时，我们没有自由的操作系统。但那时的开发者还很诚实，他们开发用户想要的软件，不会开发恶意的系统。</p>
+<p>现在，非自由的操作系统中，常常包含很多恶意的东西，还促使用户去信任系统，失去对系统的控制。</p>
+<p>总体来说，现在的环境比80年代更差。不过，80年代时你没办法找到一个自由操作系统来在你的电脑上运行，现在，我们完全可以在自己的电脑上运行自由操作系统，从这点来说，环境是好了很多。</p>]]></content:encoded>
             
         </item>
         
