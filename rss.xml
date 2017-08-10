@@ -250,7 +250,7 @@
             <pubDate>Thu, 08 Jun 2017 09:40:41 +0200</pubDate>
             <description>
                 
-                最近在团队中给大家做了一个分享，泛泛地聊了一些有关「监控」的话题。 其实做分享对分享者的作用往往大于参与者。 这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。    目的 🎯 我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？ 传统意义上的监
+                最近在团队中给大家做了一个分享，泛泛地聊了一些有关「监控」的话题。 其实做分享对分享者的作用往往大于参与者。 这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。   目的 🎯 我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？ 传统意义上的监控
                 
             </description>
             
@@ -258,7 +258,6 @@
 其实做分享对分享者的作用往往大于参与者。
 这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。</p>
 <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201706/stock-exchange.png" /></p>
-
 
 <h2>目的 🎯</h2>
 <p>我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？</p>
@@ -526,8 +525,6 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.
 <span>&lt;img src=&quot;http://xxx.com/yyy.png&quot; onerror=&quot;alert('</span><span>XSS</span><span>')&quot;&gt;</span>
 <span>（这个仅限IE有效）</span>
 </pre></div>
-
-
 <p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
 通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
 PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。</p>
@@ -1477,7 +1474,6 @@ TPS 、Latency 和 Capacity。
 我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境，
 这次我们讨论另外一个比较头疼的问题：部署。</p>
 
-
 <p>小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。
 但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。</p>
 <p>前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。
@@ -1603,7 +1599,6 @@ Indicator 的含义是建立一系列评价指标，比如价格、户型、位�
 看房的过程可能长达数月，而人的记忆会随着时间逐步失真，只对最近看到的事物有深刻印象。
 使用客观的数字评价房源，则可以进行精准的评价，避免产生主观臆断。</p>
 
-
 <p>我使用的 Indicator 和评价细项罗列如下，供参考：</p>
 <ul>
 <li>价格</li>
@@ -1707,7 +1702,6 @@ Indicator 的含义是建立一系列评价指标，比如价格、户型、位�
   导致 443 端口直接被拒绝。</p>
 </blockquote>
 
-
 <p>这个问题不解决，强行上 HTTPS 的话，会导致一部分用户出现无法访问网站
 一旦用户不爽了，轻则对产品不信任，重则直接导致用户流失。</p>
 <p>运营商为了赚广告钱、省网间结算是不择手段的。
@@ -1758,8 +1752,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
     <span>proxy_pass</span> <span>$</span><span>scheme</span><span>:</span><span>//127.0.0.1;</span>
 <span>}</span>
 </pre></div>
-
-
 <p>最后一个注意事项是，记得调整 Nginx 配置的 remote_addr，否则都变成了 127.0.0.1，
 也许会导致其他一些策略失效。</p>
 <p>完美收工，效果如下：<a href="https://221.228.82.181/?__domain=www.duitang.com">https://221.228.82.181/?__domain=www.duitang.com</a>。</p>
@@ -2829,8 +2821,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
      <span>7</span>  <span>fiona66</span>     <span>6.4</span><span>%</span>
      <span>2</span>  <span>雪糕</span>        <span>1.8</span><span>%</span>
 </pre></div>
-
-
 <hr />
 <p>参考文档</p>
 <ul>
@@ -2922,7 +2912,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 这里我着重讨论后者「容量规划」。</p>
 <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201606/message.png" /></p>
 <p>^ 看我的一堆报警消息</p>
-
 
 <h2>面临的问题</h2>
 <p>面对暴涨流量，一边是业务方的满心欢喜，一边就是工程师的烦恼和压力了。
@@ -3381,7 +3370,6 @@ bled FROM video WHERE $cond &quot; .
 <p>海贼王的世界很大，富有个性的角色和团队也很多，恰好可以和显示世界中的互联网创业团队进行对比。
 柳传志讲的好，做大事，要「建班子，定战略，带队伍」，我们就着金句来看看草帽这个团队怎么样。</p>
 
-
 <h2>产品和战略</h2>
 <p>我先讲产品和战略。</p>
 <p>由于海贼王世界的设定，以及作为一个全年段漫画动画的原因。
@@ -3517,7 +3505,6 @@ bled FROM video WHERE $cond &quot; .
 <p>ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的时候，请留步思考 5s）。</p>
 <h2>Alt+Tab = 苦难的历史</h2>
 <p>当我还年轻的时候，曾经对 Alt+Tab 这个快捷键愤慨无比，觉得这种设计虽然简单但是很蠢。</p>
-
 
 <ul>
 <li><strong>命中率低</strong>。要在茫茫图标中查找自己需要的窗口，如果开了 20 个应用，切换到一个非常用窗口至多可能需要 20-1 次按键。
@@ -3868,7 +3855,6 @@ ssl_session_timeout 5m;</code></p>
 虽然没那么酷。</p>
 <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/s26354473.jpg" /></p>
 
-
 <blockquote>
 <p>要在团队中获得成功，你必须以<strong>谦虚</strong>、<strong>尊重</strong>和<strong>信任</strong>为核心原则。</p>
 </blockquote>
@@ -4012,13 +3998,12 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
             <pubDate>Tue, 02 Feb 2016 16:34:44 +0100</pubDate>
             <description>
                 
-                 早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。   检查日志，并没有 ERROR 信息，但是大量 WARN 报错。 WARN  [2015-12-09 11:01:02,730] org.eclips
+                 早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。  检查日志，并没有 ERROR 信息，但是大量 WARN 报错。 WARN  [2015-12-09 11:01:02,730] org.eclipse
                 
             </description>
             
             <content:encoded><![CDATA[<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg" /></p>
 <p>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。</p>
-
 
 <p>检查日志，并没有 ERROR 信息，但是大量 WARN 报错。</p>
 <div><pre><span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>730</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>:</span> <span>dw</span><span>{</span><span>STARTED</span><span>,</span><span>8</span><span>&lt;=</span><span>50</span><span>&lt;=</span><span>50</span><span>,</span><span>i</span><span>=</span><span>0</span><span>,</span><span>q</span><span>=</span><span>1024</span><span>}</span> <span>rejected</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConne</span>
@@ -4040,8 +4025,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>$</span><span>3.</span><span>run</span><span>(</span><span>QueuedThreadPool</span><span>.</span><span>java</span><span>:</span><span>555</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
 <span>!</span> <span>at</span> <span>java</span><span>.</span><span>lang</span><span>.</span><span>Thread</span><span>.</span><span>run</span><span>(</span><span>Thread</span><span>.</span><span>java</span><span>:</span><span>745</span><span>)</span> <span>[</span><span>na</span><span>:</span><span>1.8.0</span><span>_51</span><span>]</span>
 </pre></div>
-
-
 <p>这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads：</p>
 <p><code>http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu</code></p>
 <p>正常的实例：</p>
@@ -4065,8 +4048,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
     <span>-</span> <span>type</span><span>:</span> <span>http</span>
       <span>port</span><span>:</span> <span>8351</span>
 </pre></div>
-
-
 <p>一般对应服务不稳定，有个简单策略，超时，那么七牛服务超时是多少？找了一下相关代码，下巴都没合上：</p>
 <div><pre><span># com.qiniu.http.Client</span>
     <span>this</span><span>.</span><span>httpClient</span><span>.</span><span>setConnectTimeout</span><span>((</span><span>long</span><span>)</span><span>Config</span><span>.</span><span>CONNECT_TIMEOUT</span><span>,</span> <span>TimeUnit</span><span>.</span><span>SECONDS</span><span>);</span>
@@ -4076,8 +4057,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <span>public</span> <span>static</span> <span>int</span> <span>CONNECT_TIMEOUT</span> <span>=</span> <span>10000</span><span>;</span>
 <span>public</span> <span>static</span> <span>int</span> <span>RESPONSE_TIMEOUT</span> <span>=</span> <span>30000</span><span>;</span>
 </pre></div>
-
-
 <p>超时时间 8h，吓得我赶紧关掉了显示器。
 赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。 </p>
 <p>咨询了七牛的工程师故障当天的状况：</p>
@@ -4108,7 +4087,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
             <pubDate>Tue, 12 Jan 2016 15:53:55 +0100</pubDate>
             <description>
                 
-                公司使用 Confluence 管理自己的知识库， 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑）， 在群众的强烈呼声下，我着手开始升级。    官方的升级
+                公司使用 Confluence 管理自己的知识库， 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑）， 在群众的强烈呼声下，我着手开始升级。   官方的升级路
                 
             </description>
             
@@ -4118,7 +4097,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
 在群众的强烈呼声下，我着手开始升级。</p>
 <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201601/confluence_river.jpg" /></p>
-
 
 <p>官方的升级路线很扯，3.0.1 的升级路线是：</p>
 <ul>
@@ -4148,15 +4126,11 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <span>awk</span> <span>'{s=s $0}END{gsub(/&gt;&lt;/,&quot;&gt;</span><span>\n</span><span>&lt;&quot;,s);s=gensub(/&gt;([^ </span><span>\n</span><span>&gt;]*)&lt;/,&quot;&gt;</span><span>\n\\</span><span>1</span><span>\n</span><span>&lt;&quot;,&quot;g&quot;,s);print s}'</span> <span>entities.xml</span> <span>&gt;</span> <span>entities.xml.format</span>
 <span>#</span> <span>找重复主键</span> <span>cat</span> <span>entities.xml.format</span> <span>G</span> <span>'content&quot; class=&quot;Page'</span> <span>-A</span> <span>2</span> <span>G</span> <span>-E</span> <span>'[0-9]+'</span> <span>|</span> <span>sort</span> <span>|</span> <span>uniq</span> <span>-c</span> <span>|</span> <span>sort</span> <span>-gr</span> <span>L</span> <span>cat</span> <span>entities.xml.format</span> <span>|</span> <span>grep</span> <span>'name=&quot;id&quot;'</span> <span>-A</span> <span>1</span> <span>-B</span> <span>1</span> <span>|</span> <span>grep</span> <span>-E</span> <span>'[0-9]+'</span> <span>-B</span> <span>2</span> <span>L</span>
 </pre></div>
-
-
 <p>操作过程中，发现有数据就一条数据（grep entities.xml），还是插入重复（13238835）。
 官方文档解释是，内置数据库的锁有时候会不灵，插入重复键。
 于是决定再试试去掉主键约束方案，大不了那个数据我就不要了。</p>
 <div><pre><span>ALTER</span> <span>TABLE</span> <span>BODYCONTENT</span> <span>DROP</span> <span>PRIMARY</span> <span>KEY</span><span>;</span>
 </pre></div>
-
-
 <p>结果还有其他 PK 约束，我于是一条一条解开，然后……还是不行，真是作了一手的好死。</p>
 <p>结论是，这数据错误了太多，已经无法手工修复。</p>
 <h2>横插一刀的 Emoji 😊😢💗</h2>
@@ -4348,8 +4322,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <span>|</span>                 <span>|</span>                                                  <span>|</span>                <span>|</span>
 <span>+-----------------+</span>                                                  <span>+----------------+</span>
 </pre></div>
-
-
 <p>配置：</p>
 <div><pre><span>global</span>
     <span>ulimit</span><span>-</span><span>n</span>  <span>4096</span>
@@ -4393,8 +4365,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
     <span>server</span> <span>s2</span> <span>host2</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>2</span><span>s</span> <span>rise</span> <span>30</span> <span>fall</span> <span>6</span>
     <span>server</span> <span>s3</span> <span>host2</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>1</span><span>s</span> <span>rise</span> <span>60</span> <span>fall</span> <span>6</span>
 </pre></div>
-
-
 <p>挺稳定，很快速。</p>
 <p>update: 2015-12-15，添加 <code>backup</code> 项，选一台最稳定的做 backup，避免所有连接都超时。
 update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项，换机器重试，
@@ -4638,8 +4608,6 @@ May use other licenses for binary package on other distribution sites.</p>
 <span>!</span> <span>at</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>.</span><span>run</span><span>(</span><span>Thing</span><span>.</span><span>java</span><span>:</span><span>16</span><span>)</span>
 <span>!</span>
 </pre></div>
-
-
 <p>splunk 的最佳实践：</p>
 <ul>
 <li>使用清晰的键值对：<code>key1=val1, key2=val2</code></li>
@@ -4853,8 +4821,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <span># 4.552 g db1</span>
 <span>17</span><span>:</span><span>38</span><span>:</span><span>36</span><span>,</span><span>422</span> <span>-</span> <span>__main__</span> <span>-</span> <span>INFO</span> <span>-</span> <span>v</span><span>,</span> <span>dumps</span> <span>keys</span> <span>1392</span><span>/</span><span>7711834</span><span>/</span><span>...,</span> <span>time</span><span>:</span> <span>3076.41647506</span>
 </pre></div>
-
-
 <p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
 <hr />
 <div>
