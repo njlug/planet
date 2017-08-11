@@ -514,16 +514,16 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.
 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p>
 <p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p>
 <p>常见的检测方法（来自 <a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95">跨网站脚本 - 维基百科，自由的百科全书</a>：</p>
-<div><pre><span>&gt;&lt;</span><span>script</span><span>&gt;</span><span>alert</span><span>(</span><span>document.cookie</span><span>)</span><span>&lt;/</span><span>script</span><span>&gt;</span>
-<span>=</span><span>'&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
-<span>&quot;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
-<span>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
-<span>&lt;script&gt;alert (vulnerable)&lt;/script&gt;</span>
-<span>%3Cscript%3Ealert('</span><span>XSS</span><span>')%3C/script%3E</span>
-<span>&lt;script&gt;alert('</span><span>XSS</span><span>')&lt;/script&gt;</span>
-<span>&lt;img src=&quot;javascript:alert('</span><span>XSS</span><span>')&quot;&gt;</span>
-<span>&lt;img src=&quot;http://xxx.com/yyy.png&quot; onerror=&quot;alert('</span><span>XSS</span><span>')&quot;&gt;</span>
-<span>（这个仅限IE有效）</span>
+<div><pre><span></span>&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
+='&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
+&quot;&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
+<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
+<span>&lt;script&gt;</span>alert (vulnerable)<span>&lt;/script&gt;</span>
+%3Cscript%3Ealert('XSS')%3C/script%3E
+<span>&lt;script&gt;</span>alert('XSS')<span>&lt;/script&gt;</span>
+<span>&lt;img</span> <span>src=</span><span>&quot;javascript:alert('XSS')&quot;</span><span>&gt;</span>
+<span>&lt;img</span> <span>src=</span><span>&quot;http://xxx.com/yyy.png&quot;</span> <span>onerror=</span><span>&quot;alert('XSS')&quot;</span><span>&gt;</span>
+（这个仅限IE有效）
 </pre></div>
 <p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
 通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
@@ -1269,7 +1269,7 @@ TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使
 <p>通过分层，不仅仅完成了自上而下地遍历整个技术栈，也同时将不同模块的内容交给不同的责任方，
 确保任务的分割。</p>
 <p>分完模块，还要告知大家如何具体查找问题。
-这里我介绍一个通用的方法：USE<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn:1">1</a></sup>：</p>
+这里我介绍一个通用的方法：USE<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn-1">1</a></sup>：</p>
 <blockquote>
 <p>For every resource, check Utilization, Saturation, and Errors.</p>
 </blockquote>
@@ -1277,7 +1277,7 @@ TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使
 在技术设施的领域里，Resource 即是指各种类型的资源，比如 CPU、磁盘、网络、内存，
 Utilization 指的是使用率，可以简单分为百分制和非百分制。
 Saturation 是指饱和率，支持 queue 的资源，就会有这个指标。
-Error 即错误，可以从错误统计和日志得知。<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn:2">2</a></sup></p>
+Error 即错误，可以从错误统计和日志得知。<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn-2">2</a></sup></p>
 <p>业务领域里面，USE 也有相对应的含义。以审核系统举例，
 对应的 USE 可以理解为「审核应用实例跑的 CPU 占用如何，任务队列是否塞满，业务日志是否有异常」。</p>
 <p>除了 USE 里面提到的指标，还有几个指标特别重要：
@@ -1316,10 +1316,10 @@ TPS 、Latency 和 Capacity。
 <hr />
 <ol>
 <li>
-<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref:1">↩</a></p>
+<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref-1">↩</a></p>
 </li>
 <li>
-<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref:2">↩</a></p>
+<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref-2">↩</a></p>
 </li>
 </ol>
 </div>
@@ -1741,15 +1741,15 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>为了解决同一个 IP 下面多个域名的问题，我们引入了一个URL参数： <code>__domain</code>。
 当请求 IP 域名时候，必须带着这个参数，服务器会将请求域名解析出来，再分发到对应的域名。</p>
 <p>实现这个逻辑的 Nginx 核心代码：</p>
-<div><pre><span>set</span> <span>$</span><span>query_domain</span> <span>$</span><span>arg___domain</span><span>;</span>
-<span>if</span> <span>(</span><span>$</span><span>query_domain</span> <span>!~</span> <span>'</span><span>(</span><span>www</span><span>|</span><span>a</span><span>|</span><span>b</span><span>)</span><span>\</span><span>.</span><span>example</span><span>\</span><span>.</span><span>com</span><span>'</span><span>)</span> <span>{</span>
-    <span>rewrite</span> <span>^</span> <span>http</span><span>:</span><span>//www.example.com/404/ redirect;</span>
+<div><pre><span></span><span>set</span> <span>$</span><span>query_domain</span> <span>$</span><span>arg___domain</span><span>;</span>
+<span>if</span> <span>($</span><span>query_domain</span> <span>!~</span> <span>'(www|a|b)\.example\.com'</span><span>)</span> <span>{</span>
+    <span>rewrite</span> <span>^</span> <span>http</span><span>:</span><span>//</span><span>www</span><span>.</span><span>example</span><span>.</span><span>com</span><span>/</span><span>404</span><span>/</span> <span>redirect</span><span>;</span>
 <span>}</span>
 <span>set</span> <span>$</span><span>my_host</span> <span>$</span><span>query_domain</span><span>;</span>
 <span>location</span> <span>/</span> <span>{</span>
-    <span>proxy_set_header</span> <span>Host</span> <span>$</span><span>my_host</span><span>;</span>
-    <span>proxy_set_header</span> <span>X</span><span>-</span><span>REAL</span><span>-</span><span>IP</span> <span>$</span><span>remote_addr</span><span>;</span>
-    <span>proxy_pass</span> <span>$</span><span>scheme</span><span>:</span><span>//127.0.0.1;</span>
+    <span>proxy_set_header</span> <span>Host</span> <span>$my_host</span><span>;</span>
+    <span>proxy_set_header</span> <span>X-REAL-IP</span> <span>$remote_addr</span><span>;</span>
+    <span>proxy_pass</span> <span>$</span><span>scheme</span><span>:</span><span>//</span><span>127.0.0.1</span><span>;</span>
 <span>}</span>
 </pre></div>
 <p>最后一个注意事项是，记得调整 Nginx 配置的 remote_addr，否则都变成了 127.0.0.1，
@@ -2809,7 +2809,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。</p>
 <p>感谢项目贡献者：</p>
-<div><pre><span>project</span>  <span>:</span> <span>abao</span>
+<div><pre><span></span><span>project</span>  <span>:</span> <span>abao</span>
  <span>repo</span> <span>age</span> <span>:</span> <span>5</span> <span>months</span>
  <span>active</span>   <span>:</span> <span>32</span> <span>days</span>
  <span>commits</span>  <span>:</span> <span>109</span>
@@ -4006,11 +4006,11 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <p>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。</p>
 
 <p>检查日志，并没有 ERROR 信息，但是大量 WARN 报错。</p>
-<div><pre><span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>730</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>:</span> <span>dw</span><span>{</span><span>STARTED</span><span>,</span><span>8</span><span>&lt;=</span><span>50</span><span>&lt;=</span><span>50</span><span>,</span><span>i</span><span>=</span><span>0</span><span>,</span><span>q</span><span>=</span><span>1024</span><span>}</span> <span>rejected</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConne</span>
-<span>ction</span><span>$</span><span>2</span><span>@</span><span>62</span><span>c021c6</span>
+<div><pre><span></span><span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>730</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>:</span> <span>dw</span><span>{</span><span>STARTED</span><span>,</span><span>8</span><span>&lt;=</span><span>50</span><span>&lt;=</span><span>50</span><span>,</span><span>i</span><span>=</span><span>0</span><span>,</span><span>q</span><span>=</span><span>1024</span><span>}</span> <span>rejected</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConne</span>
+<span>ction</span><span>$</span><span>2@62</span><span>c021c6</span>
 <span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>731</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectorManager</span><span>:</span> <span>Could</span> <span>not</span> <span>process</span> <span>key</span> <span>for</span> <span>channel</span> <span>java</span><span>.</span><span>nio</span><span>.</span><span>channels</span><span>.</span><span>SocketChannel</span><span>[</span><span>connected</span> <span>local</span><span>=/</span><span>10.</span>
 <span>1.1.78</span><span>:</span><span>8350</span> <span>remote</span><span>=/</span><span>10.1.1.74</span><span>:</span><span>63290</span><span>]</span>
-<span>!</span> <span>java</span><span>.</span><span>util</span><span>.</span><span>concurrent</span><span>.</span><span>RejectedExecutionException</span><span>:</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>2</span><span>@</span><span>62</span><span>c021c6</span>
+<span>!</span> <span>java</span><span>.</span><span>util</span><span>.</span><span>concurrent</span><span>.</span><span>RejectedExecutionException</span><span>:</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>2@62</span><span>c021c6</span>
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>.</span><span>execute</span><span>(</span><span>QueuedThreadPool</span><span>.</span><span>java</span><span>:</span><span>362</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>FillingState</span><span>.</span><span>onEnter</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>379</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>.</span><span>next</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>273</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
@@ -4033,7 +4033,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/image2015-12-9_2.png" /></p>
 <p>确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？</p>
 <p>检查了 App 的配置文件，的确配置了 <code>maxThreads</code> 为 50:</p>
-<div><pre><span>server</span><span>:</span>
+<div><pre><span></span><span>server</span><span>:</span>
   <span>gzip</span><span>:</span>
     <span>enabled</span><span>:</span> <span>false</span>
   <span>requestLog</span><span>:</span>
@@ -4049,13 +4049,13 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
       <span>port</span><span>:</span> <span>8351</span>
 </pre></div>
 <p>一般对应服务不稳定，有个简单策略，超时，那么七牛服务超时是多少？找了一下相关代码，下巴都没合上：</p>
-<div><pre><span># com.qiniu.http.Client</span>
-    <span>this</span><span>.</span><span>httpClient</span><span>.</span><span>setConnectTimeout</span><span>((</span><span>long</span><span>)</span><span>Config</span><span>.</span><span>CONNECT_TIMEOUT</span><span>,</span> <span>TimeUnit</span><span>.</span><span>SECONDS</span><span>);</span>
-    <span>this</span><span>.</span><span>httpClient</span><span>.</span><span>setReadTimeout</span><span>((</span><span>long</span><span>)</span><span>Config</span><span>.</span><span>RESPONSE_TIMEOUT</span><span>,</span> <span>TimeUnit</span><span>.</span><span>SECONDS</span><span>);</span>
+<div><pre><span></span># com.qiniu.http.Client
+    this.httpClient.setConnectTimeout((long)Config.CONNECT_TIMEOUT, TimeUnit.SECONDS);
+    this.httpClient.setReadTimeout((long)Config.RESPONSE_TIMEOUT, TimeUnit.SECONDS);
 
-<span># com.qiniu.common.Config</span>
-<span>public</span> <span>static</span> <span>int</span> <span>CONNECT_TIMEOUT</span> <span>=</span> <span>10000</span><span>;</span>
-<span>public</span> <span>static</span> <span>int</span> <span>RESPONSE_TIMEOUT</span> <span>=</span> <span>30000</span><span>;</span>
+# com.qiniu.common.Config
+public static int CONNECT_TIMEOUT = 10000;
+public static int RESPONSE_TIMEOUT = 30000;
 </pre></div>
 <p>超时时间 8h，吓得我赶紧关掉了显示器。
 赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。 </p>
@@ -4122,14 +4122,14 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 </blockquote>
 <p>官方文档 <a href="https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html">https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a>
 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p>
-<div><pre><span>#</span> <span>格式化</span>
-<span>awk</span> <span>'{s=s $0}END{gsub(/&gt;&lt;/,&quot;&gt;</span><span>\n</span><span>&lt;&quot;,s);s=gensub(/&gt;([^ </span><span>\n</span><span>&gt;]*)&lt;/,&quot;&gt;</span><span>\n\\</span><span>1</span><span>\n</span><span>&lt;&quot;,&quot;g&quot;,s);print s}'</span> <span>entities.xml</span> <span>&gt;</span> <span>entities.xml.format</span>
-<span>#</span> <span>找重复主键</span> <span>cat</span> <span>entities.xml.format</span> <span>G</span> <span>'content&quot; class=&quot;Page'</span> <span>-A</span> <span>2</span> <span>G</span> <span>-E</span> <span>'[0-9]+'</span> <span>|</span> <span>sort</span> <span>|</span> <span>uniq</span> <span>-c</span> <span>|</span> <span>sort</span> <span>-gr</span> <span>L</span> <span>cat</span> <span>entities.xml.format</span> <span>|</span> <span>grep</span> <span>'name=&quot;id&quot;'</span> <span>-A</span> <span>1</span> <span>-B</span> <span>1</span> <span>|</span> <span>grep</span> <span>-E</span> <span>'[0-9]+'</span> <span>-B</span> <span>2</span> <span>L</span>
+<div><pre><span></span># 格式化
+awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot;,s);s=gensub(/&gt;([^ \n&gt;]*)<span>&lt;</span>/,&quot;&gt;\n\\1\n<span>&lt;</span>&quot;,&quot;g&quot;,s);print s}' entities.xml &gt; entities.xml.format
+# 找重复主键 cat entities.xml.format G 'content&quot; class=&quot;Page' -A 2 G -E '[0-9]+' | sort | uniq -c | sort -gr L cat entities.xml.format | grep 'name=&quot;id&quot;' -A 1 -B 1 | grep -E '[0-9]+' -B 2 L
 </pre></div>
 <p>操作过程中，发现有数据就一条数据（grep entities.xml），还是插入重复（13238835）。
 官方文档解释是，内置数据库的锁有时候会不灵，插入重复键。
 于是决定再试试去掉主键约束方案，大不了那个数据我就不要了。</p>
-<div><pre><span>ALTER</span> <span>TABLE</span> <span>BODYCONTENT</span> <span>DROP</span> <span>PRIMARY</span> <span>KEY</span><span>;</span>
+<div><pre><span></span>ALTER TABLE BODYCONTENT DROP PRIMARY KEY;
 </pre></div>
 <p>结果还有其他 PK 约束，我于是一条一条解开，然后……还是不行，真是作了一手的好死。</p>
 <p>结论是，这数据错误了太多，已经无法手工修复。</p>
@@ -4304,66 +4304,66 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 需要手动切换一下服务器。
 于是用 HA 做了一个本地代理，调整了一些参数，让 SS 总是有快速的服务器供选择。</p>
 <p>结构：</p>
-<div><pre><span>+-----------------+</span>                                                  <span>+----------------+</span>
-<span>|</span>                 <span>|</span>                                                  <span>|</span>                <span>|</span>
-<span>|</span>    <span>Server</span> <span>1</span>     <span>|&gt;&gt;&gt;&gt;</span><span>v</span>                                           <span>&gt;&gt;|</span>   <span>Mail</span><span>.</span><span>app</span>     <span>|</span>
-<span>|</span>                 <span>|</span>    <span>v</span>                                           <span>^</span> <span>|</span>                <span>|</span>
-<span>+-----------------+</span>    <span>v</span>                                           <span>^</span> <span>+----------------+</span>
-                       <span>v</span>                                           <span>^</span>
-<span>+-----------------+</span>    <span>v</span>    <span>|----------------+</span>      <span>+------------+</span> <span>^</span> <span>+----------------+</span>
-<span>|</span>                 <span>|</span>    <span>v</span>    <span>|</span>                <span>|</span>      <span>|</span>            <span>|</span> <span>^</span> <span>|</span>                <span>|</span>
-<span>|</span>    <span>Server</span> <span>2</span>     <span>|&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;|</span>    <span>HAProxy</span>     <span>|&gt;&gt;&gt;&gt;&gt;&gt;|</span> <span>SS</span><span>-</span><span>Client</span>  <span>|&gt;&gt;&gt;|</span>   <span>Browser</span>      <span>|</span>
-<span>|</span>                 <span>|</span>    <span>^</span>    <span>|</span>                <span>|</span>      <span>|</span>            <span>|</span> <span>v</span> <span>|</span>                <span>|</span>
-<span>+-----------------+</span>    <span>^</span>    <span>+----------------+</span>      <span>+------------+</span> <span>v</span> <span>+----------------+</span>
-                       <span>^</span>                                           <span>v</span>   
-<span>+-----------------+</span>    <span>^</span>                                           <span>v</span> <span>+----------------+</span>
-<span>|</span>                 <span>|</span>    <span>^</span>                                           <span>v</span> <span>|</span>                <span>|</span>
-<span>|</span>    <span>Server</span> <span>3</span>     <span>|&gt;&gt;&gt;&gt;^</span>                                           <span>v</span><span>&gt;|</span>   <span>Evernote</span><span>...</span>  <span>|</span>
-<span>|</span>                 <span>|</span>                                                  <span>|</span>                <span>|</span>
-<span>+-----------------+</span>                                                  <span>+----------------+</span>
+<div><pre><span></span>+-----------------+                                                  +----------------+
+|                 |                                                  |                |
+|    Server 1     |&gt;&gt;&gt;&gt;v                                           &gt;&gt;|   Mail.app     |
+|                 |    v                                           ^ |                |
++-----------------+    v                                           ^ +----------------+
+                       v                                           ^
++-----------------+    v    |----------------+      +------------+ ^ +----------------+
+|                 |    v    |                |      |            | ^ |                |
+|    Server 2     |&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;|    HAProxy     |&gt;&gt;&gt;&gt;&gt;&gt;| SS-Client  |&gt;&gt;&gt;|   Browser      |
+|                 |    ^    |                |      |            | v |                |
++-----------------+    ^    +----------------+      +------------+ v +----------------+
+                       ^                                           v   
++-----------------+    ^                                           v +----------------+
+|                 |    ^                                           v |                |
+|    Server 3     |&gt;&gt;&gt;&gt;^                                           v&gt;|   Evernote...  |
+|                 |                                                  |                |
++-----------------+                                                  +----------------+
 </pre></div>
 <p>配置：</p>
-<div><pre><span>global</span>
-    <span>ulimit</span><span>-</span><span>n</span>  <span>4096</span>
+<div><pre><span></span>global
+    ulimit-n  4096
 
 
-<span>defaults</span>
-    <span>log</span> <span>global</span>
-    <span>mode</span>    <span>tcp</span>
-    <span>timeout</span> <span>connect</span> <span>1</span><span>s</span>
-    <span>timeout</span> <span>client</span> <span>1</span><span>s</span>
-    <span>timeout</span> <span>server</span> <span>1</span><span>s</span>
+defaults
+    log global
+    mode    tcp
+    timeout connect 1s
+    timeout client 1s
+    timeout server 1s
 
 
-<span>listen</span> <span>stats</span>
-    <span>bind</span> <span>127.0.0.1</span><span>:</span><span>12222</span>
-    <span>mode</span> <span>http</span>
-    <span>stats</span> <span>enable</span>
-    <span>stats</span> <span>uri</span> <span>/</span>
-    <span>stats</span> <span>refresh</span> <span>8</span><span>s</span>
+listen stats
+    bind 127.0.0.1:12222
+    mode http
+    stats enable
+    stats uri /
+    stats refresh 8s
 
 
-<span>listen</span> <span>ss</span>
-    <span>bind</span> <span>127.0.0.1</span><span>:</span><span>1081</span>
-    <span>mode</span> <span>tcp</span>
-    <span>option</span> <span>tcpka</span>
-    <span>#</span><span>balance</span> <span>source</span>
-    <span>balance</span> <span>roundrobin</span>
-    <span>log</span> <span>global</span>
-    <span>maxconn</span> <span>1024</span>
+listen ss
+    bind 127.0.0.1:1081
+    mode tcp
+    option tcpka
+    #balance source
+    balance roundrobin
+    log global
+    maxconn 1024
 
-    <span>timeout</span> <span>connect</span> <span>200</span><span>ms</span>
-    <span>timeout</span> <span>client</span> <span>600</span><span>s</span>
-    <span>timeout</span> <span>server</span> <span>600</span><span>s</span>
-    <span>timeout</span> <span>check</span> <span>80</span><span>ms</span>  <span>#</span> <span>for</span> <span>office</span> <span>/</span> <span>home</span>
-    <span>#</span> <span>timeout</span> <span>check</span> <span>400</span><span>ms</span>  <span>#</span> <span>for</span> <span>starbucks</span>
-    <span>retries</span> <span>1</span>
-    <span>option</span> <span>redispatch</span>
-    <span>option</span> <span>tcp</span><span>-</span><span>check</span>
+    timeout connect 200ms
+    timeout client 600s
+    timeout server 600s
+    timeout check 80ms  # for office / home
+    # timeout check 400ms  # for starbucks
+    retries 1
+    option redispatch
+    option tcp-check
 
-    <span>server</span> <span>s1</span> <span>host1</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>2</span><span>s</span> <span>rise</span> <span>30</span> <span>fall</span> <span>6</span> <span>backup</span>
-    <span>server</span> <span>s2</span> <span>host2</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>2</span><span>s</span> <span>rise</span> <span>30</span> <span>fall</span> <span>6</span>
-    <span>server</span> <span>s3</span> <span>host2</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>1</span><span>s</span> <span>rise</span> <span>60</span> <span>fall</span> <span>6</span>
+    server s1 host1:port maxconn 20 check inter 2s rise 30 fall 6 backup
+    server s2 host2:port maxconn 20 check inter 2s rise 30 fall 6
+    server s3 host2:port maxconn 20 check inter 1s rise 60 fall 6
 </pre></div>
 <p>挺稳定，很快速。</p>
 <p>update: 2015-12-15，添加 <code>backup</code> 项，选一台最稳定的做 backup，避免所有连接都超时。
@@ -4599,14 +4599,14 @@ May use other licenses for binary package on other distribution sites.</p>
 <p>Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.</p>
 </blockquote>
 <p>eg.:</p>
-<div><pre><span>TRACE</span> <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>271</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>Contemplating</span> <span>doing</span> <span>a</span> <span>thing</span><span>.</span>
-<span>DEBUG</span> <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>274</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>About</span> <span>to</span> <span>do</span> <span>a</span> <span>thing</span><span>.</span>
-<span>INFO</span>  <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>274</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>Doing</span> <span>a</span> <span>thing</span>
-<span>WARN</span>  <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>275</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>Doing</span> <span>a</span> <span>thing</span>
-<span>ERROR</span> <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>275</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>This</span> <span>may</span> <span>get</span> <span>ugly</span><span>.</span>
-<span>!</span> <span>java</span><span>.</span><span>lang</span><span>.</span><span>RuntimeException</span><span>:</span> <span>oh</span> <span>noes</span><span>!</span>
-<span>!</span> <span>at</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>.</span><span>run</span><span>(</span><span>Thing</span><span>.</span><span>java</span><span>:</span><span>16</span><span>)</span>
-<span>!</span>
+<div><pre><span></span>TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing.
+DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing.
+INFO  [2010-04-06 06:42:35,274] com.example.dw.Thing: Doing a thing
+WARN  [2010-04-06 06:42:35,275] com.example.dw.Thing: Doing a thing
+ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
+! java.lang.RuntimeException: oh noes!
+! at com.example.dw.Thing.run(Thing.java:16)
+!
 </pre></div>
 <p>splunk 的最佳实践：</p>
 <ul>
@@ -4816,10 +4816,10 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <code>ttl</code>。</p>
 <h2>正式操作</h2>
 <p>线上操作的数据：</p>
-<div><pre><span># 0.483 g db0</span>
-<span>12</span><span>:</span><span>05</span><span>:</span><span>19</span><span>,</span><span>444</span> <span>-</span> <span>__main__</span> <span>-</span> <span>INFO</span> <span>-</span> <span>v</span><span>,</span> <span>dumps</span> <span>keys</span> <span>1014</span><span>/</span><span>1375371</span><span>/</span><span>...,</span> <span>time</span><span>:</span> <span>974.183676004</span>
-<span># 4.552 g db1</span>
-<span>17</span><span>:</span><span>38</span><span>:</span><span>36</span><span>,</span><span>422</span> <span>-</span> <span>__main__</span> <span>-</span> <span>INFO</span> <span>-</span> <span>v</span><span>,</span> <span>dumps</span> <span>keys</span> <span>1392</span><span>/</span><span>7711834</span><span>/</span><span>...,</span> <span>time</span><span>:</span> <span>3076.41647506</span>
+<div><pre><span></span># 0.483 g db0
+12:05:19,444 - __main__ - INFO - v, dumps keys 1014/1375371/..., time: 974.183676004
+# 4.552 g db1
+17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506
 </pre></div>
 <p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
 <hr />
