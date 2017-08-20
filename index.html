@@ -48,11 +48,11 @@
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-c" href="#">*nix</span>
+                            <span class="post-category post-category-a" href="#">*nix</span>
                             
                             <span class="post-category post-category-a" href="#">nix</span>
                             
-                            <span class="post-category post-category-d" href="#">vpn</span>
+                            <span class="post-category post-category-a" href="#">vpn</span>
                             
                         </p>
                     </header>
@@ -60,193 +60,6 @@
                         
                         最近手贱想把手头的几台玩具机器统一下标准，其中一个标准是将 kernel.pid_max 增加到了 512000，结果就在当天的凌晨，一台跑着 pptp 的 VPS 崩溃了: Jun 20 22:53:09 jaseywang vps pptpd: ======= Backtrace: ========= Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(__fortify_fail+0x37)[0x7fdba6416047] Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(+0x10d200)[0x7fdba6414200] Jun 20 22:53:09 jaseywang vps pptpd: /lib64/libc.so.6(+0x10c709)[0x7fdba6413709] Jun 20 … <a href="http://jaseywang.me/2017/06/23/%e7%94%b1-rc_mksid-%e5%bc%95%e8%b5%b7-pppd-%e5%a5%94%e6%ba%83%e7%9a%84%e4%b8%80%e4%b8%aa-bug/">Continue reading <span>→</span></a><div><h3>Related Posts:</h3><ul><li><a href="http://jaseywang.me/2015/05/13/how-we-migrate-pbs-data-from-beijing-to-shanghai/">How We Migrate PBs Data from Beijing to Shanghai</a></li><li><a href="http://jaseywang.me/2015/01/12/venta-%e6%b0%b4%e6%b4%97%e6%9c%ba%e5%8d%8a%e5%ae%9a%e9%87%8f%e4%bd%bf%e7%94%a8%e6%b5%8b%e8%af%84/">venta 水洗机半定量使用测评</a></li><li><a href="http://jaseywang.me/2015/02/16/umeng-operations-infrastructure-practice/">Umeng Operations Infrastructure &amp; Practice</a></li><li><a href="http://jaseywang.me/2015/01/02/resolv-conf-%e7%9a%84%e8%b6%85%e6%97%b6timeout%e4%b8%8e%e9%87%8d%e8%af%95attempts%e6%9c%ba%e5%88%b6/">resolv.conf 的超时(timeout)与重试(attempts)机制</a></li><li><a href="http://jaseywang.me/2014/10/13/sar-%e7%9a%84%e5%9b%be%e5%bd%a2%e5%8c%96/">sar 的图形化</a></li></ul><div></div></div>
                         <div><p class="post-meta">[<em><a href="http://jaseywang.me/2017/06/23/%e7%94%b1-rc_mksid-%e5%bc%95%e8%b5%b7-pppd-%e5%a5%94%e6%ba%83%e7%9a%84%e4%b8%80%e4%b8%aa-bug/">Continue reading...</a></em>]</p></div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">June 8th 2017 9:40:41 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2017/06/monitoring-introducing/" class="post-title">当我们在聊监控，我们在聊什么？</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-b" href="#">Monitoring</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>最近在团队中给大家做了一个分享，泛泛地聊了一些有关「监控」的话题。
-其实做分享对分享者的作用往往大于参与者。
-这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201706/stock-exchange.png" /></p>
-
-<h2>目的 🎯</h2>
-<p>我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？</p>
-<p>传统意义上的监控，是指：</p>
-<blockquote>
-<p>通过一些手段和工具，关注运行中的<strong>硬件、软件、用户体验</strong>的关键数据，将其暴露出来。
-  当关键数据出现异常时候发出警告，进行人工或者自动的响应。</p>
-</blockquote>
-<p>我们平时看到的最常见的监控系统，比如 Zabbix，提供了丰富的模板，
-可以监控服务器的 Load / CPU Usage / Alive 这些常规指标。
-并在出现问题时候，对其进行报警通知。
-随后运维工程师们会上线进行应急操作，case by case 的处理故障。</p>
-<p>我将上面的使用目的归纳为：</p>
-<ul>
-<li>故障发生时提供数据报警</li>
-<li>提供历史数据以供分析</li>
-</ul>
-<p>故事到这里似乎可以结束了，可监控真的是这么简单的么？
-当然没，随着时代的进步，用户对服务提出了更为严苛的要求，
-同时我们也有能力进一步控制平均故障修复时间
-（<a href="https://en.wikipedia.org/wiki/Mean_time_between_failures">MTBF</a>），
-上述描述的做法已经不能满足我们了。</p>
-<p>现在让我们切换一下视角，从传统的 OPS 的视角切换到 SRE
-（<a href="https://en.wikipedia.org/wiki/Site_reliability_engineering">Site Reliability Engineering</a>）的视角。
-当我们在关注网站整体的可用性时，我们会发现：
-故障警报处理当然很重要，但是我们根本上想减少甚至避免 MTBF。
-我们有两种手段：
-一种是去除单点故障，让问题自然发生，但是不对线上造成影响；
-另一种是在问题出现的早期就发现并进行及时修复。
-前者是高可用范畴，后者就是我们今天关注的「监控」了。</p>
-<p>监控的目的是要<strong>将灾难消灭在襁褓里；在灾难即将出现或者发生问题时， 给大家展示直接的原因</strong>。</p>
-<p>那为了达成这两个目标，我们需要回到问题的本质，重新思考两个问题：</p>
-<ol>
-<li>监控哪些对象？</li>
-<li>如何识别故障？</li>
-</ol>
-<h2>对象 🐘🐘</h2>
-<p>我们说的监控对象，一般指的都是某个资源，
-资源即持有某种其他方需要的某些属性的载体，包括硬件、软件。
-除了资源这种类型，还有一种常见的监控对象是「体验」，即终端用户的访问感受，
-这块内容我们暂时略去。</p>
-<p>让我们来先看一下常见的资源：</p>
-<ul>
-<li>硬件<ul>
-<li>服务器</li>
-<li>网络设备</li>
-</ul>
-</li>
-<li>软件<ul>
-<li>Application</li>
-<li>Infrastructure</li>
-</ul>
-</li>
-</ul>
-<p>这个分类是粗粒度的描述，为了落地地描述监控对象对象的健康状况，
-我们还要进一步细化。以「服务器」为例，我们可以将其监控的内容细化为以下监控项：</p>
-<ul>
-<li>CPU</li>
-<li>Memory</li>
-<li>Network interface</li>
-<li>Storage devices</li>
-<li>Controllers</li>
-</ul>
-<p>如何评估这些监控项的健康状况？我们使用
-<a href="https://en.wikipedia.org/wiki/Service_level_indicator">SLI（Service Level Indicator）</a>。
-比如<strong>可用性</strong>就是一个最容易理解的 SLI。
-这里我将资源归为两类，面向用户提供服务的资源和面向存储的资源，
-以下是针对这两类资源的常见 SLI：</p>
-<ul>
-<li>User-facing Service<ul>
-<li>Availability</li>
-<li>Latency</li>
-<li>Throughput</li>
-</ul>
-</li>
-<li>Storage System<ul>
-<li>Latency</li>
-<li>Throughput</li>
-<li>durability</li>
-</ul>
-</li>
-</ul>
-<p>基于 SLI 建立的数字关键指标，称之为
-<a href="https://en.wikipedia.org/wiki/Service_level_objective">Service Level Objective</a>。
-SLO 往往是一组数字范围，比如 CPU 负载的 SLO 可以设置为 0.0-6.0（针对 8 核 CPU）。
-不同的资源、不同的业务场景，会有不一样的 SLO 设计。</p>
-<p>看到这里，我们已经聊了要监控哪些指标，那么接下来我们聊聊如何用量化的思想，
-帮助指标更易于识别、分析和决策。</p>
-<h2>量化的思想 🔢</h2>
-<p>刚开始担任线上救火队成员时候，当有个系统出现问题时候，我经常听到这样的描述：
-网站挂了、页面打不开了，CPU 出问题了，内存爆了，线程池炸了等等。
-这样的表述虽然没错，但带来的可用价值太少，信息熵太低。
-这样的说辞多了，就给人产生一种不靠谱，不科学的感觉。</p>
-<p>那怎样才能成为科学的描述？
-古希腊哲学家在思考宇宙的时候，提出了一种心智能力，
-从而打开了科学的窗子，这就是 Reasonable，中文名叫理智，这成为了自然科学的基石。
-使用 Reasonable 探讨意味着探讨要深入问题的本质，不停留在表象，挖掘出真正有价值的内容。</p>
-<p>但是光有 Reasonable 还不够，B站粉丝建了一个微博，每天会检查
-<a href="http://weibo.com/yamanasion?refer_flag=1001030201_&amp;is_hot=1">今天B站炸了吗</a>，
-他只能告诉我们炸没炸，不能给工程师带来实际的用处。
-在科学的发展历史上，我们可以发现在亚里士多德的著作里没有任何数据公式。
-他对现象只有描述，只是定性分析，通过描述性状来阐述定理。
-这个定性的研究方式到了伽利略那里才出现了突破。
-这里我们可以引入第二个关键词是  Quantifier，量化。
-伽利略率先使用定量分析的方法，并将其运用到动力学和天文学，从而开创了近代科学。</p>
-<p>如果我们以定量的方式来描述网站挂没挂，就会变成：网站的响应耗时在 30s，基本无法使用。
-描述线程池出问题，就会变成：active 线程数量是 200，已经到达 maxCount 数量，无法进行分配。
-你看，通过这样的描述，我们一下子就能发现问题出在哪里。</p>
-<h2>USE 💡</h2>
-<p>现在我们已经了解了「监控哪些对象？」，以及尝试用「量化」这个法宝来「识别故障」。
-那有没有一些最佳实践帮助大家高效的识别故障呢？这里我推荐 Brend Gregg 大神的 <a href="http://www.brendangregg.com/usemethod.html">USE 方法</a>。
-Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.com/sysperfbook.html">Systems Performance Book</a>，
-目前已经出版中文版 <a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B0140I5WPK">性能之巅:洞悉系统、企业与云计算</a>。</p>
-<p>USE 分别是三个单词的首字母缩写：</p>
-<ul>
-<li>Utilization：使用率，CPU running percent，硬盘的 IO </li>
-<li>Saturation：饱和度，一般偏存储型资源，内存使用，硬盘使用</li>
-<li>Error：错误数</li>
-</ul>
-<p>我们可以为每个资源找到各自的 USE 度量指标，具体的 Check List 清单可以参考
-<a href="http://www.brendangregg.com/USEmethod/use-rosetta.html">USE Method: Rosetta Stone of Performance Checklists</a>。</p>
-<p>这里举个例子，前段时间在设计 MySQL HA 方案时候，同时关注了 MySQL 的监控方案，
-那么针对 MySQL，我们要做哪些监控呢？下面是使用 USE 方法设计出来的 SLI：</p>
-<ul>
-<li>Business<ul>
-<li>Questions：语句计总，Throughput</li>
-<li>Slow_queries：慢查询计总，Error</li>
-<li>Com_select：查询语句计总，Throughput</li>
-<li>Com_insert：插入语句计总，Throughput</li>
-<li>Com_update：更新语句计总，Throughput</li>
-</ul>
-</li>
-<li>Threads &amp; Connections<ul>
-<li>Threads_connected：当前连接数，Utilization</li>
-<li>Threads_running：当前使用中连接数，Utilization</li>
-<li>Aborted_connects：尝试连接失败数，Error</li>
-<li>Connection_errors_max_connections：由于连接数超标从而失败的连接数，Error</li>
-</ul>
-</li>
-<li>Buffer<ul>
-<li>Innodb_buffer_pool_pages_total：内存使用页数，Utilization</li>
-<li>Innodb_buffer_pool_read_requests：读请求数计总，Utilization</li>
-</ul>
-</li>
-</ul>
-<h2>完 🏁</h2>
-<p>如果你对我上面描述的还意犹未尽，建议你可以看 <a href="https://book.douban.com/subject/19992841/">Effective Monitoring and Alerting</a>。
-虽然本书没有中文版，但是关于监控、报警的原理解析很到位，值得一看。
-另外还有一本 <a href="https://book.douban.com/subject/26875239/">SRE: Google运维解密</a>，
-里面有不少篇幅在讲「SLA」，也是和监控、报警息息相关的。</p>
-<p>这次讲了一些概念性的内容，期望对大家有帮助，下一次我再分享一篇文章，聊聊 Metrics。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2017/06/monitoring-introducing/">https://blog.alswl.com/2017/06/monitoring-introducing/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
                         
                     </div>
                 </section>
@@ -266,17 +79,17 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Notes</span>
+                            <span class="post-category post-category-b" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">netflow</span>
+                            <span class="post-category post-category-c" href="#">netflow</span>
                             
                             <span class="post-category post-category-c" href="#">sflow</span>
                             
-                            <span class="post-category post-category-a" href="#">fastnetmon</span>
+                            <span class="post-category post-category-c" href="#">fastnetmon</span>
                             
-                            <span class="post-category post-category-c" href="#">influxdb</span>
+                            <span class="post-category post-category-d" href="#">influxdb</span>
                             
-                            <span class="post-category post-category-a" href="#">grafana</span>
+                            <span class="post-category post-category-d" href="#">grafana</span>
                             
                         </p>
                     </header>
@@ -322,124 +135,6 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">May 31st 2017 4:04:00 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2017/05/xss/" class="post-title">XSS 攻击的处理</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-d" href="#">security</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
-谨以此文怀念 <a href="http://wooyun.org/">乌云</a>。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201705/wooyun.jpg" /></p>
-<hr />
-<h2>事情缘由</h2>
-<p>春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
-告知我厂网站上出现一例 XSS 漏洞。
-因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
-后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。</p>
-<p>这里简单科普一下 XSS
-<a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC">跨网站脚本 -维基百科，自由的百科全书</a>
-中介绍到：</p>
-<blockquote>
-<p>跨网站脚本（Cross-site  scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
-  它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。</p>
-</blockquote>
-<p>XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
-针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
-所有访问被攻击的页面，都会触发用户被攻击行为。</p>
-<p>这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
-时间紧迫，问题必须被解决。</p>
-<h2>XSS 实现手段</h2>
-<p>在解决问题之前，需要对这个问题有必要的基础认识。
-我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。</p>
-<p>XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
-让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p>
-<p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p>
-<p>常见的检测方法（来自 <a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95">跨网站脚本 - 维基百科，自由的百科全书</a>：</p>
-<div><pre><span></span>&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-='&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-&quot;&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-<span>&lt;script&gt;</span>alert (vulnerable)<span>&lt;/script&gt;</span>
-%3Cscript%3Ealert('XSS')%3C/script%3E
-<span>&lt;script&gt;</span>alert('XSS')<span>&lt;/script&gt;</span>
-<span>&lt;img</span> <span>src=</span><span>&quot;javascript:alert('XSS')&quot;</span><span>&gt;</span>
-<span>&lt;img</span> <span>src=</span><span>&quot;http://xxx.com/yyy.png&quot;</span> <span>onerror=</span><span>&quot;alert('XSS')&quot;</span><span>&gt;</span>
-（这个仅限IE有效）
-</pre></div>
-<p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
-通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
-PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。</p>
-<h2>我厂历史上的处理方案</h2>
-<p>XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？
-答案是用了两个策略：第一个是使用 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a>
-提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。</p>
-<p>在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义，
-在输出时候在前端（模板渲染）层面直接输出。
-第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。</p>
-<p>我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义，
-避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如
-APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP
-上面无法正确输出。</p>
-<p>这个处理方案是稳妥的，那么为什么最近又暴露出问题了？
-排查之后发现，原来最近有若干个服务迁移到了一个新系统，
-而新系统在安全上面没有全局处理，所以爆出了漏洞。</p>
-<h2>本次处理方案</h2>
-<p>知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？
-而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。
-导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 <code>br</code> / <code>&lt;</code> 这类特殊字符时，表现不同。</p>
-<p>由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局
-encode。 将有危险的数据转移为在 HTML 文本。</p>
-<p>PS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而
-Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</p>
-<p>处理方案：</p>
-<ul>
-<li>开启全局 HTML 输出 Encode，有一个 <a href="http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/">Default HTML-escape using Freemarker</a> 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 <code>noescape</code> 特殊处理</li>
-<li>检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好</li>
-<li>将 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a> 方案强制开启</li>
-</ul>
-<h2>其他 Tips</h2>
-<p>OWASP 有一个很长的 <a href="https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">列表</a>，教导如何避免 XSS，里面提到了：</p>
-<ul>
-<li>为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身</li>
-<li>几条对抗 XSS 的规则<ul>
-<li>尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。</li>
-<li>将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 <code>&amp; &lt; &gt; &quot; ' /</code> 进行转义</li>
-<li>将不可信变量输出 URL 参数之前，进行 URLEncode</li>
-<li>使用合适的 HTML 过滤库进行过滤</li>
-<li>预防 DOM-based XSS，见 <a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based XSS Prevention Cheat Sheet</a></li>
-<li>开启 HTTPOnly cookie，让浏览器接触不到 cookie</li>
-</ul>
-</li>
-</ul>
-<hr />
-<p>最后送上一个 XSS 攻击工具 <a href="http://webxss.net/">http://webxss.net/</a>，知己知彼，百战不殆。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2017/05/xss/">https://blog.alswl.com/2017/05/xss/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">May 13th 2017 5:13:04 AM</span>
                         
                         <span class="post-author">// Update May 13th 2017 5:36:32 AM</span>
@@ -457,7 +152,7 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                             
                             <span class="post-category post-category-c" href="#">Router</span>
                             
-                            <span class="post-category post-category-c" href="#">TFTP</span>
+                            <span class="post-category post-category-b" href="#">TFTP</span>
                             
                             <span class="post-category post-category-a" href="#">Debrick</span>
                             
@@ -500,7 +195,7 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Minecraft</span>
+                            <span class="post-category post-category-c" href="#">Minecraft</span>
                             
                         </p>
                     </header>
@@ -543,17 +238,17 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-a" href="#">*nix</span>
+                            <span class="post-category post-category-c" href="#">*nix</span>
                             
-                            <span class="post-category post-category-c" href="#">freeIPA</span>
+                            <span class="post-category post-category-a" href="#">freeIPA</span>
                             
-                            <span class="post-category post-category-b" href="#">infrastucture</span>
+                            <span class="post-category post-category-c" href="#">infrastucture</span>
                             
                             <span class="post-category post-category-a" href="#">LDAP</span>
                             
                             <span class="post-category post-category-a" href="#">tcp</span>
                             
-                            <span class="post-category post-category-d" href="#">vpn</span>
+                            <span class="post-category post-category-a" href="#">vpn</span>
                             
                         </p>
                     </header>
@@ -689,7 +384,7 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-d" href="#">*nix</span>
+                            <span class="post-category post-category-b" href="#">*nix</span>
                             
                             <span class="post-category post-category-c" href="#">infrastucture</span>
                             
@@ -805,9 +500,9 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                             
                             <span class="post-category post-category-c" href="#">Node.js</span>
                             
-                            <span class="post-category post-category-a" href="#">RSS</span>
+                            <span class="post-category post-category-d" href="#">RSS</span>
                             
-                            <span class="post-category post-category-a" href="#">Feed</span>
+                            <span class="post-category post-category-b" href="#">Feed</span>
                             
                         </p>
                     </header>
@@ -872,11 +567,11 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-c" href="#">Notes</span>
+                            <span class="post-category post-category-b" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">NGINX</span>
+                            <span class="post-category post-category-d" href="#">NGINX</span>
                             
-                            <span class="post-category post-category-b" href="#">Server</span>
+                            <span class="post-category post-category-d" href="#">Server</span>
                             
                         </p>
                     </header>
@@ -921,17 +616,17 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-a" href="#">*nix</span>
+                            <span class="post-category post-category-b" href="#">*nix</span>
                             
                             <span class="post-category post-category-a" href="#">infrastucture</span>
                             
                             <span class="post-category post-category-b" href="#">kiosk</span>
                             
-                            <span class="post-category post-category-d" href="#">operations</span>
+                            <span class="post-category post-category-a" href="#">operations</span>
                             
                             <span class="post-category post-category-d" href="#">raspberrypi</span>
                             
-                            <span class="post-category post-category-d" href="#">saltstack</span>
+                            <span class="post-category post-category-c" href="#">saltstack</span>
                             
                         </p>
                     </header>
@@ -1041,102 +736,6 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">January 31st 2017 4:12:43 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2017/01/prophecy/" class="post-title">👁️ 预测未来？</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-b" href="#">Math</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <h2>拉普拉斯之妖</h2>
-<p>未来是可以被预测的么？</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201702/zhu-ge-liang.jpg" /></p>
-<p>专家在预测股票趋势变化，天气预报员可以预测未来一周甚至更长时间的天气。
-如果给他们更多的信息和参数，是否可以将未来预测的更准确？
-如果精确的粒度可以达到基本粒子级别，同时给一个计算力超群的计算器，能否精确的推衍未来变化？</p>
-<p>这些想法在我刚接触经典力学时浮现，学习了牛顿三定律之后，异常激动。
-感觉人类可以凭借技术的进步，逐步对未来精确预测。彼时可以解决人类即将遇到的任何问题了，化问题于无形。</p>
-<p>这想法其实在 200 年前就出现了。法国伟大的数学家拉普拉斯（Laplace）在他的著作「概率论」里面，
-提出了这样的观点：</p>
-<blockquote>
-<p>我们可以把宇宙现在的状态视为其过去的果以及未来的因。假若一位智者会知道在某一时刻所有促使自然运动的力和所有组构自然的物体的位置，假若他也能够对这些数据进行分析，则在宇宙里，从最大的物体到最小的粒子，它们的运动都包含在一条简单公式里。对于这位智者来说，没有任何事物会是含糊的，并且未来只会像过去般出现在他眼前。</p>
-</blockquote>
-<p>「根据当前已知即可预测未来」，这种决定论，就是拉普拉斯之妖。</p>
-<h2>打破</h2>
-<p>除了拉普拉斯的决定论，这个世纪末还发生了另外一件事情。
-开尔文男爵在 19 世纪的最后一天，发表了「物理大厦已经落成，所剩只是一些装饰性工作」的言论。
-然而，在随后的岁月里，经典物理大厦却开始被量子力学逐步击破，轰然倒地。</p>
-<p>在决定论这个方面，根据海森堡的不确定性理论，粒子的位置与动量不可同时被确定。
-这个结论说明目前技术下面，无法精准测量粒子的状态。
-既然无法准确测量粒子的状态，就失去了演算未来可能性的基础，更无法预测未来了。</p>
-<p>那既然是无法预测，是否表示，预测未来这件事情是无稽之谈，未来是不成规律的？</p>
-<h2>混沌：被理解错误的「蝴蝶效应」</h2>
-<p>针对未来的预测，动力系统中，有相当多的研究和思考，其中比较注明的一项是：蝴蝶效应。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201702/chaos-butterfly_400.png" /></p>
-<p>关于「蝴蝶效应」，不用过多解释。命名的来源据说是发现者 Edward Lorenz 觉得图形像是蝴蝶。
-而有另一种另一说法是，Edward 的一个比喻「巴西蝴蝶煽动，引起德克萨斯的龙卷风」。</p>
-<p>事实上这种说法是不精准的。Edward 在预测天气模型中，发现起始数据的微小差异，
-会导致数日之后计算结果的巨大差异。
-从点在于在预测模型上，忽略了一个蝴蝶煽动引起的力量，即起始条件的设定，会导致结果的巨大差异。
-而不是表名龙卷风是蝴蝶煽动产生的。</p>
-<p>如果蝴蝶煽动能够产生龙卷风。那么一个普通人的呼吸，也可以造成同样的效果。😂</p>
-<h2>分形和混沌</h2>
-<p>和混沌相关的，还有一个重要概念「分形」：</p>
-<blockquote>
-<p>一个粗糙或零碎的几何形状，可以分成数个部分，且每一部分都（至少近似地）是整体缩小后的形状”[2]，即具有自相似的性质。分形的核心是自相似。</p>
-</blockquote>
-<p>随机从这种自相似的图形中提取样本，样本集表现出不可预测的特性。</p>
-<p>混沌的定义：</p>
-<blockquote>
-<p>非线性系统在一定参数条件下展现分岔（bifurcation）、周期运动与非周期运动相互纠缠，以至于通向某种非周期有序运动。这种运动是不可预测，呈现出失序的状态。三体问题，即是一例混沌的场景。</p>
-</blockquote>
-<p>为什么混沌和分形是具有相关性的呢？这里有一个重要概念 IFS。
-IFS（Iterated Function System）是迭代函数系统，即在数学上被认为一个完全向量空间上收缩映射的有限集。
-分形的图案，部分可以抽象出 IFS 公式。</p>
-<p>这个公式的奇妙之处是在于，在公式渐进推算过程之中，初始看到的结果是混沌无序的，而在逐步运算之后，可以看出分形的特征。</p>
-<p>下图是根据一个 IFS 公式，逐步构造出一个分形图片的过程：</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201702/chaosgame.gif" /></p>
-<p>图片来自 Wikipedia <a href="https://en.wikipedia.org/wiki/Iterated_function_system">https://en.wikipedia.org/wiki/Iterated_function_system</a></p>
-<p>这种由初期混沌，逐渐表现为分形的情况，被学者总结为：「混沌在（生成）时间上是分形的；而分形的在空间（展示）上是混沌的。」
-混沌中可以找到有序，在非线性中找到理性，混沌中可以演化出非规则，也可以演化出在规则中混沌。</p>
-<h2>哲学上的象征</h2>
-<p>感谢你迷迷糊糊的读到这里，混沌不仅仅在数学和物理上面，吸引着一代代人的探索。
-在哲学生活指导方面，也有重大的意义。早在古人说「分久必合，合久必分」，
-就是一种稳定线性的表现，具有预测性的表现。
-而「一生二、二生三，三生万物」则体现了古人对分形的理解。
-经典的「马蹄毁了一场战争」故事，讲的是混沌理论。</p>
-<p>这些对未来预测能力的渴望，表现了对生活的掌控欲望，对未来可行性的探索，
-在低谷期可以带来希望，大跃进时期可以带来警醒。</p>
-<hr />
-<p>对于我个人而言，虽然失去了能够预测未来的理论基础而略感遗憾。
-但是反过来想想，如果真的发明了一台机器，能够精确预言到未来，
-那么在发明实现的当天，就能够推衍出未来所有出现的科学理论、文学、艺术创作，
-那给后人创造了一个多么再无新事物的未来，这该是一个多么无趣的世界啊。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2017/01/prophecy/">https://blog.alswl.com/2017/01/prophecy/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">January 6th 2017 1:17:46 PM</span>
                         
                     </p>
@@ -1148,21 +747,21 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-d" href="#">*nix</span>
+                            <span class="post-category post-category-b" href="#">*nix</span>
                             
-                            <span class="post-category post-category-b" href="#">Django</span>
+                            <span class="post-category post-category-c" href="#">Django</span>
                             
                             <span class="post-category post-category-b" href="#">infrastucture</span>
                             
-                            <span class="post-category post-category-b" href="#">kiosk</span>
+                            <span class="post-category post-category-d" href="#">kiosk</span>
                             
-                            <span class="post-category post-category-a" href="#">LDAP</span>
+                            <span class="post-category post-category-c" href="#">LDAP</span>
                             
-                            <span class="post-category post-category-b" href="#">mysql</span>
+                            <span class="post-category post-category-c" href="#">mysql</span>
                             
-                            <span class="post-category post-category-a" href="#">saltstack</span>
+                            <span class="post-category post-category-c" href="#">saltstack</span>
                             
-                            <span class="post-category post-category-a" href="#">vnc</span>
+                            <span class="post-category post-category-b" href="#">vnc</span>
                             
                             <span class="post-category post-category-b" href="#">websocket</span>
                             
@@ -1209,112 +808,6 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">January 3rd 2017 4:20:50 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2017/01/spring-cleaning/" class="post-title">👷如何做年前大扫除</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-b" href="#">Infrastructure</span>
-                            
-                            <span class="post-category post-category-b" href="#">DevOps</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>今年过年特别早，离春节只剩下二十多天了。
-为期 7 天的春节里，工程师们不上班，那万一线上业务出现了故障怎么办？
-大公司的朋友们会安排专门的人进行值班（此处心疼一下那些需要大年三十还要值班保证高峰的工程师们），
-而作为创业团队人少，难做到在线值守，就需要对线上进行一些整理盘点，找出潜在问题，为春节长假做一些准备。</p>
-<p>我们称之为年前大扫除。</p>
-<p>大扫除需要做些什么呢，且听我一一道来。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201701/saber.jpeg" /></p>
-<p>PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Spring Festival spring cleaning。</p>
-<h2>大扫除的内容</h2>
-<p>大扫除其实是一个查漏补缺+囤积粮草的事情。</p>
-<p>查漏补缺，即找出潜在的问题。这些问题平时可能不会特意去查看，
-借助大扫除这个运动，恰好进行盘点。
-计算机的世界里，有一个方法论非常好使，在极多场景可以见到其身影：分层。
-TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使用。
-查漏补缺也不例外，我们可以按照业务访问流程，将需要排查的问题拆分为：业务、应用、中间件、网络、物理、存储 etc。</p>
-<p>通过分层，不仅仅完成了自上而下地遍历整个技术栈，也同时将不同模块的内容交给不同的责任方，
-确保任务的分割。</p>
-<p>分完模块，还要告知大家如何具体查找问题。
-这里我介绍一个通用的方法：USE<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn-1">1</a></sup>：</p>
-<blockquote>
-<p>For every resource, check Utilization, Saturation, and Errors.</p>
-</blockquote>
-<p>USE 方法是从 Brend Gregg 那里学来的。
-在技术设施的领域里，Resource 即是指各种类型的资源，比如 CPU、磁盘、网络、内存，
-Utilization 指的是使用率，可以简单分为百分制和非百分制。
-Saturation 是指饱和率，支持 queue 的资源，就会有这个指标。
-Error 即错误，可以从错误统计和日志得知。<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn-2">2</a></sup></p>
-<p>业务领域里面，USE 也有相对应的含义。以审核系统举例，
-对应的 USE 可以理解为「审核应用实例跑的 CPU 占用如何，任务队列是否塞满，业务日志是否有异常」。</p>
-<p>除了 USE 里面提到的指标，还有几个指标特别重要：
-TPS 、Latency 和 Capacity。
-这几个指标对性能敏感的尤为重要。
-检查 USE 的同时，我们必须关注一下这三个指标，
-确保 TPS / Latency 是否满足我们预期的 SLA。
-哦？压根没有制定 SLA，不要慌，和历史数据对比，先制定一个粗糙的 SLA。
-哦？连历史数据都没有？那只能找你 Leader 让他考量一下了。</p>
-<p>负责每个子系统的同学，记得检查时候将这些收集到的数据列下来。
-在 Metric 做的还不够完善时候，这些数据也是很宝贵的。</p>
-<p>在我看来，检查 USE / TPS / Latency ，<strong><strong>最大的作用是将抽象的可用性指标描述为几个易于理解的数值进行量化。
-一旦能够量化，就可以对比、观测、监控，并且 Review 起来也异常轻松</strong></strong>。</p>
-<h2>应对方案</h2>
-<p>检查出问题之后，就要考虑应对了。时间急任务多，我们的应对方案是是囤积粮草 / 写救命笔记。</p>
-<p>囤积粮草比较好理解，<strong><strong>基于已有的容量预估，为容易出问题的系统提供一份冗余</strong></strong>。
-有些团队平时做基础设施就比较，做 Scale 就是小轻松。
-那平时 Scalable 做的不好的朋友，就只能将应用实例多开一些，以避免临时出现的流量波动。</p>
-<p>无状态的服务好搞，有状态的 DB 就很难在短时间内做 Scale。
-检查这些服务的容量，如果重点资源临近阈值，比如 DB 的硬盘资源，缓存的内存容量。
-核心服务的余量在检查中真的发现问题的话，那也只能短期内做扩容了。</p>
-<p>对于小团队来说，春节长假的特殊性在于响应会变慢甚至是联系不上。
-一旦线上有异常，可能找不到合适的人员来进行处理。
-所以第二条写救命笔记则更为重要。
-「Google SRE」里面有个小段子，一个绝对不能被按的按钮，
-这个按钮会清空内存数据，在飞行过程中被宇航员按了。幸亏美女工程师（下图）写了相关的救命手册，
-专门写了针对这种情况的操作，救了这些宇航员的命。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201701/sre.jpeg" /></p>
-<p>图片来自 「Google SRE」</p>
-<p>从这个故事里面可以看到，一个紧急操作手册是多么重要。
-<strong><strong>所以在大扫除期间，我们还要补一补平时的文档，将一些常见问题 / 常规操作记录下来。</strong></strong>
-步骤需要细致到能让让每个远程值班的同学做到 step by step 操作。</p>
-<hr />
-<p>啰嗦了这么多，相信大家对大扫除要做些什么已经有所印象了，祝大家过个好年，流量涨涨涨，还能平平安安的。</p>
-<div>
-<hr />
-<ol>
-<li>
-<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref-1">↩</a></p>
-</li>
-<li>
-<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref-2">↩</a></p>
-</li>
-</ol>
-</div>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2017/01/spring-cleaning/">https://blog.alswl.com/2017/01/spring-cleaning/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">January 1st 2017 4:13:04 PM</span>
                         
                     </p>
@@ -1326,7 +819,7 @@ TPS 、Latency 和 Capacity。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-b" href="#">新年</span>
+                            <span class="post-category post-category-a" href="#">新年</span>
                             
                         </p>
                     </header>
@@ -1371,7 +864,7 @@ TPS 、Latency 和 Capacity。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Notes</span>
+                            <span class="post-category post-category-d" href="#">Notes</span>
                             
                         </p>
                     </header>
@@ -1448,346 +941,6 @@ TPS 、Latency 和 Capacity。
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">December 8th 2016 1:16:26 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/12/https-2/" class="post-title">🔑 也谈 HTTPS - 如何内测</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-c" href="#">HTTPS</span>
-                            
-                            <span class="post-category post-category-c" href="#">HTTPDNS</span>
-                            
-                            <span class="post-category post-category-d" href="#">MikroTik</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201612/mouse.jpeg" />
-(图片来自 <a href="https://www.duitang.com/blog/?id=48013745">茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所</a>)</p>
-<p>在上篇文章 <a href="https://blog.alswl.com/2016/11/https-1/">🔒 也谈 HTTPS - HTTPDNS + HTTPS</a> 中，
-我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境，
-这次我们讨论另外一个比较头疼的问题：部署。</p>
-
-<p>小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。
-但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。</p>
-<p>前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。
-比如 JS 里面写死了 HTTP，那在 HTTPS 下请求 HTTP XHR 的话，
-浏览器会将请求拦截掉。
-一旦出现这种故障，用户就无法正常使用业务，小白用户往往也不懂得自己将 <code>https://</code> 换成 <code>http://</code> 使用。</p>
-<p>解决的思路是足够的内测，找一群人帮我在 HTTPS 环境下使用足够长时间。
-让他们当小白鼠，提前发现问题并解决。
-于是，我把目光转向了身边的一大大群小白鼠，整个办公室的同事~😄</p>
-<p>没错，<strong><strong>我要强制所有同事使用 HTTPS 的公司网站</strong></strong>，从而靠他们帮我发现问题。</p>
-<p>靠发邮件、QQ 广播呼吁大家使用 HTTPS 站点的方法，估计是不行的。
-没有利益驱动，推动力是不足的，我必须想点强制的手段让他们使用 HTTPS。</p>
-<p>有三种方法来达到这个效果：</p>
-<ol>
-<li>业务系统内入口判断用户身份，是雇员的话，切换到 HTTPS</li>
-<li>Nginx 入口系统判断 IP 来源，办公室 IP 则切换到 HTTPS</li>
-<li>改造办公室网络，访问站点时候，自动切换到 HTTPS</li>
-</ol>
-<p>为了避免对线上业务系统、基础设施造成影响，我采用了第三条方案。</p>
-<p>说干就干，直接对公司网络出口设备是 ROS<a href="http://wiki.mikrotik.com/wiki/Main_Page">via</a> 动起刀子。</p>
-<p>实现的原理如下：</p>
-<ul>
-<li>A：办公室网络的 🐁 们请求站点 http://www.duitang.com</li>
-<li>B：操作 RouterOS 的防火墙，将 dst 为 www.duitang.com IP 的 TCP 请求都 dst-nat 到新的一台 Nginx 服务器 proxy.duitang.com</li>
-<li>C：这台 proxy.duitang.com 做过特别定制，将所有针对 *.duitang.com 请做一次 302 请求，将 http://www.duitang.com 请求都转发到 https://www.duitang.com</li>
-<li>D：Client 收到 302 请求，重新请求 https://www.duitang.com</li>
-<li>E：同 B</li>
-<li>F：proxy.duitang.com 将请求转发到真正的 www.duitang.com 服务器</li>
-</ul>
-<p>PS：这里要小心的是，需要配置 proxy.duitang.com 的 <code>resolver</code> 避免 Nginx 内部请求。</p>
-<p>流程图：</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201612/https_ros_process.jpg" /></p>
-<p>这样操作之后，在办公室网络下，所有访问公司网站的 HTTP 流量都会跳转到 HTTPS。</p>
-<p>PS：我原始方案想使用 ROS 的 L7 防火墙 直接抓 HTTP 包，match HTTP 头数据，
-再修改返回的 TCP 包。
-但测试下来发现 ROS L7 Firewall 不支持写 TCP 数据。
-所以我最后只能使用中间跳转的方案。</p>
-<p>如果不是使用 ROS 的朋友也不用担心，原理和流程已经讲清楚了，
-无非是使用 Cisco / Huawei 网络设备的防火墙命令实现需要的功能。</p>
-<hr />
-<p>上篇文章发完之后，好几个朋友问我 IP 证书供应商的事情。我就简单说一下我了解的情况。</p>
-<p>国内 SSL 证书供应商们会给他们兜售的产品起各种各样花里胡哨的名字，
-什么超真、超强、超安、超快，国外有些企业也会搞什么 Pro / Super / Premium / Essential，
-其实 SSL 证书的区分，笼统来说就三种类型：DV / OV / EV，
-Domain Validation / Orgnization Validation / Extented Validation。
-他们区别除了字面意思，就是所有权审核流程一个比一个麻烦。</p>
-<p>想基于 IP 直接搞所有权审核，要看对应供应商的证书是否支持。
-去年年底我做了一个调查，支持 IP 证书的厂家如下：</p>
-<ul>
-<li>Rapid SSL 不支持 ip</li>
-<li>wosign OV 级别支持<ul>
-<li>OV 需要验证 需要验证申请单位的营业执照、等其他证明文件</li>
-<li>浏览器支持情况<ul>
-<li>Firefox 32 <a href="https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport">https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport</a></li>
-<li>交叉认证了 Startcom 的证书，可以支持老版本</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>GlobalSign OV 支持<ul>
-<li>$349 * 6 * 8 = 16752</li>
-<li><a href="https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates">https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates</a></li>
-<li>需要认证 RIPE ip， <a href="https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor">https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor</a></li>
-</ul>
-</li>
-<li>Geotrust 明确表示不支持 https://www.geocerts.com/faq#Q47</li>
-</ul>
-<p>现在 Wosign 爆了丑闻，于是支持 IP SSL 又少了一家。
-只剩下 GlobalSign 了，但是 GlobalSign OV 又贵审核又麻烦，
-不知道看到此文的大神们有没有更好的推荐。</p>
-<hr />
-<p>参考链接：</p>
-<ul>
-<li><a href="http://serverfault.com/questions/193775/ssl-certificate-for-a-public-ip-address">domain name - SSL certificate for a public IP address? - Server Fault</a></li>
-<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter">ROS Filter</a></li>
-<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/NAT">ROS NAT</a></li>
-<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/L7">ROS Firewall L7</a></li>
-<li><a href="http://forum.mikrotik.com/viewtopic.php?f=13&amp;t=62152">How to block and redirect website - MikroTik RouterOS</a></li>
-<li><a href="http://forum.mikrotik.com/viewtopic.php?t=39837">Mikrotik IP REDIRECT using firewall - MikroTik RouterOS</a></li>
-<li><a href="http://forum.mikrotik.com/viewtopic.php?t=88049">Redirect all traffic from a spesific ip number to a web page - MikroTik RouterOS</a></li>
-</ul>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/12/https-2/">https://blog.alswl.com/2016/12/https-2/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">December 5th 2016 2:29:37 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/12/house/" class="post-title">教你在上海挑房子</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-a" href="#">Shanghai</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201612/shanghai.jpg" /></p>
-<p>点开的同学别失望，这并不是教你如何快速致富的 😂 ……</p>
-<hr />
-<p>上海政府在 11-28 出了房屋新政 <a href="http://sh.xinhuanet.com/2016-11/28/c_135864791.htm">via</a>，对房价进行进一步调控。
-其核心思想是「认房又认贷」。3 月份的政策 <a href="http://www.shanghai.gov.cn/nw2/nw2314/nw2319/nw10800/nw11408/nw39426/u26aw46965.html">via</a> 是限制购房资格。
-这次 11 月份调整则是提高二套房首付比例。
-双管齐下，进一步给上海房市进行降温。</p>
-<p>在这种严苛的政策下面，如何挑选一套自己满意，家人住得安心的房子就尤为关键了。
-我对房市一直比较关注，也曾有几位朋友咨询我的一些经验。之前我是将 Evernote
-笔记链接贴给别人，这次我就详细讲讲，如何在上海挑房子。</p>
-<p>第一步，<strong><strong>是建立有价值的 Indicator，并对具体房源进行计算</strong></strong>。
-Indicator 的含义是建立一系列评价指标，比如价格、户型、位置，
-再根据这些 Indicator 给房源进行打分。
-如果我是一个购房者，我挺希望我的置业顾问告诉我这套房有哪些优点、缺点，综合评价得几份。
-（当然实际情况下这些置业顾问都是吹得天花乱坠，尽睁眼说瞎话。）
-看房的过程可能长达数月，而人的记忆会随着时间逐步失真，只对最近看到的事物有深刻印象。
-使用客观的数字评价房源，则可以进行精准的评价，避免产生主观臆断。</p>
-
-<p>我使用的 Indicator 和评价细项罗列如下，供参考：</p>
-<ul>
-<li>价格</li>
-<li>面积</li>
-<li>地理位置：内环、中环、外环</li>
-<li>交通：离地铁距离，换乘便利性；多地铁线换乘；</li>
-<li>户型：南北通透；客厅朝南；全明；户型方正；无暗室</li>
-<li>装修：毛胚；简装；普通；精装；豪装</li>
-<li>商圈：购物中心；超市；菜场</li>
-<li>学区房</li>
-<li>产权：满五唯一</li>
-<li>楼层</li>
-<li>房龄：5 / 10 / 15 / 20</li>
-<li>政策发展前景</li>
-<li>停车</li>
-</ul>
-<p>第二步，<strong><strong>就是和家人达成一致的期望</strong></strong>，避免潜在的纠纷。
-每个人对未来的住房有自己的期望，即便是一家人，
-各自看中的点也不会太一样。不管平时家庭决策是什么流程，我都建议坐下来一起讨论讨论。
-将 Indicator 依次列出，大家讨论各自心中的优先级。</p>
-<p>除了优先级的讨论，还要考虑一下各自对 Indicator 划分等级的理解。
-比如对房型、装修这两项，评价标准就会很模糊，这一切都需要讨论清楚。</p>
-<p>我个人最为看中价格、位置、交通，可以放弃的有学区房、停车、户型。</p>
-<p>第三步，<strong><strong>划定圈子，判断趋势</strong></strong>。
-众多 Indicator 里面，价格是固定的，户型、楼层等是和具体房源相关的，
-我们能够撬动的最重要因素，其实就是位置。</p>
-<p>作为上海这个拥有 2500w 人口的超大型城市，是不可能把各个位置的房源都扫一遍的，
-所以必须重点规划自己准备实地考察的区域。
-那么我们就在上海地图上面划几个圈了，数据可以通过链家、中原地产等多网站收集。
-安居客有一个大颗粒度的圈子，展示了社区集中点 <a href="http://shanghai.anjuke.com/">via</a>，
-下图是我筛选条件之后形成的几个簇：</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201612/map_thumb.png" /></p>
-<p>（数据爬取分析这一块，我只服一个人，他专门写了一堆爬虫捞数据然后分析，
-如果对杭州的房地产投资感兴趣，可以私信我，我可以帮忙问问。）</p>
-<p>从城市级别来看，其实不同区域的变化趋势基本是一致的，但是局部地区可能受外部因素而出现较大波动。
-比如上海闸北并入静安，价格就大涨；大宁板块产生一个地王，也会让这片区域价格大幅波动；
-甚至新开业一个 Mall，都会让周边价格波动。
-这些外部因素，必须提前关注政府市政规划方案、房产网站、公众号、房产微博。
-政策相关推荐阅读：「上海市城市总体规划（2015-2040）纲要概要」 
-<a href="http://2040.shgtj.net/web/">via</a> 规划了整体发展格调。
-「上海市商业网点布局规划（2013-2020）」<a href="http://www.scofcom.gov.cn/zxxxgk/235081.htm">via</a> 规划了 14 个市级商圈，之前只有 10 个，还有若干区级商圈。 </p>
-<p>第四步，<strong><strong>快速行动，快速决策</strong></strong>。</p>
-<p>还记得捡西瓜的故事么，小猴子一直想找个大西瓜，但一路看过去最后什么都没捡到。
-看房不仅仅是一个体力活，而且非常讲究时效性的，必须能够快速响应，快速决策。
-在上海这中刚需强需求旺盛的城市，一套评价都不错的房源，半天内就会被别人拿下。
-所以前期观察一段时间之后，必须摸清楚自己的需求和承受能力，遇到合适的房源，
-就速战速决。</p>
-<p>速战速决还依赖实地看房源的效率。
-从我的经验来看，一天至多可以看 10 套左右的房源。
-出发前一天约好中介、房东，列一个清单，时间、地点、联系方式全部罗列下来，第二天依照清单行动。
-另外为了提高速度，全程应该打车，对于上海这样的一线城市，出租车费用和房产价格相比，真的是小钱。</p>
-<p>在看中合适的房源之后，有些人可能面对这笔巨额交易摇摆不定，而错失了良机。
-收益于 Indicator + 前期数据准备，我们在看房时候应该具有了客观的评价能力。
-一旦各方面满意，不要犹豫，快速决策。
-但也不要因为几次擦肩而过就冲动决策，要相信客观的 Indicator 数据。</p>
-<p>我推荐上班族看房时间安排是，频繁看房两个月，每周末两天出动。
-前期一个月看房，不管看中多中意的，都不做决策，
-但要计算出一个自己心理预期。一个月后，看到合适的立刻上手。</p>
-<hr />
-<p>OK 写完了。回顾其实这四个步骤，其实就是选一个开源软件的流程嘛。
-设定特性需求 -&gt; 设定期望 -&gt; 调研候选者 -&gt; 快速测试上线。
-嚯嚯嚯。</p>
-<p>最后，如果你恰好在看房，希望你看完本文有些收获，收获自己中意的住房。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/12/house/">https://blog.alswl.com/2016/12/house/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">November 30th 2016 3:02:23 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/11/https-1/" class="post-title">🔒 也谈 HTTPS - HTTPDNS + HTTPS</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-d" href="#">HTTPS</span>
-                            
-                            <span class="post-category post-category-b" href="#">HTTPDNS</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>最近谈论 HTTPS 的文章很多，其原因之一是运营商作恶底线越来越低，动不动就插播广告，
-前两天小米还联合几家公司发文 <a href="http://weibo.com/1771925961/Da1aopxLQ?refer_flag=1001030103_&amp;type=comment#_rnd1480392491936">关于抵制流量劫持等违法行为的联合声明</a> 痛斥某些运营商。
-另一方面也是苹果 <a href="https://techcrunch.com/2016/06/14/apple-will-require-https-connections-for-ios-apps-by-the-end-of-2016/">ATS</a> 政策的大力推动，逼迫大家在 APP 中全部使用 HTTPS 通信。
-上 HTTPS 的好处很多：保护用户的数据不外泄，避免中间人篡改数据，
-对企业信息进行鉴权。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201611/https.png" /></p>
-<p>关于 HTTPS 如何购买证书，如何部署，网上的教程已经太多了，实践起来没有太大的难处。
-我们在部署 HTTPS 的时候，遇到了一些新问题，首当其冲的就是 HTTPS 部分网络不可访问的问题：</p>
-<blockquote>
-<p>尽管使用了 HTTPS 技术，部分邪恶的运营商，仍然使用 DNS 污染技术，让域名指向的他们自己服务器
-  而这些服务器并没有部署 SSL 服务（就算部署了，也会触发 SSL 证书 Common name 不一致报警），
-  导致 443 端口直接被拒绝。</p>
-</blockquote>
-
-<p>这个问题不解决，强行上 HTTPS 的话，会导致一部分用户出现无法访问网站
-一旦用户不爽了，轻则对产品不信任，重则直接导致用户流失。</p>
-<p>运营商为了赚广告钱、省网间结算是不择手段的。
-他们普遍使用的劫持手段是通过 ISP提供的 DNS 伪造域名。
-那有没有什么方法可以解决 DNS 劫持呢？
-业界有一套解决这类场景的方案，即 HTTPDNS。</p>
-<p>HTTPDNS 的原理很简单，将 DNS 这种容易被劫持的协议，转为使用 HTTP 协议请求 Domain &lt;-&gt; IP 映射。
-获得正确 IP 之后，Client 自己组装 HTTP 协议，从而避免 ISP 篡改数据。</p>
-<p>有两篇文章很清晰的讲解了 HTTPDNS 的细节：</p>
-<ul>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3ODgyNzcwMw==&amp;mid=201837080&amp;idx=1&amp;sn=b2a152b84df1c7dbd294ea66037cf262&amp;scene=2&amp;from=timeline&amp;isappinstalled=0#rd">【鹅厂网事】全局精确流量调度新思路-HttpDNS服务详解</a><ul>
-<li>腾讯这篇文章时间点是 2014 年，说明这个方案上线更早，也较为成熟</li>
-</ul>
-</li>
-<li><a href="https://developers.google.com/speed/public-dns/docs/dns-over-https">DNS-over-HTTPS  |  Public DNS  |  Google Developers</a><ul>
-<li>该方案更为先进，使用 HTTP 替换为 HTTPS，减少一个隐患点</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201611/httpdnsjbyl.png" /></p>
-<p>点击 <a href="https://dns.google.com/resolve?name=www.duitang.com">https://dns.google.com/resolve?name=www.duitang.com</a> /
-<a href="http://119.29.29.29/d?dn=www.duitang.com">http://119.29.29.29/d?dn=www.duitang.com</a> 感受一下 DNS-over-HTTPS / HTTPDNS。</p>
-<h2>单 IP 多域名支持</h2>
-<p>这个方案看似完美，但是在实际生产中，会遇到一个问题。</p>
-<p>Android / iOS 在操作系统级别对 HTTPS 通信是提供了封装。
-APP 无法在发起连接时候，也没有权限直接操作 socket。
-所以尽管 APP 拿到了域名对应的 IP，却没有办法让这个 IP 在 HTTPS 里生效。</p>
-<p>解决的思路很暴力：<strong>彻底放弃域名系统，完全使用基于 IP 系统的通讯。</strong></p>
-<p>原本请求 <code>https://www.duitang.com</code> 的 request，
-调整为请求 <code>https://221.228.82.181</code>。</p>
-<p>OK，做到这一步，我们就可以跟运营商劫持说拜拜了。</p>
-<p>不，还没结束。</p>
-<p>完全搞定运营商之后，这 IP 方案给我们自己带来一个困扰：
-<strong>Nginx 服务器无法通过 Host 来识别不同域名下面的请求了！！！</strong>
-在由于使用一个独立 IP，会导致所有域名请求混在一起，无法分别。
-大公司可以 dedicated IP，小公司就玩不起了。</p>
-<p>为了解决同一个 IP 下面多个域名的问题，我们引入了一个URL参数： <code>__domain</code>。
-当请求 IP 域名时候，必须带着这个参数，服务器会将请求域名解析出来，再分发到对应的域名。</p>
-<p>实现这个逻辑的 Nginx 核心代码：</p>
-<div><pre><span></span><span>set</span> <span>$</span><span>query_domain</span> <span>$</span><span>arg___domain</span><span>;</span>
-<span>if</span> <span>($</span><span>query_domain</span> <span>!~</span> <span>'(www|a|b)\.example\.com'</span><span>)</span> <span>{</span>
-    <span>rewrite</span> <span>^</span> <span>http</span><span>:</span><span>//</span><span>www</span><span>.</span><span>example</span><span>.</span><span>com</span><span>/</span><span>404</span><span>/</span> <span>redirect</span><span>;</span>
-<span>}</span>
-<span>set</span> <span>$</span><span>my_host</span> <span>$</span><span>query_domain</span><span>;</span>
-<span>location</span> <span>/</span> <span>{</span>
-    <span>proxy_set_header</span> <span>Host</span> <span>$my_host</span><span>;</span>
-    <span>proxy_set_header</span> <span>X-REAL-IP</span> <span>$remote_addr</span><span>;</span>
-    <span>proxy_pass</span> <span>$</span><span>scheme</span><span>:</span><span>//</span><span>127.0.0.1</span><span>;</span>
-<span>}</span>
-</pre></div>
-<p>最后一个注意事项是，记得调整 Nginx 配置的 remote_addr，否则都变成了 127.0.0.1，
-也许会导致其他一些策略失效。</p>
-<p>完美收工，效果如下：<a href="https://221.228.82.181/?__domain=www.duitang.com">https://221.228.82.181/?__domain=www.duitang.com</a>。</p>
-<p>恭喜你，已经掌握核心科技了，再也不怕运营商瞎折腾了，从此走上了业务蓬勃发展的金光大道……☀️</p>
-<p>下一篇文章，我会再谈谈如何做 HTTPS 的「内测」，避免将线上业务一次性切到 HTTPS 导致不少边边角角业务无法正常使用。</p>
-<hr />
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/11/https-1/">https://blog.alswl.com/2016/11/https-1/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">November 28th 2016 4:50:41 PM</span>
                         
                     </p>
@@ -1799,9 +952,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">音乐</span>
+                            <span class="post-category post-category-b" href="#">音乐</span>
                             
-                            <span class="post-category post-category-c" href="#">维也纳新年音乐会</span>
+                            <span class="post-category post-category-b" href="#">维也纳新年音乐会</span>
                             
                         </p>
                     </header>
@@ -1859,11 +1012,11 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Notes</span>
+                            <span class="post-category post-category-c" href="#">Notes</span>
                             
-                            <span class="post-category post-category-b" href="#">DNS</span>
+                            <span class="post-category post-category-c" href="#">DNS</span>
                             
-                            <span class="post-category post-category-d" href="#">Unbound</span>
+                            <span class="post-category post-category-b" href="#">Unbound</span>
                             
                         </p>
                     </header>
@@ -1932,19 +1085,19 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Notes</span>
+                            <span class="post-category post-category-d" href="#">Notes</span>
                             
-                            <span class="post-category post-category-d" href="#">SSL</span>
+                            <span class="post-category post-category-b" href="#">SSL</span>
                             
-                            <span class="post-category post-category-a" href="#">NGINX</span>
+                            <span class="post-category post-category-d" href="#">NGINX</span>
                             
-                            <span class="post-category post-category-a" href="#">Server</span>
+                            <span class="post-category post-category-d" href="#">Server</span>
                             
-                            <span class="post-category post-category-b" href="#">Configuration</span>
+                            <span class="post-category post-category-c" href="#">Configuration</span>
                             
-                            <span class="post-category post-category-b" href="#">IPKVM</span>
+                            <span class="post-category post-category-d" href="#">IPKVM</span>
                             
-                            <span class="post-category post-category-a" href="#">VNC</span>
+                            <span class="post-category post-category-b" href="#">VNC</span>
                             
                         </p>
                     </header>
@@ -1990,9 +1143,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-c" href="#">Arch Linux</span>
                             
-                            <span class="post-category post-category-a" href="#">Linux</span>
+                            <span class="post-category post-category-d" href="#">Linux</span>
                             
-                            <span class="post-category post-category-d" href="#">Network</span>
+                            <span class="post-category post-category-a" href="#">Network</span>
                             
                         </p>
                     </header>
@@ -2039,11 +1192,11 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-d" href="#">Linux</span>
                             
-                            <span class="post-category post-category-d" href="#">Configuration</span>
+                            <span class="post-category post-category-a" href="#">Configuration</span>
                             
-                            <span class="post-category post-category-d" href="#">Arch Linux</span>
+                            <span class="post-category post-category-b" href="#">Arch Linux</span>
                             
-                            <span class="post-category post-category-d" href="#">ThinkPad</span>
+                            <span class="post-category post-category-b" href="#">ThinkPad</span>
                             
                             <span class="post-category post-category-b" href="#">Fingerprint</span>
                             
@@ -2086,19 +1239,19 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Notes</span>
+                            <span class="post-category post-category-a" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">Server</span>
+                            <span class="post-category post-category-b" href="#">Server</span>
                             
-                            <span class="post-category post-category-c" href="#">DNS</span>
+                            <span class="post-category post-category-d" href="#">DNS</span>
                             
-                            <span class="post-category post-category-b" href="#">Ubuntu</span>
+                            <span class="post-category post-category-c" href="#">Ubuntu</span>
                             
-                            <span class="post-category post-category-d" href="#">VPN</span>
+                            <span class="post-category post-category-b" href="#">VPN</span>
                             
-                            <span class="post-category post-category-c" href="#">IPSec</span>
+                            <span class="post-category post-category-b" href="#">IPSec</span>
                             
-                            <span class="post-category post-category-b" href="#">iptables</span>
+                            <span class="post-category post-category-a" href="#">iptables</span>
                             
                         </p>
                     </header>
@@ -2215,7 +1368,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-b" href="#">Telegram</span>
                             
-                            <span class="post-category post-category-d" href="#">OS X</span>
+                            <span class="post-category post-category-c" href="#">OS X</span>
                             
                         </p>
                     </header>
@@ -2265,13 +1418,13 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-b" href="#">Linux</span>
                             
-                            <span class="post-category post-category-b" href="#">Server</span>
+                            <span class="post-category post-category-a" href="#">Server</span>
                             
-                            <span class="post-category post-category-c" href="#">Ubuntu</span>
+                            <span class="post-category post-category-d" href="#">Ubuntu</span>
                             
-                            <span class="post-category post-category-c" href="#">uWSGI</span>
+                            <span class="post-category post-category-d" href="#">uWSGI</span>
                             
-                            <span class="post-category post-category-d" href="#">Configration</span>
+                            <span class="post-category post-category-c" href="#">Configration</span>
                             
                         </p>
                     </header>
@@ -2318,7 +1471,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-a" href="#">Node.js</span>
                             
-                            <span class="post-category post-category-a" href="#">Telegram</span>
+                            <span class="post-category post-category-c" href="#">Telegram</span>
                             
                             <span class="post-category post-category-d" href="#">ImageMagick</span>
                             
@@ -2358,17 +1511,17 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-b" href="#">Notes</span>
+                            <span class="post-category post-category-a" href="#">Notes</span>
                             
                             <span class="post-category post-category-c" href="#">NGINX</span>
                             
-                            <span class="post-category post-category-c" href="#">Server</span>
+                            <span class="post-category post-category-a" href="#">Server</span>
                             
                             <span class="post-category post-category-c" href="#">DNS</span>
                             
-                            <span class="post-category post-category-c" href="#">MySQL</span>
+                            <span class="post-category post-category-b" href="#">MySQL</span>
                             
-                            <span class="post-category post-category-b" href="#">PowerDNS</span>
+                            <span class="post-category post-category-d" href="#">PowerDNS</span>
                             
                         </p>
                     </header>
@@ -2458,7 +1611,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-a" href="#">Life</span>
                             
-                            <span class="post-category post-category-c" href="#">Arch Linux</span>
+                            <span class="post-category post-category-a" href="#">Arch Linux</span>
                             
                             <span class="post-category post-category-c" href="#">ThinkPad</span>
                             
@@ -2515,9 +1668,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Notes</span>
+                            <span class="post-category post-category-b" href="#">Notes</span>
                             
-                            <span class="post-category post-category-a" href="#">OS X</span>
+                            <span class="post-category post-category-d" href="#">OS X</span>
                             
                         </p>
                     </header>
@@ -2559,7 +1712,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                             
                             <span class="post-category post-category-c" href="#">Life</span>
                             
-                            <span class="post-category post-category-a" href="#">Anime</span>
+                            <span class="post-category post-category-c" href="#">Anime</span>
                             
                         </p>
                     </header>
@@ -2611,13 +1764,13 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Phoenix Nemo</span>
                             
-                            <span class="post-category post-category-a" href="#">Life</span>
+                            <span class="post-category post-category-c" href="#">Life</span>
                             
-                            <span class="post-category post-category-a" href="#">Network</span>
+                            <span class="post-category post-category-b" href="#">Network</span>
                             
-                            <span class="post-category post-category-d" href="#">AWS</span>
+                            <span class="post-category post-category-c" href="#">AWS</span>
                             
-                            <span class="post-category post-category-b" href="#">Cloud Computing</span>
+                            <span class="post-category post-category-d" href="#">Cloud Computing</span>
                             
                         </p>
                     </header>
@@ -2662,7 +1815,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-d" href="#">总结</span>
+                            <span class="post-category post-category-c" href="#">总结</span>
                             
                         </p>
                     </header>
@@ -2705,9 +1858,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-a" href="#">*nix</span>
+                            <span class="post-category post-category-c" href="#">*nix</span>
                             
-                            <span class="post-category post-category-c" href="#">mysql</span>
+                            <span class="post-category post-category-a" href="#">mysql</span>
                             
                         </p>
                     </header>
@@ -2808,9 +1961,9 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-b" href="#">*nix</span>
+                            <span class="post-category post-category-d" href="#">*nix</span>
                             
-                            <span class="post-category post-category-c" href="#">nginx</span>
+                            <span class="post-category post-category-b" href="#">nginx</span>
                             
                         </p>
                     </header>
@@ -2847,259 +2000,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">August 14th 2016 1:08:20 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/08/api-integration-test/" class="post-title">API 集成测试实践</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-b" href="#">Test</span>
-                            
-                            <span class="post-category post-category-c" href="#">API</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201608/abao_thumbnail.png" /></p>
-<p>为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。
-之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试，
-这个测试过程非常耗费人力。
-尤其是当开发交付的质量不高时候，很可能自身没有经过测试，会遇到主干流程都无法进行的状况。</p>
-<p>如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。
-基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。
-现在将这个系统的选型和运行状况拎出来，和大家分享。</p>
-<h3>确认测试范围、目标和意义</h3>
-<ul>
-<li>范围<ul>
-<li>后台输出的 API 级别 URL</li>
-<li>使用场景<ul>
-<li>打包时候的冒烟</li>
-<li>Dev / QA 手工添加添加新特性用例</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>目标<ul>
-<li>覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口</li>
-<li>选型时，需要考虑非幂等（POST / DELETE / PUT）等接口</li>
-</ul>
-</li>
-<li>意义<ul>
-<li>提高开发效率，一种自动化的 IT 测试方案</li>
-<li>提高测试效率，减少人工集成测试成本</li>
-<li>提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能</li>
-</ul>
-</li>
-</ul>
-<h3>特性需求</h3>
-<p>选型一个系统，不是看市面上有哪些可以供选择，而是看我需要什么样特性的一款产品。
-如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。</p>
-<ul>
-<li>Required<ul>
-<li>开源</li>
-<li>免费</li>
-<li>使用 DSL 或者简单代码描述测试用例</li>
-<li>支持细粒度的单 API 测试和构建带过程的测试用例</li>
-<li>HTTP API</li>
-</ul>
-</li>
-<li>Optional<ul>
-<li>CI 集成</li>
-<li>UI</li>
-</ul>
-</li>
-</ul>
-<h3>挑选出来的选型和评价</h3>
-<ul>
-<li><a href="https://www.runscope.com/">API Monitoring and Testing · Runscope</a><ul>
-<li>收费</li>
-<li>非开源</li>
-<li>有监控特性</li>
-</ul>
-</li>
-<li><a href="https://www.atlassian.com/software/bamboo">Bamboo - Continuous integration, deployment &amp; release management | Atlassian</a><ul>
-<li>收费</li>
-<li>CI</li>
-</ul>
-</li>
-<li><a href="https://circleci.com/features/">Continuous Integration Product and Features - CircleCI</a><ul>
-<li>CI</li>
-<li>收费</li>
-</ul>
-</li>
-<li>Sauce Labs<ul>
-<li>客户端测试，收费</li>
-</ul>
-</li>
-<li>Apiary<ul>
-<li>API 设计工具 + API Test</li>
-</ul>
-</li>
-<li><a href="http://frisbyjs.com/">http://frisbyjs.com/</a><ul>
-<li>code</li>
-<li>npm</li>
-<li>open source</li>
-<li>NO UI</li>
-</ul>
-</li>
-<li><a href="https://github.com/vowsjs/api-easy">https://github.com/vowsjs/api-easy</a><ul>
-<li>同上</li>
-<li>真是热爱造轮子的 JS 生态圈</li>
-</ul>
-</li>
-<li><a href="https://github.com/visionmedia/supertest">https://github.com/visionmedia/supertest</a><ul>
-<li>同上</li>
-<li>从 Star 看，这个质量最高</li>
-</ul>
-</li>
-<li><a href="http://dareid.github.io/chakram/">http://dareid.github.io/chakram/</a><ul>
-<li>code</li>
-<li>npm</li>
-<li>open source</li>
-<li>NO UI</li>
-</ul>
-</li>
-<li><a href="https://vrest.io/">https://vrest.io/</a><ul>
-<li>收费</li>
-<li>不开源</li>
-<li>无插件</li>
-</ul>
-</li>
-<li><a href="http://swagger.io/open-source-integrations/">http://swagger.io/open-source-integrations/</a><ul>
-<li>for API</li>
-<li>生态环境强大</li>
-<li><a href="https://github.com/cachecontrol/hippie-swagger">https://github.com/cachecontrol/hippie-swagger</a></li>
-<li>用户端似乎在尝试用 swagger</li>
-</ul>
-</li>
-<li><a href="http://robotframework.org/">http://robotframework.org/</a><ul>
-<li>一个通用自动化测试工具</li>
-<li>DSL</li>
-<li>扩展性较强</li>
-<li>活跃度在降低 <a href="https://github.com/robotframework/robotframework/graphs/contributors">https://github.com/robotframework/robotframework/graphs/contributors</a></li>
-</ul>
-</li>
-<li><a href="https://cucumber.io/">https://cucumber.io/</a><ul>
-<li><a href="https://cucumber.io/docs/reference">https://cucumber.io/docs/reference</a></li>
-<li>和 Robotframework 相似，通用自动化测试工具</li>
-<li>DSL</li>
-<li>活跃度降低 <a href="https://github.com/cucumber/cucumber-jvm/graphs/contributors">https://github.com/cucumber/cucumber-jvm/graphs/contributors</a></li>
-</ul>
-</li>
-<li><a href="https://www.solanolabs.com/">https://www.solanolabs.com/</a><ul>
-<li>Airbnb 在用</li>
-<li>收费</li>
-<li>云端的通用测试环境</li>
-</ul>
-</li>
-<li><a href="https://github.com/christophd/citrus">https://github.com/christophd/citrus</a><ul>
-<li><a href="http://www.citrusframework.org/">http://www.citrusframework.org/</a></li>
-<li>依赖 mvn / ant，离代码太近</li>
-<li>项目不够活跃</li>
-</ul>
-</li>
-<li>代码内测试<ul>
-<li>src/it/com/duitang/xxx</li>
-<li>eg. tritornis</li>
-<li>Spring<ul>
-<li><a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html</a></li>
-<li><a href="http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html">http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>这部分工作，是和团队的其他成员一起去看的，大家各自分头寻找一些产品，然后进行评测，给出结论。</p>
-<p>经过讨论，我们将重点关注放在这么几款下面：</p>
-<ul>
-<li>supertest</li>
-<li>robotframework</li>
-<li>swagger</li>
-<li>讨论时候的新发现 <a href="https://github.com/svanoort/pyresttest">https://github.com/svanoort/pyresttest</a></li>
-</ul>
-<h3>搭建 demo，进行试用</h3>
-<p>在确定选用那几款产品之后，就可以集中精力在几款候选者里面。搭建相应的环境，对他们进行实际测试。</p>
-<p>supertest：</p>
-<ul>
-<li>功能太简单了，简单到几乎可以自己写掉，不算一个 test framework</li>
-</ul>
-<p>pyresettest：</p>
-<ul>
-<li>哈哈哈，YAML based，dreamed feature</li>
-<li>支持 YAML / extractor / validator</li>
-<li>天生支持 host 为参数</li>
-<li>create for me!!!</li>
-</ul>
-<p>hippie-swagger：</p>
-<ul>
-<li>在使用上，和 supertest 差异不大</li>
-<li>仍然需要自己定义，在 swagger 描述文件不存在时候会抛错，描述文件不符合时会抛错</li>
-</ul>
-<p>robotframework：</p>
-<ul>
-<li>较为复杂</li>
-<li>有 YAML 了，不用试了</li>
-</ul>
-<h2>使用感觉</h2>
-<p>经过一个季度的试用，我们基于 pyresttest 的项目 abao 运行较稳定。
-尽量在工程师提交代码之后，运行一次，从而可以在早期发现问题。</p>
-<p>由于是基于 Python 的源代码，我们还给 pyresttest 开发了几款插件：</p>
-<ul>
-<li>cookie_extractor：用来解析特定的 cookie</li>
-<li>file_choice_generator：从文件随机选择预设数据</li>
-<li>file_seq_generator：从文件顺序选择预设数据</li>
-</ul>
-<p>在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
-前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。</p>
-<p>感谢项目贡献者：</p>
-<div><pre><span></span><span>project</span>  <span>:</span> <span>abao</span>
- <span>repo</span> <span>age</span> <span>:</span> <span>5</span> <span>months</span>
- <span>active</span>   <span>:</span> <span>32</span> <span>days</span>
- <span>commits</span>  <span>:</span> <span>109</span>
- <span>authors</span>  <span>:</span>
-    <span>39</span>  <span>Chery</span><span>.</span><span>Peng</span>  <span>35.8</span><span>%</span>
-    <span>33</span>  <span>3</span><span>D</span>          <span>30.3</span><span>%</span>
-    <span>17</span>  <span>yanqi</span><span>.</span><span>chen</span>  <span>15.6</span><span>%</span>
-    <span>11</span>  <span>橙子</span>        <span>10.1</span><span>%</span>
-     <span>7</span>  <span>fiona66</span>     <span>6.4</span><span>%</span>
-     <span>2</span>  <span>雪糕</span>        <span>1.8</span><span>%</span>
-</pre></div>
-<hr />
-<p>参考文档</p>
-<ul>
-<li><a href="https://github.com/integrations">Integrations Directory</a></li>
-<li><a href="http://www.infoq.com/cn/search.action?queryString=%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95&amp;page=1&amp;searchOrder=&amp;sst=guKeEhPzzhUs7xpS">http://www.infoq.com/cn/search.action?queryString=%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95&amp;page=1&amp;searchOrder=&amp;sst=guKeEhPzzhUs7xpS</a></li>
-<li><a href="http://www.infoq.com/cn/news/2014/02/autotest-2013">http://www.infoq.com/cn/news/2014/02/autotest-2013</a></li>
-<li><a href="http://www.infoq.com/cn/articles/cucumber-robotframework-comparison">http://www.infoq.com/cn/articles/cucumber-robotframework-comparison</a></li>
-<li><a href="http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform">http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform</a></li>
-<li><a href="http://nerds.airbnb.com/testing-at-airbnb/">http://nerds.airbnb.com/testing-at-airbnb/</a></li>
-<li>Google keywords<ul>
-<li>integration api test framework</li>
-<li>github intergration test</li>
-</ul>
-</li>
-</ul>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/08/api-integration-test/">https://blog.alswl.com/2016/08/api-integration-test/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">July 6th 2016 5:32:14 PM</span>
                         
                     </p>
@@ -3111,7 +2011,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-b" href="#">总结</span>
+                            <span class="post-category post-category-c" href="#">总结</span>
                             
                         </p>
                     </header>
@@ -3146,228 +2046,6 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">June 19th 2016 5:57:39 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/06/capacity-planning/" class="post-title">搞定暴涨的流量</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>2013 年左右，我司业务发展迅速，每天晚上都会面临服务器濒临崩溃情况。
-我相信每个高速发展的互联网企业在某个阶段都会面临这样的情形，比如去年爆红的「足迹」。
-过程往往是：线上出现故障，手机会收到报警，然后登录到服务器上去解决问题。
-处理这种问题工种现在有一个时髦的名称，叫做「SRE（Site Reliability Engineer）」系统可用性工程师。</p>
-<p>虽然我常常救火，但是我还是想尽可能避免线上发生故障。「最好的消息，就是没有消息。」
-减少故障出现概率，增强系统可用性，降低故障处理时间是 SRE 的最大课题。
-在这里有最常用的两个手段，一个是优化性能，一个是做好容量规划和扩展。
-这里我着重讨论后者「容量规划」。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201606/message.png" /></p>
-<p>^ 看我的一堆报警消息</p>
-
-<h2>面临的问题</h2>
-<p>面对暴涨流量，一边是业务方的满心欢喜，一边就是工程师的烦恼和压力了。
-也许是一个受欢迎的功能上线了，或者是某个社会活动导致流量爆发，系统开始出现高延迟，磁盘 IO 不够用了。
-也许是 DB 第一个倒下，也许是 RPC 系统第一个倒下……
-呃，大神可能会说，我艹，RPC 系统第一个倒下还搞个屁啊，赶紧倒闭算了。</p>
-<p>核心的问题就是，在现有性能下面，在面临可能的大流量冲击时候，如何做到不慌不忙，能够 handle 住突如其来的流量？</p>
-<h2>设定容量目标</h2>
-<p>在解决这个问题之前，我们得先考虑清楚，我们到底要多强的流量处理能力。
-如果今天我们只是一个两三台服务器的小团队，却企图设计一个能够抗住 1 亿 pv 访问的系统，
-显然是不现实的，至少是不经济的。</p>
-<p>衡量系统容量的指标可以简化为在什么流量下面，提供什么样的可用性保证。
-一个实际的样例是，在 1 亿 pv 下面，提供 99.99% 的可用性，
-其可用性的评判标准是「服务器在 200ms 内返回正确的数据」。</p>
-<p>这里有一个重要的概念，可用性保证，术语是服务等级协议（SLA）。
-这个指标可以从大部分标准云供应商的标准条款里看到，比如我司机房供应商提供的可用性保证是 99.9%。
-阿里云 ECS 的 SLA 是「99.95%」，统计周期是 1 个月
-（如果故障时间低于 5 min，不计入故障时间，云供应商都这样，特别霸权）。</p>
-<p>一个对 SLA 的直观认识是（具体数据来自 <a href="https://en.wikipedia.org/wiki/High_availability#Percentage_calculation">High availability - Wikipedia, the free encyclopedia</a>）：</p>
-<ul>
-<li>99.0% 意味着一年有 87 天不可用</li>
-<li>99.5% 意味着一年 1.83 天不可用</li>
-<li>99.9% 意味着一年 8.76 小时不可用</li>
-<li>99.99% 意味着一年 52.56 分钟不可用</li>
-<li>99.999% 意味着一年 5 分 15 秒不可用，这是高可用的一般标准</li>
-</ul>
-<p>设定越高的 SLA 的成本越高，具体 SLA 的设定是成本、收益、期望的平衡。
-不同的业务需要的 SLA 也不一样，一般认为 99.9% 基本可用，99.99% 可用性较高，
-99.999% 为高可用。</p>
-<p>有些云供应商号称 8 个 9，9 个 9，那往往都是对于存储服务里面的数据不丢失这个指标。
-除了忽悠忽悠人，这个 SLA 没什么用的。</p>
-<h2>测量</h2>
-<p>做一件伟大事情时候，先有目标，下一步如果是迈出脚步出去闯荡，那么往往换来的是一个身心疲惫的自己。
-更稳当的做法是，先摸摸清楚，自己有几把刷子，是不是还要再练练，有没有资格上战场。
-没有 Profiling，就是瞎子，根本不用谈优化和容量规划。</p>
-<p>对于一般的业务场景而言，常见的测量指标分为三类：</p>
-<ul>
-<li>服务器的硬件指标（CPU、内存、硬盘 IO、硬盘容量、网络）</li>
-<li>服务的软件指标（QPS / latency / pool）</li>
-<li>业务的数据指标（核心业务指标，比如注册数，核心动作次数）</li>
-</ul>
-<p>我司的实践情况是这样的，我们使用 Zabbix 测量服务器，用自己设计的系统收集服务数据，使用 Grafana 呈现。
-后者被设计到 RPC 系统内部，数据是全量收集。
-我司在业务层面的数据监控做的还不足，这种不足不仅仅体现在数据的全面性上面，还体现在相关成员（比如产品汪）对数据的利用率上面。</p>
-<p>除了测量线上的实施数据，了解某个设施的性能极限也是很重要，目前常见的测量方式是：</p>
-<ul>
-<li>模拟流量进行测试</li>
-<li>在线上进行测试，并实时跟踪进展情况，出现异常时候，停止流量切入</li>
-<li>从线上引入流量到测试环境进行测试</li>
-</ul>
-<p>我发现，第一种方法往往不准，第三种方法对于小团队来说，成本太高。第二种方法是最粗暴和有效的。</p>
-<h2>预警和提醒</h2>
-<p>仅仅知道当前系统的性能表现是不足的，重要的如何将这些数据利用起来，对未来系统增长进行预估。
-流量增长 vs 资源消耗，这个曲线大部分情况是线性的，有些情况确实指数增长的。</p>
-<p>常见的做法是，给核心指标设置一个阈值（比如 80% 磁盘使用率，40% 磁盘 IO 利用率），当监控的数据到达这个阈值时候。
-就必须进行容量扩充，进行负载均衡。</p>
-<p>一个从运维同学身上学到的是，提前采购一些设备放到机房里面，比如硬盘、内存，别到时候供应商来不及供货。
-必要库存可以降低 MTBF。</p>
-<p>除了设定阈值报警，应当定期跑一些脚本获得数据。定期检查报警系统，避免报警系统失效。</p>
-<h2>必选项 - Scalable</h2>
-<p>上文写到，「必要时候进行容量扩充，进行负载均衡」。
-这点的提出，意味这需要<strong>保证基础设施是可扩展的，支持负载均衡，支持硬件扩容</strong>。</p>
-<p>Web 系统比较容易做到横向扩容，使用 Nginx / LVS 等负载均衡即可。
-中间件服务一般也是在设计时候就考虑了扩展。（什么？你们家 RPC 系统设计调用不支持扩展？什么脑残设计？！）</p>
-<p>DB 级别的服务，往往就要花一些心思了，一些技术（比如 MySQL）想要做到横向扩展，
-需要进行提前设计。而一些设施虽然容易进行扩展，比如 ES / Kafka 等现代化设施，
-但在部署的时候仍然要进行一些提前准备。</p>
-<p>除了提前做好 Scalable，还有几个和部署相关的 tips 可以供参考：</p>
-<ul>
-<li>使用工具：自动化部署，现在有太多工具可以供选择，比如 ansible 就是一个很好的工具</li>
-<li>automatic everything：避免登录服务器操作才能保证未来自动化</li>
-<li>工程化：用最佳实践去维护部署系统，用工程化的态度去写部署代码</li>
-<li>保持同质，避免花样：避免使用 shell 级别的操作原语操作部署系统，使用预设的 module 去操作</li>
-</ul>
-<h2>End</h2>
-<p>好了，现在去预测一下当大流量来临之际，你的服务会在哪些环节失败。
-想不出来的话，就一点点去测量各个环节性能，然后做一把容量规划吧。</p>
-<p>调优和增加容量，这是两个手段，这两个手段互相作用，互相影响。使用时候需要根据成本和收益进行选择。</p>
-<p>关于容量规划的更多细节，可以看看 <a href="https://book.douban.com/subject/4200645/">Web容量规划的艺术 (豆瓣)</a>
-这里看看。只是这本书写在 2010 年，并且作者介绍的过于传统运维视角一些。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/06/capacity-planning/">https://blog.alswl.com/2016/06/capacity-planning/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">June 15th 2016 3:59:16 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/06/q-and-a/" class="post-title">一次「分答」记录</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>尝试在团队内部发起一次类似「分答」的沟通方式，一对一面聊。
-回答其他工程师的问题，这种沟通的方式暨在提供一个特定的场合，帮助加强双方了解，
-解决团队中其他工程师的一些实际的问题。</p>
-<p>在征得对方同意之后，我将他的问题和我的回答 PO 出来。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201606/questions-and-answers.jpg" /></p>
-<ol>
-<li>喜欢什么游戏，玩游戏的问题<ul>
-<li>喜欢和人玩游戏，不喜欢和不认识网友玩游戏</li>
-<li>小学从红月开始玩，传奇、CS、魔兽、真三、DOTA，大学时候和舍友玩游戏，毕业后不玩</li>
-<li>minecraft 尝试着玩过，没有玩下去，找不到人</li>
-<li>日活的桌面游戏，三国杀等蛮喜欢</li>
-<li>不喜欢浪费时间，怕没控制</li>
-<li>从玩游戏里面学习什么么？不，就是纯粹享受游戏，不会想这么多</li>
-</ul>
-</li>
-<li>喜欢什么语言<ul>
-<li>看场合，小东西，小场景用 Python，生产环境用 Java，生产环境又有时间，考虑 Scala</li>
-<li>只允许选一门语言，就用 Python</li>
-<li>最吸引的特点，熟悉程度高，生产效率高，第三方库丰富，粘合性强</li>
-<li>为 Python 做一些功能扩展？不同时期答案会不一样，目前来说，希望有一个开发效率更高的 framework；有时间的话，会考虑如何绕过底层 GIL 问题 </li>
-</ul>
-</li>
-<li>有什么事情投入精力，铩羽而归<ul>
-<li>工具向重的人，推广 git 花了两年，推广 Restful 不利</li>
-<li>做业务开发 leader，和 tsu、小管一起做，项目管理、团队管理没做好，没做好，有挫败感。</li>
-</ul>
-</li>
-<li>职业迷茫期<ul>
-<li>我作为一个学渣，并且长期以来没有人给予职业生涯规划，一直对自己未来发展有困惑</li>
-<li>如何在无领导的情况之下，探索未来道路，规划自己工作内容？跟优秀的人聊，跟外部的人聊，看博客，看书</li>
-<li>迷茫是客观存在的，并且可能持续存在很久，正视它</li>
-<li>现实中一定会遇到各种挑战和困难的，用挑战和困难填充自己，丰富自己的生活</li>
-<li>迷茫是未知，有恐惧，有兴奋。对当前的我来说，恐惧可能更多，但是要面对</li>
-<li>职业生涯里面，前期的同质度更高，资深工程师可以会给初级工程师规划清晰一些，但是越往后期，越难规划，需要自己探索</li>
-</ul>
-</li>
-<li>推荐书<ul>
-<li><a href="https://book.douban.com/people/alswl/collect?sort=rating&amp;start=0&amp;filter=all&amp;mode=list&amp;tags_sort=count">https://book.douban.com/people/alswl/collect?sort=rating&amp;start=0&amp;filter=all&amp;mode=list&amp;tags_sort=count</a></li>
-</ul>
-</li>
-<li>学习来源<ul>
-<li>博客，infoq 等专业信息来源</li>
-<li>书籍</li>
-<li>周围的人</li>
-<li>尽可能从每天时间挤出时间阅读</li>
-</ul>
-</li>
-<li>生活和工作平衡点<ul>
-<li>不同的人，同一个人的不同时期所需要的平衡不一样</li>
-<li>对自己人生期望不一样的人，平衡点不一样</li>
-<li>对我来说，目前阶段不存在明显边界，尽可能投入工作</li>
-</ul>
-</li>
-<li>如何保持激情<ul>
-<li>人总是有低谷期的，不可能一直保持亢奋，除非是甲亢</li>
-<li>短期情绪会有起伏，长期来看，保持梦想和对自己高要求，可以帮助保持激情</li>
-<li>我有低谷期，低谷期适合反思</li>
-</ul>
-</li>
-<li>如何擦屁股<ul>
-<li>现实是残酷的，总有屁股要擦，自己也有脏屁股，今天要给昨天的自己擦屁股</li>
-<li>现实中存在脏屁股，尽可能了解它，看代码、文档，设计方案，了解的人，让自己变舒服</li>
-<li>责任心的体现，做好当下的事情；解决这样的问题，解决当前的问题；避免留下脏屁股，设计好，规划好</li>
-<li>责任心的话很虚。一个人做擦屁股、低产值的事情，从长远来看，是错的；短期需要撑下来；并且帮助团队避免这样的事情发生</li>
-</ul>
-</li>
-<li>最有成就感的事情<ul>
-<li>顶着家庭压力，到上海来</li>
-<li>在堆糖改造环境，提升自己心智水平，不害怕问题，自信，自省</li>
-</ul>
-</li>
-</ol>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/06/q-and-a/">https://blog.alswl.com/2016/06/q-and-a/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">May 14th 2016 11:29:09 AM</span>
                         
                     </p>
@@ -3379,7 +2057,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-d" href="#">折腾</span>
+                            <span class="post-category post-category-c" href="#">折腾</span>
                             
                         </p>
                     </header>
@@ -3595,7 +2273,7 @@ bled FROM video WHERE $cond &quot; .
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-c" href="#">技术</span>
+                            <span class="post-category post-category-d" href="#">技术</span>
                             
                         </p>
                     </header>
@@ -3622,320 +2300,6 @@ bled FROM video WHERE $cond &quot; .
 <p><a href="http://www.cisco.com/c/en/us/support/security/anyconnect-secure-mobility-client/tsd-products-support-series-home.html" target="_blank">Cisco AnyConnect Secure Mobility Client</a>中自带了一个进程名为acwebsecagent的Web安全模块，这个安全模块不管VPN是否在使用，都会劫持本机所有的发往80端口的通信，具体它做了什么好事坏事就不得而知了。</p>
 <p>找到了问题所在，网上搜一搜就能查到很多吐槽这个Web Security模块的贴子了，它会随着AnyConnect默认安装到你的电脑上（我的电脑系统是IT预装的，不然我装AnyConnect时肯定会手工把这个勾勾去掉）。解决问题的方法也很简单 ，一行命令卸载它：<br />
 <code> sudo /opt/cisco/anyconnect/bin/websecurity_uninstall.sh</code></p>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">April 26th 2016 6:36:10 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/04/onepiece-startup/" class="post-title">海贼王和创业团队</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>一个同事在知乎提了一个问题 <a href="https://www.zhihu.com/question/35037806">如果把草帽海贼团比作一个创业团队,这个Team的组织架构是怎样的?有哪些优势,又有哪些不足?</a></p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201604/onepiece.jpg" /></p>
-<p>这个话题很有趣，作为追了多年的 fans ，又是身处互联网创业团队的我要来强答一记。</p>
-<p>海贼王的世界很大，富有个性的角色和团队也很多，恰好可以和显示世界中的互联网创业团队进行对比。
-柳传志讲的好，做大事，要「建班子，定战略，带队伍」，我们就着金句来看看草帽这个团队怎么样。</p>
-
-<h2>产品和战略</h2>
-<p>我先讲产品和战略。</p>
-<p>由于海贼王世界的设定，以及作为一个全年段漫画动画的原因。
-海贼王世界的整体战略是较为简单，海贼团的目标都较为单一，即「找到 哥尔 D 罗杰 留下的宝藏」。
-海贼团们实现目标的路径也较为单一，打斗增强战斗力，不断寻找线索，去伟大航道寻找宝藏。</p>
-<p>所以故事的开展反而是围绕另外一条隐秘的线索「历史的真相」，尾田大神埋坑很深。
-「历史的真相」并不是作为大部分人努力和前进的目标，所以「海贼王」世界的故事虽然曲折跌宕，
-但是产品模型极为单一，不具备太多可以讨论的点。</p>
-<h2>团队</h2>
-<p>接着讲团队，一个团队第一重要的是创始人，这必须要是一位领袖人物。</p>
-<p>评价领袖优秀程度，从这么几个角度评价：</p>
-<ul>
-<li>意志力：打不死的小强，不达目标誓不罢休</li>
-<li>专业技能：能打、脑子灵光、心灵手巧、一技之长</li>
-<li>规划能力：除了体力值和专业智慧，也要讲讲战略和谋略</li>
-<li>管理能力：沟通协调、团队管理促进能力，能够带领团队实现目标，促进他人成长</li>
-</ul>
-<p>以这个标准来看几个具有领袖气质的角色：</p>
-<ul>
-<li>路飞<ul>
-<li>意志力：5</li>
-<li>专业技能：5</li>
-<li>规划能力：1（率性而为的大爷）</li>
-<li>管理能力：1（团队自由生长）</li>
-</ul>
-</li>
-<li>白胡子<ul>
-<li>意志力：5</li>
-<li>专业技能：5</li>
-<li>规划能力：4（顶上之战的过程证明）</li>
-<li>管理能力：5（队长们的成长和忠诚度证明）</li>
-</ul>
-</li>
-<li>多弗朗明哥<ul>
-<li>意志力：5</li>
-<li>专业技能：5</li>
-<li>规划能力：5</li>
-<li>管理能力：5</li>
-</ul>
-</li>
-<li>艾斯<ul>
-<li>意志力：5</li>
-<li>专业技能：4（以牺牲的时间点战斗力打分）</li>
-<li>规划能力：2（追踪黑胡子，一个人冒进，被黑胡子摆了一道）</li>
-<li>管理能力：2（也就混到一个队长，能够鼓励其他人，但是没发现黑胡子成长的问题）</li>
-</ul>
-</li>
-<li>唐僧（乱入一个对比）<ul>
-<li>意志力：5+</li>
-<li>专业技能：4（熟读经书算不算专业能力？）</li>
-<li>规划能力：0</li>
-<li>管理能力：0</li>
-</ul>
-</li>
-</ul>
-<p>从上面的判断可以看出，对于一个领袖而言，路飞仅仅是不错，但是谈不上多么优秀，
-倒是白胡子，典范啊典范。</p>
-<p>根据上面提到的能力模型，草帽海贼团的其他角色大家也可以心里评估出来了：
-大部分人都是意志力、专业技能强悍（即便是乌索普，射击能力也是可以评上 3），但是同时也在规划能力和管理能力上面较弱。</p>
-<p>唉，这么弱，很难继续支撑草帽海贼团继续走下去啊，怎么办呢？</p>
-<h2>带队伍</h2>
-<p>草帽海贼团，一个极为漂亮的「自组织团队」。</p>
-<p>什么是「自组织团队」？来自 InfoQ 的一篇文章 <a href="http://www.infoq.com/cn/articles/what-are-self-organising-teams">什么是自组织团队？</a> 里面讲到团队的特性：</p>
-<blockquote>
-<ul>
-<li>分散式的控制，也就是说与集中式的控制截然相反，</li>
-<li>不断适应改变的环境，</li>
-<li>在局部相互作用下自然浮现出来的结构,</li>
-<li>反馈，包括肯定的和否定的</li>
-<li>弹性，归结于系统修复和调整的能力。</li>
-</ul>
-</blockquote>
-<p>用简单的关键词概括，其实是这么几个关键词：</p>
-<ul>
-<li>自行决策</li>
-<li>自己成长</li>
-<li>适应环境变化</li>
-<li>团队内部信任并且沟通顺畅</li>
-</ul>
-<p>从这几个关键词来看，草帽海贼团和这种自组织模式极为匹配。路飞从来不会发号施令，统一调度，顶多喊几句口号振奋一下大家。
-路飞自身的规划能力和帮助他人成长的能力也远不及格。团队里面其他的成员，索隆、香吉士等的成长，完全是靠自己，
-甚至在「两年」跨度这么长的时间，尾田也是借外部力量帮助团队这些成员成长，而不是依靠领袖来培养成员。</p>
-<p>路飞选择这种自组织模式，不仅仅是一种巧合，更多的是一种逼不得已。尾田大神写的就是青春热血漫画，要是换成一个有勇有谋，
-那就成主旋律电视剧了，大家可能也是因为路飞这种优点和缺点喜欢他。</p>
-<h3>Anti-自组织模式</h3>
-<p>和「自组织模式」相反的情况，可以参照一下多弗朗明哥的团队。我们可以看到，在多弗朗明哥团里里面，有严密的等级关系（四大干部，家族干部，普通小兵），
-有帮助人才成长的流程（培训罗的一系列流程）。
-这种设定也是多弗朗明哥的战略能力和管理能力的体现。</p>
-<p>还有一种更极致的组织模式「集权模式」，由核心层发号施令，协同作战。
-海贼王的世界里，较少发现这样的模式，反派角色海军有一点点像。
-倒是另外一部作品「星球大战」，其中的帝国、第一秩序，都是典型的 Manager 发号施令，底层士兵只要好好作战即可。
-统一培养成行的克隆人，就可以支撑这样的团队发挥十足战力。</p>
-<p>这种集权模式，缺少向上反馈能力，缺少自发的创新能力。在业务发展顺利规模扩张阶段，也许可以发展不错，但是长久以往，
-核心层必然会发觉创新力和驱动力不足，花费大量的精力在管理、制度建设、奖惩机制上面。</p>
-<p>路飞的缺点和优点一样鲜明，他很幸运的（可能也完全不知道）使用了「自组织团队」这种模式，完成了创业的起步阶段。
-但是这种模式有也有自带的缺陷，需要目标一致性很高，团队成员自身有极高成长度。一旦遇到业务爆炸（顶上之战这种规模的战役），
-这团队就完蛋了。期望路飞在未来的航道上，注意培养一下自己不善于的能力。好消息是，从最近的「庞克哈撒德篇」和「德雷斯罗撒篇」战况来看，
-路飞已经开始学会制定「寻找友军结盟」、「树立竞争对手标杆」这样的初级战略方案了。</p>
-<h2>末</h2>
-<p>海贼王的世界，真的就是现实中「海盗」的正式写照吧。完成不可能的目标，成就团队，成就自己。</p>
-<p>「世代传承的意志，时代的变迁，人们的梦，只要人们继续追求自由的答案，这一切的一切都将永不停止.这世界……没错！一个追求自由任凭选择的世界，就在我们的眼前无限地延伸，如果我们的梦想可以引导你的方向的话，就去追寻吧！在名为信念的旗帜下」</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/04/onepiece-startup/">https://blog.alswl.com/2016/04/onepiece-startup/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">April 24th 2016 10:36:16 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/04/windows-management-for-hacker/" class="post-title">Windows management for hacker</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-d" href="#">Mac</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>团队里的同学有时看见我键指如飞，可以用快捷键将 Mac 的窗口玩转于手心。他们表示酷炫非常，
-心生羡慕的同时，希望掌握这门技艺，我就把使用的 Phoenix 介绍给大家。结果过了一段时间，
-发现普及率并不高，本着好为人师的精神，今天我就来八一八这款优秀的桌面管理工具。</p>
-<p>在介绍我使用的工具之前，我要先介绍一下我选择的原因和历史。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201604/ergodox_infinity.jpg" /></p>
-<p>ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的时候，请留步思考 5s）。</p>
-<h2>Alt+Tab = 苦难的历史</h2>
-<p>当我还年轻的时候，曾经对 Alt+Tab 这个快捷键愤慨无比，觉得这种设计虽然简单但是很蠢。</p>
-
-<ul>
-<li><strong>命中率低</strong>。要在茫茫图标中查找自己需要的窗口，如果开了 20 个应用，切换到一个非常用窗口至多可能需要 20-1 次按键。
-    不要跟我说有 Alt+Shift+Tab 的反向循环操作，估计大部分用户都不知道。而且 正向/反向 切换伤脑子。</li>
-<li><strong>交互方式耗时</strong>。由于 Alt+Tab 的操作需要用户进行反馈才能进行，是 <code>眼-手-眼-手</code> 的操作反馈方式，
-    这种交互模式费时费脑子。跟这种需要实时反馈对立的交互模式应当是类似「一键呼出」的操作。</li>
-<li><strong>在大显示器、多显示器的环境下面，Alt-Tab 模式没有做任何优化</strong>。</li>
-<li>频繁切出窗口进行切换，容易让人分神，比如切换时候看到某个播放器的标题，在放一首喜欢的歌，很可能吸引过去。</li>
-</ul>
-<p>有人会问，难道不优化都是缺陷么？
-    我的答案是肯定的。Alt+Tab 是几乎除鼠标之外的唯一一种窗口操作方式。如果它不能跟上时代的步伐，
-    对大显示器、多显示器做优化，那就是不作为，不努力，不上进。跟不上变化是要被淘汰的！</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201604/alt_tab_windows.jpeg" /></p>
-<h2>平铺式窗口管理器</h2>
-<p>在被 Windows Alt-Tab 虐了多年之后，我长大了，开始接触 Linux，但是这种痛苦仍然时刻包围着我。
-当我分期购买一个外置显示器之后，这种痛苦到达到了顶端。
-恰好彼时我是 <a href="https://www.archlinux.org/">ArchLinux</a> 的信徒，很快就发现了一片桃源：
-自己安装 <a href="https://wiki.archlinux.org/index.php/window_manager">Window manager</a>。</p>
-<p>我重新认识了桌面系统世界，除了介绍常规的 Gnome / KDE / xfce 之外，还有一类窗口管理系统，他们叫做「平铺式窗口管理器」。
-（严格来说，Gnome / KDE / xfce 属于 Desktop environment，层级比「窗口管理系统」要高，我这里不做严格区分）。</p>
-<p>什么是平铺式窗口管理器？来一个直观的认识：</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201604/awesome_1.jpeg" /></p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201604/awesome_2.jpeg" /></p>
-<p>官方的解释是……呵呵，自己点进去看解释吧。平铺式桌面管理器（包括同时支持平铺式和堆叠式的混合式桌面管理器）给我带来了新的认知，
-原来桌面系统是可以进行接口编程的，我不那么 care 到底是哪种风格，我 care 的是，
-能否通过编程定制来解决我的 Alt-Tab 问题。</p>
-<h2>我期望的窗口管理模式</h2>
-<ul>
-<li>快速启动最常用的应用，同时也能将其快速呼出</li>
-<li>对大屏幕友好，现在显示器普遍是大屏幕，可以自由控制窗体的移动，方便多个窗口同时进行操作</li>
-<li>对多屏幕友好，多屏幕间的切换，要友好。可以快速屏幕间切换</li>
-<li>对键盘友好，对鼠标友好，全键盘操作模式，但同时要对鼠标友好，比如鼠标跟随焦点功能，毕竟一些操作还是鼠标方便</li>
-<li>帮助集中注意力，将操作界面隔离成多个目的区分的空间，比如写作时候，期望只有一个 Evernote + Chrome 在眼前</li>
-</ul>
-<h2>我在 Mac 下面的方案</h2>
-<p>呜呼，感谢伟大的 <a href="https://github.com/jasonm23/">Jason Milkins</a> 做了一堆尝试，
-创造了一堆乱七八糟的桌面管理器。然后感谢 <a href="https://github.com/kasper">Kasper Hirvikoski</a>
-在 Jason 拍拍屁股走人之后，接过了 Jason 的棒子，将 Phoenix 这个项目快速推进，解决了一堆导致不可用的 bug，
-并新增了很多特性。</p>
-<p>回到要介绍的主角身上，<a href="https://github.com/kasper/phoenix">Phoenix</a>：</p>
-<blockquote>
-<p>A lightweight OS X window and app manager scriptable with JavaScript</p>
-</blockquote>
-<p>基本特性是：</p>
-<ul>
-<li>Javascript 作为配置文件，定制性超级强</li>
-<li>支持 App / Window / Space / Screen 等对象的操作</li>
-</ul>
-<p>基于 Phoenix，我达成了我的窗口管理模式的目标：</p>
-<ul>
-<li>快速启动<ul>
-<li>使用 <code>Option</code> + ` / 1 / 2 / 3 / 4 / 8 / 9 / e / a / s / z /, / . / / 启动</li>
-<li>iTerm / Chrome / Safari / QQ / Bearychat / Wechat / Neteasy Music / MacVim / IntelliJ IDEA / Macdown / Mail / Evernote / Finder</li>
-</ul>
-</li>
-<li>窗口操作<ul>
-<li>Option + - / =<ul>
-<li>大小控制</li>
-</ul>
-</li>
-<li>Option + m<ul>
-<li>窗口移动到屏幕中央</li>
-</ul>
-</li>
-<li>Option + Space<ul>
-<li>鼠标找回到窗口中央</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>屏幕内操作<ul>
-<li>Option + J / K<ul>
-<li>焦点在同屏幕窗口切换</li>
-</ul>
-</li>
-<li>Ctrl + Option + J / K / H / L<ul>
-<li>窗口移动</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>屏幕间操作<ul>
-<li>Option + H / L<ul>
-<li>焦点左右屏幕切换</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Space 操作<ul>
-<li>Option + I / O<ul>
-<li>Space 左右切换</li>
-</ul>
-</li>
-<li>Option + Ctrl + I / O<ul>
-<li>将当前窗口移动到相邻 Space</li>
-</ul>
-</li>
-<li>Option + Enter<ul>
-<li>将当前窗口移动到 Work Space</li>
-</ul>
-</li>
-<li>Option + Delete<ul>
-<li>将当前窗口移动到 Park Space</li>
-</ul>
-</li>
-<li>Work / Park Space 就是用来帮助我集中精力的</li>
-</ul>
-</li>
-</ul>
-<p>我的配置文件在 <a href="https://github.com/alswl/.oOo./blob/master/.phoenix.js">https://github.com/alswl/.oOo./blob/master/.phoenix.js</a>
-我的配置文件可以开箱即用，但这是我自己的工作模式，想要获得自己最舒适的效果，需要自己进行一些研究和定制。</p>
-<h2>其他一些替代方案</h2>
-<ul>
-<li>Mac<ul>
-<li>SizeUp  # 简单的桌面平铺工具，不支持一键切换</li>
-<li>Spectacle  # 类 SizeUp</li>
-<li>Divvy  # 类 SizeUp，收费</li>
-<li>Slate  # 支持配置，支持一键切换（推荐）</li>
-</ul>
-</li>
-<li>Linux<ul>
-<li>Awesome<ul>
-<li><a href="http://hahack.com/tools/awesome/">平铺式窗口管理器-Awesome | HaHack</a></li>
-<li><a href="https://github.com/alswl/awesome">我的 Awesome 配置文件（停止位置）</a></li>
-</ul>
-</li>
-<li>xmonad</li>
-</ul>
-</li>
-<li>Windows<ul>
-<li><a href="https://github.com/fuhsjr00/bug.n">fuhsjr00/bug.n: Tiling Window Manager for Windows</a></li>
-</ul>
-</li>
-</ul>
-<hr />
-<p>我曾经写过一篇 <a href="http://blog.alswl.com/2013/12/mac/">Linux 程序员的 Mac 安装记录</a>，
-告诉大家我在 Mac 上面常用的工具、包管理器。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/04/windows-management-for-hacker/">https://blog.alswl.com/2016/04/windows-management-for-hacker/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
                         
                     </div>
                 </section>
@@ -3985,7 +2349,7 @@ bled FROM video WHERE $cond &quot; .
                             
                             <span class="post-category post-category-d" href="#">工具</span>
                             
-                            <span class="post-category post-category-c" href="#">音乐</span>
+                            <span class="post-category post-category-b" href="#">音乐</span>
                             
                         </p>
                     </header>
@@ -4134,148 +2498,6 @@ ssl_session_timeout 5m;</code></p>
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">February 28th 2016 11:16:01 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/02/team-geek/" class="post-title">技术之外</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-b" href="#">读书笔记</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>这是一天一本书的第二次执行，这次选了一本比较薄的书，上周的书看了一天，脑仁疼。</p>
-<hr />
-<p>在我组织团队新兵训练营（入职之后一段时间内容集中的培训）时候，
-经常和新同事聊到一个词：软实力。
-我将其描述为专业技能之外的能力。每个人都这种能力的解读可能会不一样，
-我将其拆解为：「对工作的热情；观察力和反思能力；做计划和决策是否周全」。</p>
-<p>这种拆解是不全面的，「多年」以后，我意识到，硬实力考衡的是专业的能力，
-而软实力则是考衡人的因素。这种晚来的意识让我在一段时间里面，
-将自己的工作陷入困境，并且得不到解药。</p>
-<p>Google 的两位工程师 Brian W. Fitzpatrick 和 Ben Collins-Sussman
-写了一本书<a href="http://book.douban.com/subject/21372237/">极客与团队</a>，通过他们的视角，
-告诉大家想要在团队中获得成功的另一面。不要被书名误解，我觉得「开发者和团队」是更好的名字，
-虽然没那么酷。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/s26354473.jpg" /></p>
-
-<blockquote>
-<p>要在团队中获得成功，你必须以<strong>谦虚</strong>、<strong>尊重</strong>和<strong>信任</strong>为核心原则。</p>
-</blockquote>
-<p>要做的第一件事情，应该就是沟通了。让自己成为一个玻璃玲珑人，
-其他人可以看到你的方向、目标和里程碑，同时可以看到你的进展和问题点。
-这样不但可以获得工作中的肯定，当个人的目标设定和团队出现偏差，
-又或是开发过程中在一个点停顿了太久，可以有其他人参与进来或直接伸出援手。</p>
-<p>这种透明度对上对下都应该如此。团队的领导，
-应当在开发周期内的早期就明确告知团队愿景、目标和设定的里程碑。
-产生共鸣的愿景可以让人对目标有渴望，对自己工作有认同。
-各位还记得中国中小学开学第一周里，大多都有一个开学典礼讲话。讲的好的领导，
-会阐述自己的教学理念，去年取得的成绩，今年的教学着重点。
-讲的差的领导就是泛泛而谈，每年都是一套话术，完全看不到长进。</p>
-<p>缺失沟通，还会将个人陷于单打独斗的境地，一个篮球队需要 5 个人大，
-一个人牛逼没屁用。</p>
-<p>提高工程质量的一个有效手段就是 CI（持续集成），将开发过程中一点点的小进展都以一种机械的方式呈现出来，
-并进行测试。另一个有效手段是 Code Review，不但推荐要 CR，更是要尽早、快速的 CR。
-避免屎积压多了拉，太臭。</p>
-<p>我突然想到一条实践：即便是做一个人的项目，在精简程度上也保持最小的一个阈值，
-想象明天就要长假，工作要交给别人维护，如何在交付物里面有足够的信息让其他人知晓细节。
-而不是丢给后继维护者一句冰冷的话：「看代码」。</p>
-<p>沟通必须是有效的，我想任何人都不想听一个嘴碎的人在那边逼逼一下午。
-有很多结构化、一部的沟通可以显著提高沟通效率：
-项目看板、设计文档、Code Review、代码注释、数据字典等。</p>
-<p>第二个重要的观点是，接受失败，承认自己不是无能的。你可能很聪明，但所做的事情不一定完全都是正确的，
-连上帝都会犯错，何况是普通人。犯错不可怕，但是犯错还认识不到可怕。犯错并且认识到了，
-但是拒绝承认错误的人，不是可怕，而是应该要被淘汰，这类人会极其难以合作。
-如何你周围都是这样的人，或者你上司是这样的人，也许你可以考虑换一个地方，在拉钩搜索「堆糖」试试吧。</p>
-<p>关于接受失败的另外一个隐含后续发展就是「成长」。意识到这个世界是动态发展的，
-「要以发展的眼光看待事物」是一个非常非常有用的认知。
-能自己意识到失败，并且会主动复盘，重新认知自己的人，往往会成长的极为迅速。
-关于成长的话题可以讨论很深，以后可以单独拎出来讨论。</p>
-<p>书中提到一个失败后回顾的清单：</p>
-<blockquote>
-<ol>
-<li>简要</li>
-<li>时间的时间线，从发现到调查，再到最终见过</li>
-<li>事件发生的主因</li>
-<li>影响和损失评估</li>
-<li>立即修正问题的步骤</li>
-<li>防止事件再次发生的步骤</li>
-<li>得到的教训</li>
-</ol>
-</blockquote>
-<p>我就哈哈哈了，这不就是我大堆糖的故障报告模板么？</p>
-<p>第三点，如何成长？简单来说，去冒险，去承担自己能力之外的任务，
-去挑战没有经历过的任务。有一条<a href="https://zh.wikipedia.org/wiki/%E5%BD%BC%E5%BE%97%E5%8E%9F%E7%90%86">彼得定律</a>：「在组织或企业的等级制度中，
-人会因其某种特质或特殊技能，令他在被擢升到不能胜任的职位，相反变成组织的障碍物（冗员）及负资产。」。
-前半段含义是，大部分情况下面，并不是具有了相应能力才去承担，而是试着去承担任务。
-无论成功与否，对当前去挑战的人来说，都能够得到历练，从而能力得到提升。</p>
-<p>第四点是：成为 Leader，而不是 Manager。
-一个团队是一艘危机四伏的海面上一只船，如果没有一个船长，那么就前途叵测。
-在职业生涯的某些阶段，你可能自然成为船长，也许是一个项目的船长，也许是一个小 Team 的船长。
-那么切记，船长是 Leader，而不是 Manager，是能力综合，可守可攻，顺风时候会把舵，
-缺人时候可以顶任何岗位的船长。而不是手持大鞭的 Manager。
-我觉得新闻联播里面描述的人民公仆，就是一个很好的 Leader。</p>
-<p>一年多前之前和铁柱聊过，一个 Leader 是否需要要以能力服众。
-我仍然保持当初的观点：「是的」。在目标管理、方向把握上面，
-强大的技术背景可以有魄力的开展工作，挖掘新技术，推动变化。
-在遇到困难时候，可以决策、解决问题。
-这是由这个行业特质决定的，互联网是依赖创造力的脑力劳动，而不是根据人数线性增加产出的体力劳动。</p>
-<p>但毕竟不是每个人都一定拥有 Leader 特质，难道就要一辈子做技术得不到上升？
-Google 的一种做法，可以很好解决这个问题。分离 TL（techlead）和 TLM（techleadmanager），
-前者更着重技术，后者不但关心技术，还关心手下工程师的成长。
-用国内互联网的职责分工描述，大概就是有技术专家和团队负责人的区别。</p>
-<p>关于这条，书中的几点最佳实践非常棒：</p>
-<blockquote>
-<ol>
-<li>放下自负</li>
-<li>做一个禅师（保持冷静和理性）</li>
-<li>成为催化剂</li>
-<li>当一个导师</li>
-<li>设置明确的目标</li>
-<li>坦诚（三明治赞美法）</li>
-<li>记录快乐程度</li>
-</ol>
-</blockquote>
-<p>最后聊一下对书本身的评价。黄易山在 Quora 写过一段非常有名的
-<a href="https://www.quora.com/What-makes-engineering-management-hard">为什么工程师管理这么难？</a>。
-这本书讨论的内容要比黄易山那篇回答范围更大，讲述的也更详细（废话，这是书）。
-作者是典型的工程师，书目结构易读，第五章从反模式来思考问题非常赞。</p>
-<p>我读过几本技术管理相关的书籍，印象深刻的有两本，一本是温伯格的<a href="http://book.douban.com/subject/1132623/">成为技术领导者</a>，另外一本是此书。温伯格的行文比较跳跃、比较抽象，不容易读。
-而这本书不但通俗异动，也添加了非常具有可操作性的最佳实践。
-从创造力驱动的角度出发，技术开发者都是管理者。因为他们需要设计方案，创造价值，而不是重复劳动，
-所以我推荐每个开发者阅读。</p>
-<p>好了，学习够了充分的理论，下面就是做起来了，「知行合一」。</p>
-<hr />
-<p>开给自己的处方：</p>
-<ul>
-<li>上面提到的最佳实践</li>
-<li>谦逊：谦逊一些，低调一些，向他人学习</li>
-<li>坚毅：认准目标，稳步前行，不放弃</li>
-<li>信心：信念也许可以重建，但是对自己始终保有信心，也许会错，但是要相信自己的判断</li>
-<li>开会技巧：超过 5 人的会用单向宣讲更有效</li>
-</ul>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/02/team-geek/">https://blog.alswl.com/2016/02/team-geek/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">February 12th 2016 2:12:57 PM</span>
                         
                     </p>
@@ -4287,15 +2509,15 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-b" href="#">*nix</span>
+                            <span class="post-category post-category-d" href="#">*nix</span>
                             
                             <span class="post-category post-category-d" href="#">monitoring</span>
                             
-                            <span class="post-category post-category-a" href="#">networking</span>
+                            <span class="post-category post-category-b" href="#">networking</span>
                             
-                            <span class="post-category post-category-d" href="#">tcp</span>
+                            <span class="post-category post-category-a" href="#">tcp</span>
                             
-                            <span class="post-category post-category-d" href="#">vpn</span>
+                            <span class="post-category post-category-a" href="#">vpn</span>
                             
                         </p>
                     </header>
@@ -4316,220 +2538,6 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">February 2nd 2016 4:34:44 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/02/a-timeout-fault/" class="post-title">一例 Timeout 故障</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-c" href="#">Qiniu</span>
-                            
-                            <span class="post-category post-category-c" href="#">TCP</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg" /></p>
-<p>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。</p>
-
-<p>检查日志，并没有 ERROR 信息，但是大量 WARN 报错。</p>
-<div><pre><span></span><span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>730</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>:</span> <span>dw</span><span>{</span><span>STARTED</span><span>,</span><span>8</span><span>&lt;=</span><span>50</span><span>&lt;=</span><span>50</span><span>,</span><span>i</span><span>=</span><span>0</span><span>,</span><span>q</span><span>=</span><span>1024</span><span>}</span> <span>rejected</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConne</span>
-<span>ction</span><span>$</span><span>2@62</span><span>c021c6</span>
-<span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>731</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectorManager</span><span>:</span> <span>Could</span> <span>not</span> <span>process</span> <span>key</span> <span>for</span> <span>channel</span> <span>java</span><span>.</span><span>nio</span><span>.</span><span>channels</span><span>.</span><span>SocketChannel</span><span>[</span><span>connected</span> <span>local</span><span>=/</span><span>10.</span>
-<span>1.1.78</span><span>:</span><span>8350</span> <span>remote</span><span>=/</span><span>10.1.1.74</span><span>:</span><span>63290</span><span>]</span>
-<span>!</span> <span>java</span><span>.</span><span>util</span><span>.</span><span>concurrent</span><span>.</span><span>RejectedExecutionException</span><span>:</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>2@62</span><span>c021c6</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>.</span><span>execute</span><span>(</span><span>QueuedThreadPool</span><span>.</span><span>java</span><span>:</span><span>362</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>FillingState</span><span>.</span><span>onEnter</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>379</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>.</span><span>next</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>273</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>ReadCallback</span><span>.</span><span>succeeded</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>563</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>FillInterest</span><span>.</span><span>fillable</span><span>(</span><span>FillInterest</span><span>.</span><span>java</span><span>:</span><span>82</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectChannelEndPoint</span><span>.</span><span>onSelected</span><span>(</span><span>SelectChannelEndPoint</span><span>.</span><span>java</span><span>:</span><span>109</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectorManager</span><span>$</span><span>ManagedSelector</span><span>.</span><span>processKey</span><span>(</span><span>SelectorManager</span><span>.</span><span>java</span><span>:</span><span>636</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectorManager</span><span>$</span><span>ManagedSelector</span><span>.</span><span>select</span><span>(</span><span>SelectorManager</span><span>.</span><span>java</span><span>:</span><span>607</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectorManager</span><span>$</span><span>ManagedSelector</span><span>.</span><span>run</span><span>(</span><span>SelectorManager</span><span>.</span><span>java</span><span>:</span><span>545</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>NonBlockingThread</span><span>.</span><span>run</span><span>(</span><span>NonBlockingThread</span><span>.</span><span>java</span><span>:</span><span>52</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>.</span><span>runJob</span><span>(</span><span>QueuedThreadPool</span><span>.</span><span>java</span><span>:</span><span>635</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>$</span><span>3.</span><span>run</span><span>(</span><span>QueuedThreadPool</span><span>.</span><span>java</span><span>:</span><span>555</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
-<span>!</span> <span>at</span> <span>java</span><span>.</span><span>lang</span><span>.</span><span>Thread</span><span>.</span><span>run</span><span>(</span><span>Thread</span><span>.</span><span>java</span><span>:</span><span>745</span><span>)</span> <span>[</span><span>na</span><span>:</span><span>1.8.0</span><span>_51</span><span>]</span>
-</pre></div>
-<p>这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads：</p>
-<p><code>http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu</code></p>
-<p>正常的实例：</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/image2015-12-9_1.png" /></p>
-<p>异常的实例：</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/image2015-12-9_2.png" /></p>
-<p>确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？</p>
-<p>检查了 App 的配置文件，的确配置了 <code>maxThreads</code> 为 50:</p>
-<div><pre><span></span><span>server</span><span>:</span>
-  <span>gzip</span><span>:</span>
-    <span>enabled</span><span>:</span> <span>false</span>
-  <span>requestLog</span><span>:</span>
-    <span>appenders</span><span>:</span> <span>[]</span>
-  <span>maxThreads</span><span>:</span> <span>50</span>
-  <span>applicationConnectors</span><span>:</span>
-    <span>-</span> <span>type</span><span>:</span> <span>http</span>
-      <span>port</span><span>:</span> <span>8350</span>
-      <span>acceptorThreads</span><span>:</span> <span>2</span>
-      <span>selectorThreads</span><span>:</span> <span>2</span>
-  <span>adminConnectors</span><span>:</span>
-    <span>-</span> <span>type</span><span>:</span> <span>http</span>
-      <span>port</span><span>:</span> <span>8351</span>
-</pre></div>
-<p>一般对应服务不稳定，有个简单策略，超时，那么七牛服务超时是多少？找了一下相关代码，下巴都没合上：</p>
-<div><pre><span></span># com.qiniu.http.Client
-    this.httpClient.setConnectTimeout((long)Config.CONNECT_TIMEOUT, TimeUnit.SECONDS);
-    this.httpClient.setReadTimeout((long)Config.RESPONSE_TIMEOUT, TimeUnit.SECONDS);
-
-# com.qiniu.common.Config
-public static int CONNECT_TIMEOUT = 10000;
-public static int RESPONSE_TIMEOUT = 30000;
-</pre></div>
-<p>超时时间 8h，吓得我赶紧关掉了显示器。
-赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。 </p>
-<p>咨询了七牛的工程师故障当天的状况：</p>
-<blockquote>
-<p>sorry 忘了回复，问题已经定位，早上因为有个别用户list请求数量过大，导致了整个list接口出现大量满请求，影响返回是list接口的调用 和 portal上内容管理界面列取文件key的速度，目前已经恢复</p>
-<p>大量慢请求，这个已经内部有告警和恢复机制，11点25恢复的</p>
-</blockquote>
-<p>国内一线的云服务供应商也会出这样不可用故障，即便是有服务放在云上，还是要自己留一个心眼，多关注可用性啊。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/02/a-timeout-fault/">https://blog.alswl.com/2016/02/a-timeout-fault/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">January 12th 2016 3:53:55 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2016/01/confluence-upgrade/" class="post-title">一次艰难的 Wiki 升级</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-a" href="#">confluence</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>公司使用 <a href="https://www.atlassian.com/software/confluence">Confluence</a>
-管理自己的知识库，
-现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。
-新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
-在群众的强烈呼声下，我着手开始升级。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201601/confluence_river.jpg" /></p>
-
-<p>官方的升级路线很扯，3.0.1 的升级路线是：</p>
-<ul>
-<li>3.0.1 -&gt; 3.5.17</li>
-<li>5.0.3 -&gt; 5.4.4</li>
-</ul>
-<p>中间两次大版本升级，第一次原因不明，第二次是更新了 markup 渲染引擎，
-改为 HTML 格式类型的渲染模式。</p>
-<p>由于一些原因，我们系统还跑在 embedded 模式下（其实就是 HyperSQL），这种大版本升级，
-需要先从内置库升级到外部数据库，比如 MySQL。</p>
-<p>苦逼旅程就开始了。</p>
-<h2>From embedded to MySQL</h2>
-<p>更新内置库到外部库的操作流程：</p>
-<ul>
-<li>导出当前的数据备份，包括附件，我导出后 1G+</li>
-<li>使用当前同版本（3.0.1）安装一个全新的 wiki，注意下载 JDBC-connector</li>
-<li>安装之后，配置好 MySQL，开始导入之前准备好的备份</li>
-<li>悲剧上演</li>
-</ul>
-<p>遇到了错误：</p>
-<blockquote>
-<p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry '12028015' for key 'PRIMARY'; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '12028015' for key 'PRIMARY'</p>
-</blockquote>
-<p>官方文档 <a href="https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html">https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a>
-让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p>
-<div><pre><span></span># 格式化
-awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot;,s);s=gensub(/&gt;([^ \n&gt;]*)<span>&lt;</span>/,&quot;&gt;\n\\1\n<span>&lt;</span>&quot;,&quot;g&quot;,s);print s}' entities.xml &gt; entities.xml.format
-# 找重复主键 cat entities.xml.format G 'content&quot; class=&quot;Page' -A 2 G -E '[0-9]+' | sort | uniq -c | sort -gr L cat entities.xml.format | grep 'name=&quot;id&quot;' -A 1 -B 1 | grep -E '[0-9]+' -B 2 L
-</pre></div>
-<p>操作过程中，发现有数据就一条数据（grep entities.xml），还是插入重复（13238835）。
-官方文档解释是，内置数据库的锁有时候会不灵，插入重复键。
-于是决定再试试去掉主键约束方案，大不了那个数据我就不要了。</p>
-<div><pre><span></span>ALTER TABLE BODYCONTENT DROP PRIMARY KEY;
-</pre></div>
-<p>结果还有其他 PK 约束，我于是一条一条解开，然后……还是不行，真是作了一手的好死。</p>
-<p>结论是，这数据错误了太多，已经无法手工修复。</p>
-<h2>横插一刀的 Emoji 😊😢💗</h2>
-<p>导入时候报了这么一个错误：</p>
-<blockquote>
-<p>Caused by: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x8C\x8D\xE5\x9B...' for column 'BODY' at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: -- referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p>
-</blockquote>
-<p>这是 Emoji 编码的问题，理论上 MySQL 换到 5.6+，更新 encoding 就可以了。</p>
-<p>但是……Confluence 的建表 SQL 爆出了 255 varchar 超过 1000 限制的错误
-，我尝试使用 <a href="https://github.com/rails/rails/issues/9855">innodb_large_prefix</a>
-似乎可以解决（因为重复键的问题，导致导入已经行不通）。</p>
-<p>另外 innodb_large_prefix 是 5.6.3 才有的，只能升级 MySQL，
-并且需要创建表时候使用 DYNAMIC 参数。</p>
-<p>弄个 Emoji 这么绕，这导致我直接弃用了 MySQL。</p>
-<p>如果是正常迁移，不遇到重复键，Emoji 的问题，可以参考官方的文档，完成平滑迁移：</p>
-<ul>
-<li>https://confluence.atlassian.com/doc/migrating-to-another-database-148867.html</li>
-<li>https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html</li>
-<li>https://confluence.atlassian.com/doc/upgrading-confluence-4578.html</li>
-<li>https://confluence.atlassian.com/doc/upgrading-confluence-manually-255363437.html</li>
-<li>https://confluence.atlassian.com/conf56/confluence-user-s-guide/creating-content/using-the-editor/using-symbols-emoticons-and-special-characters</li>
-</ul>
-<h2>妈蛋，自己干</h2>
-<p>上面这么点东西，陆陆续续花了我两周的时间（晚上）。已经确认走不通平滑迁移，那就别怪我手段糙了。</p>
-<p>使用 API 导出后直接导入，这种做法最大问题是不平滑，会丢掉 Wiki 修改的历史记录，
-在和各个业务方沟通之后，最后达成了一致：可以暴力升级。</p>
-<p>升级流程：</p>
-<ul>
-<li>准备最新 Confluence 新站点</li>
-<li>关停站点</li>
-<li>导出数据，包括 Page、评论、附件</li>
-<li>导入 Page，评论，附件</li>
-<li>启动旧站点，开启只读模式</li>
-<li>启用新站点</li>
-</ul>
-<p>官方有一个 <a href="https://migrations.atlassian.net/wiki">Universal Wiki Converter</a>，
-我在 Bitbucket 上面找到了源码，但是已经不可工作了。
-虽然宣称「The UWC will however save you 1-2+ weeks of scripting development time, compared with starting from scratch, for many of the most common conversion cases.」
-但并没有卵用。</p>
-<p>不行就自己随便搞搞好了，看了一下开发需要的 <a href="https://confluence.atlassian.com/display/CONF30/Remote+API+Specification+2.4#RemoteAPISpecification2.4-Page">Conflunce API</a>，
-和尤其贴心的新版本 <a href="https://developer.atlassian.com/confdev/confluence-rest-api?continue=https%3A%2F%2Fdeveloper.atlassian.com%2Fconfdev%2Fconfluence-rest-api&amp;application=dac">RESTful API</a>，就开始搞了。</p>
-<p>写迁移代码，在这里 <a href="https://github.com/duitang/atlassian-confluence-xxoo">atlassian-confluence-xxoo</a>，已经开源了，只使用过一次，成功的从 3.0.1 迁移到 5.4.4，
-理论上，支持任意版本的 3.x/4.x Confluence 迁移到最新。</p>
-<p>使用 <code>python app.py -h</code> 查看帮助，不行就看看代码。</p>
-<p>希望有迁移需求的同学，搜索到这里能够获得一些帮助。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2016/01/confluence-upgrade/">https://blog.alswl.com/2016/01/confluence-upgrade/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">January 4th 2016 11:51:39 AM</span>
                         
                     </p>
@@ -4541,7 +2549,7 @@ awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">新年</span>
+                            <span class="post-category post-category-b" href="#">新年</span>
                             
                         </p>
                     </header>
@@ -4583,9 +2591,9 @@ awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">音乐</span>
+                            <span class="post-category post-category-d" href="#">音乐</span>
                             
-                            <span class="post-category post-category-a" href="#">维也纳新年音乐会</span>
+                            <span class="post-category post-category-b" href="#">维也纳新年音乐会</span>
                             
                         </p>
                     </header>
@@ -4637,118 +2645,6 @@ awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">November 27th 2015 1:23:24 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2015/11/ss-with-haproxy/" class="post-title">SS with Haproxy</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-b" href="#">SS</span>
-                            
-                            <span class="post-category post-category-a" href="#">HAProxy</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201512/shadowsocks.png" /></p>
-<p>以前用自己的 SS，Linode 美国，后来 Linode 日本，但是始终拼不过上海电信的国际带宽。
-经常不稳定，丢一半的包。</p>
-<p>于是买了 <a href="https://portal.shadowsocks.com.hk/aff.php?aff=4215">SS</a> 服务，
-9 台服务器，自己挑觉得速度快的服务器。</p>
-<p>但一直固定某台服务器也会偶尔出问题，导致邮件出不来，网页打不开。
-需要手动切换一下服务器。
-于是用 HA 做了一个本地代理，调整了一些参数，让 SS 总是有快速的服务器供选择。</p>
-<p>结构：</p>
-<div><pre><span></span>+-----------------+                                                  +----------------+
-|                 |                                                  |                |
-|    Server 1     |&gt;&gt;&gt;&gt;v                                           &gt;&gt;|   Mail.app     |
-|                 |    v                                           ^ |                |
-+-----------------+    v                                           ^ +----------------+
-                       v                                           ^
-+-----------------+    v    |----------------+      +------------+ ^ +----------------+
-|                 |    v    |                |      |            | ^ |                |
-|    Server 2     |&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;|    HAProxy     |&gt;&gt;&gt;&gt;&gt;&gt;| SS-Client  |&gt;&gt;&gt;|   Browser      |
-|                 |    ^    |                |      |            | v |                |
-+-----------------+    ^    +----------------+      +------------+ v +----------------+
-                       ^                                           v   
-+-----------------+    ^                                           v +----------------+
-|                 |    ^                                           v |                |
-|    Server 3     |&gt;&gt;&gt;&gt;^                                           v&gt;|   Evernote...  |
-|                 |                                                  |                |
-+-----------------+                                                  +----------------+
-</pre></div>
-<p>配置：</p>
-<div><pre><span></span>global
-    ulimit-n  4096
-
-
-defaults
-    log global
-    mode    tcp
-    timeout connect 1s
-    timeout client 1s
-    timeout server 1s
-
-
-listen stats
-    bind 127.0.0.1:12222
-    mode http
-    stats enable
-    stats uri /
-    stats refresh 8s
-
-
-listen ss
-    bind 127.0.0.1:1081
-    mode tcp
-    option tcpka
-    #balance source
-    balance roundrobin
-    log global
-    maxconn 1024
-
-    timeout connect 200ms
-    timeout client 600s
-    timeout server 600s
-    timeout check 80ms  # for office / home
-    # timeout check 400ms  # for starbucks
-    retries 1
-    option redispatch
-    option tcp-check
-
-    server s1 host1:port maxconn 20 check inter 2s rise 30 fall 6 backup
-    server s2 host2:port maxconn 20 check inter 2s rise 30 fall 6
-    server s3 host2:port maxconn 20 check inter 1s rise 60 fall 6
-</pre></div>
-<p>挺稳定，很快速。</p>
-<p>update: 2015-12-15，添加 <code>backup</code> 项，选一台最稳定的做 backup，避免所有连接都超时。
-update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项，换机器重试，
-大幅提高可用性，注意，可能在非幂等状态下面产生未知错误。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201512/haproxy.png" /></p>
-<p>在跑的 node，有些延迟高，被干掉了。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201512/youtube.png" /></p>
-<p>看 1080P 也挺顺畅。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/11/ss-with-haproxy/">https://blog.alswl.com/2015/11/ss-with-haproxy/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">November 11th 2015 6:09:16 AM</span>
                         
                     </p>
@@ -4760,11 +2656,11 @@ update: 2015-12-13，添加 <code>redispatch</code>  / <code>retries</code> 项�
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-c" href="#">fHash</span>
+                            <span class="post-category post-category-d" href="#">fHash</span>
                             
-                            <span class="post-category post-category-b" href="#">OS X</span>
+                            <span class="post-category post-category-d" href="#">OS X</span>
                             
-                            <span class="post-category post-category-c" href="#">小软件</span>
+                            <span class="post-category post-category-d" href="#">小软件</span>
                             
                         </p>
                     </header>
@@ -4810,23 +2706,23 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-d" href="#">JSToolNpp</span>
+                            <span class="post-category post-category-a" href="#">JSToolNpp</span>
                             
                             <span class="post-category post-category-b" href="#">javascript</span>
                             
-                            <span class="post-category post-category-c" href="#">jsformat</span>
+                            <span class="post-category post-category-b" href="#">jsformat</span>
                             
-                            <span class="post-category post-category-c" href="#">JsToolNpp</span>
+                            <span class="post-category post-category-a" href="#">JsToolNpp</span>
                             
                             <span class="post-category post-category-a" href="#">notepad++</span>
                             
-                            <span class="post-category post-category-b" href="#">npp</span>
+                            <span class="post-category post-category-d" href="#">npp</span>
                             
-                            <span class="post-category post-category-a" href="#">plugin</span>
+                            <span class="post-category post-category-d" href="#">plugin</span>
                             
-                            <span class="post-category post-category-c" href="#">小软件</span>
+                            <span class="post-category post-category-a" href="#">小软件</span>
                             
-                            <span class="post-category post-category-b" href="#">开发</span>
+                            <span class="post-category post-category-a" href="#">开发</span>
                             
                         </p>
                     </header>
@@ -4878,11 +2774,11 @@ May use other licenses for binary package on other distribution sites.</p>
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-a" href="#">around my life</span>
+                            <span class="post-category post-category-d" href="#">around my life</span>
                             
                             <span class="post-category post-category-a" href="#">beijing</span>
                             
-                            <span class="post-category post-category-b" href="#">gadget</span>
+                            <span class="post-category post-category-d" href="#">gadget</span>
                             
                         </p>
                     </header>
@@ -4912,169 +2808,6 @@ May use other licenses for binary package on other distribution sites.</p>
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">October 27th 2015 5:17:44 PM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2015/10/a-security-password/" class="post-title">几步拥有一个安全密码</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-d" href="#">Security</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201512/password.jpg" /></p>
-<p>给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。</p>
-<hr />
-<p>这个互联网越来越不安全 <a href="https://www.baidu.com/s?wd=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2%E4%BA%8B%E4%BB%B6&amp;rsp=3&amp;f=1&amp;oq=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2&amp;ie=utf-8&amp;usm=2&amp;rsv_idx=1&amp;rsv_pq=f9362ac90000f994&amp;rsv_t=31d7A5Zyu36Hn4omAU5F9llRh3WBGl5tInDRywq%2FbPEwdPnyjCCcfGLdnNA&amp;rsv_ers=xn0&amp;rs_src=0">https://www.baidu.com/s?wd=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2%E4%BA%8B%E4%BB%B6</a>。密码数据库泄露，黑客暴库攻击，社会工程学攻击层出不穷。我给大家介绍几个小方法，轻松提高自己各类密码的安全等级。</p>
-<p>先给个地址，大家可以测试一下自己常用密码的复杂度：<a href="https://howsecureismypassword.net/">https://howsecureismypassword.net/</a></p>
-<p>认为自己电脑水平还可以的，请直接翻到文章最后。</p>
-<h2>如何管理密码</h2>
-<p>给普通用户的建议：</p>
-<ul>
-<li>密码设置复杂一些，不要使用生日、日期、姓名等有意义的信息</li>
-<li>使用一套合理的密码生成策略</li>
-</ul>
-<p>重点来了，密码生成策略：</p>
-<ul>
-<li>选择自己喜欢的诗词或者某句话，比如「床前明月光，疑是地上霜」，取其拼音的第一个字母 cqmygysdss</li>
-<li>将每个句子第一个单词大写，cqmygysdss -&gt; CqmygYsdss</li>
-<li>加上对应网站的信息，比如 163：CqmygYsdss163，qq： CqmygYsdssqq</li>
-</ul>
-<p>大功告成，你的密码安全级别提升了。</p>
-<p>----------------------------- 高手的分界线 -----------------------</p>
-<p>给高水平选手推荐的方案：</p>
-<ul>
-<li>核心思想：密码分级，分离普通密码、重要密码（财务相关等）。</li>
-<li>普通密码使用大小写英文和数字混合</li>
-<li>重要密码和财务相关密码，独立生成密码，保存到 1Password / KeePass 等工具中，每个应用软件独立开来。</li>
-<li>推荐 KeePass，免费，参考 <a href="http://www.iplaysoft.com/keepass.html">http://www.iplaysoft.com/keepass.html</a></li>
-</ul>
-<h2>常见弱密码和暴力破解需要时间</h2>
-<ul>
-<li>123456 / 不需要</li>
-<li>duitang / 2s</li>
-<li>huhela1993 / 10天</li>
-<li>huhela_1993 / 48年</li>
-<li>CqmygYsdssqq / 3千年</li>
-<li>]W?852HCMHFUYzrz,F / 10000^5 年（Keepass 生成的密码）</li>
-</ul>
-<h2>最后</h2>
-<p>针对任何在邮箱中向大家索取：</p>
-<p>密码、员工信息、通讯录、组织架构等的邮件，请大家注意确认对方的真实身份，不要轻易透露重要信息。</p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/10/a-security-password/">https://blog.alswl.com/2015/10/a-security-password/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">October 18th 2015 8:25:28 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2015/10/how-to-log/" class="post-title">怎么打日志</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-d" href="#">Logger</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201510/logger.jpg" /></p>
-<p>需要解决的问题：</p>
-<ul>
-<li>业务日志打太乱，没有位置和格式约束</li>
-<li>什么情况打日志，如何避免滥用，提高日志作用</li>
-</ul>
-<h2>打日志最佳实践</h2>
-<p>Dropwizard 列出的打日志原则：</p>
-<blockquote>
-<p>Be human readable.</p>
-<p>Be machine parsable.</p>
-<p>Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.</p>
-</blockquote>
-<p>eg.:</p>
-<div><pre><span></span>TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing.
-DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing.
-INFO  [2010-04-06 06:42:35,274] com.example.dw.Thing: Doing a thing
-WARN  [2010-04-06 06:42:35,275] com.example.dw.Thing: Doing a thing
-ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
-! java.lang.RuntimeException: oh noes!
-! at com.example.dw.Thing.run(Thing.java:16)
-!
-</pre></div>
-<p>splunk 的最佳实践：</p>
-<ul>
-<li>使用清晰的键值对：<code>key1=val1, key2=val2</code></li>
-<li>对开发者易读</li>
-<li>全部添加时间戳</li>
-<li>使用唯一标记，比如 user_id, transaction_id</li>
-<li>使用文本</li>
-<li>使用开发者易用格式，比如 JSON</li>
-<li>尽可能多加一下数据</li>
-<li>标记调用来源，比如方法名，类名</li>
-<li>将多行事件拆分</li>
-</ul>
-<p>除了一些浅显易懂的原则，还是 dropwizard 的三条原则和解决方案靠谱。
-但是两篇文章都没有告诉如果在复杂系统里面记录有用的日志，打日志生命周期是怎样的。</p>
-<p>既然找不到，我就就自行想想如何打有意义的日志。</p>
-<p>日志不怕多，而是怕繁杂难搜索，产出的数据无意义难追踪问题。所以最关键是找到一个合理通用的方式组织起来即可：</p>
-<ul>
-<li>按照模块名 com.duitang.service.module.aaa 打日志，比如 <code>com.duitang.service.module.aaa.log</code></li>
-<li>一个模块一个日志，模块复杂之后，可以拆分，<code>com.duitang.service.module.aaa.core.log</code> / <code>com.duitang.service.module.aaa.query.log</code>，其实在这个时侯，这个模块本身由于复杂性也会面临拆分。</li>
-<li>不分离 error / info 日志，放到一个文件，通过 <code>grep</code> 或者日志工具分离</li>
-<li>日志文件一定要 rotate，磁盘存储固定时间 N 天，远程文件存储固定时间 M 天，TTL 删除。</li>
-</ul>
-<p>补充一个日志常见使用场景：</p>
-<ul>
-<li>外部资源调用</li>
-<li>状态变化</li>
-<li>系统入口和出口</li>
-<li>业务异常</li>
-<li>非预期执行</li>
-</ul>
-<hr />
-<p>参考文档：</p>
-<ul>
-<li><a href="https://dropwizard.github.io/dropwizard/manual/core.html#logging">Dropwizard Core | Dropwizard</a></li>
-<li><a href="http://dev.splunk.com/view/logging-best-practices/SP-CAAADP6">Logging best practices | Splunk</a></li>
-<li><a href="http://www.infoq.com/cn/articles/why-and-how-log">程序那些事：日志记录的作用和方法</a></li>
-</ul>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/10/how-to-log/">https://blog.alswl.com/2015/10/how-to-log/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">August 16th 2015 3:37:54 PM</span>
                         
                     </p>
@@ -5086,11 +2819,11 @@ ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
                         <p class="post-meta">
                             <span class="post-author">jaseywang</span>
                             
-                            <span class="post-category post-category-b" href="#">*nix</span>
+                            <span class="post-category post-category-c" href="#">*nix</span>
                             
                             <span class="post-category post-category-d" href="#">desktop</span>
                             
-                            <span class="post-category post-category-c" href="#">monitoring</span>
+                            <span class="post-category post-category-a" href="#">monitoring</span>
                             
                         </p>
                     </header>
@@ -5156,190 +2889,6 @@ ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
                 
                 <section class="post">
                     <p class="post-meta">
-                        <span class="post-author">July 26th 2015 9:33:49 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2015/07/redis-migration/" class="post-title">Redis 集群扩容</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-c" href="#">Redis</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。
-主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、
-存储结构丰富、有持久化功能。
-我大堆糖的 Session 存储系统也正是基于 Redis。</p>
-<p>可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication
-也是在逐步完善完善过程中
-（2.4 支持 <code>Replication</code>，2.8 加入 <code>Replication partial resynchronization</code> 功能）。
-纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。
-而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。</p>
-<p>随着业务规模的扩大，单台 Redis 实例不能满足需求。
-考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。</p>
-<p>扩容的基本要求是：</p>
-<ul>
-<li>扩大系统容量，成为分布式系统，未来有横向扩展</li>
-<li>业务不中断</li>
-<li>保证原始数据的可用性</li>
-</ul>
-<p>Google 了一下，有两个项目可以参考：
-<a href="https://github.com/idning/redis-mgr">https://github.com/idning/redis-mgr</a>
-和豌豆荚的 <a href="https://github.com/wandoulabs/codis">Codis</a>。</p>
-<p>研究了这两项目的代码之后，发现前者存在几个问题：
-需要停机进行操作。
-后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，
-而且项目比较新，风险高，只能用来参考实现方法。</p>
-<p>最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：
-系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。</p>
-<h2>方案的关键词</h2>
-<h3><code>dump</code> / <code>restore</code> / <code>pttl</code></h3>
-<p>核心的操作流程是：
-使用 <code>dump</code> 命令导出数据，<code>restore</code> 命令恢复数据，<code>pttl</code> 命令获取设置 TTL。</p>
-<h3>Presharding</h3>
-<p>Redis 官方没有 sharding 方案，但提供一种策略 presharding。
-Redis 作者写了一篇<a href="http://oldblog.antirez.com/post/redis-presharding.html">Redis Presharding</a>。核心是：
-提前做 2^n 个实例，避免扩容时候数据迁移，一般使用 2^n 个实例，
-目的是为了能够自然地乘以 2 进行拆分。
-这些实例可以分开放，也可以放在同一台机器上面。</p>
-<p>我这次操作，将 <code>OLD_CLUSTER</code> 的一个实例拆分为了 <code>NEW_CLUSTER</code> 的 32 个实例，
-跑在 4 台服务器上面。</p>
-<h3>Twemproxy</h3>
-<p>Redis 的 经典款 Proxy，用来实现对多个 Redis 实例 sharding，
-Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p>
-<h3>一致性 Hash</h3>
-<p>传统的 Hash 方法是 <code>hash(key) = value % nodes.length</code>，
-当加入、减少 Hash 节点时候，会导致 <code>hash(key)</code> 的全部失效。
-典型的一致性 Hash 算法，<a href="https://github.com/RJ/ketama">Ketama</a> 通过环状 node 分布，解决了这个问题。</p>
-<p>Twemproxy 还提供 <code>modula</code> 和 random 两种分布式方案。</p>
-<h3>db 大小预估</h3>
-<p>Redis 只能查看整个实例内存尺寸。不能查看单个 db。
-使用 <code>ramdomkey</code> 做抽样检查，取 1% key 抽样，估计单个 key 大小，
-然后做 benchmark 估算操作性能，估算操作时间。</p>
-<h3>动态迁移数据</h3>
-<p>为了在迁移过程中保证服务可用，需要将数据兼容 Redis 集群 <code>OLD_CLUSTER</code> / <code>NEW_CLUSTER</code>，
-业务代码必须同时支持访问两个集群，做法也很简单</p>
-<ul>
-<li>访问 <code>NEW_CLUSTER</code></li>
-<li>有数据则继续操作，无数据则访问 <code>OLD_CLUSTER</code>，获取数据 <code>DATA</code></li>
-<li>将数据和 TTL 保存到 <code>NEW_CLUSTER</code></li>
-</ul>
-<p>将这个逻辑封装成一个 client，替换掉原来 Redis Client 即可。</p>
-<p>注意，这个点可能产生幻读，读取 key 和写入 key 有个时间差，
-但是我处理的 session 是 immutable 数据，不会出现问题。
-而如果将 Redis 用作 Persistence，就要评估对业务的影响了。</p>
-<h3>后台迁移数据</h3>
-<p>依赖用户访问来进行迁移，效率太低了，这个迁移时间和最长 TTL 时间相当，
-需要主动将这个数据从 <code>OLD_CLUSTER</code> 迁移到 <code>NEW_CLUSTER</code>。</p>
-<p>方案也很简单，使用 <code>randomkey</code> 获取一批数据，然后按动态迁移数据方法进行迁移。</p>
-<h3>pipeline</h3>
-<p>如果在业务逻辑中使用了 PIPELINE，就会遇到问题，需要改写掉业务方案，
-待迁移完成之后，再进行恢复。</p>
-<h3>multikey</h3>
-<p><code>mget</code> / <code>mset</code> 等多键操作方法需要注意拆解 key，然后一一 <code>dump</code> / <code>restore</code> /
-<code>ttl</code>。</p>
-<h2>正式操作</h2>
-<p>线上操作的数据：</p>
-<div><pre><span></span># 0.483 g db0
-12:05:19,444 - __main__ - INFO - v, dumps keys 1014/1375371/..., time: 974.183676004
-# 4.552 g db1
-17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506
-</pre></div>
-<p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/07/redis-migration/">https://blog.alswl.com/2015/07/redis-migration/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
-                        <span class="post-author">July 12th 2015 11:29:19 AM</span>
-                        
-                    </p>
-                    <header class="post-header">
-                        
-                        <img width="48" height="48" alt="alswl&#x27;s avatar" class="post-avatar" src="https://avatars2.githubusercontent.com/u/227562?s=200">
-                        
-                        <h2 class="post-title"><a href="https://blog.alswl.com/2015/07/liu-bi-xie-fu/" class="post-title">带理想的执行者 - 柳比歇夫的一生</a></h2>
-                        <p class="post-meta">
-                            <span class="post-author">alswl</span>
-                            
-                            <span class="post-category post-category-c" href="#">读书笔记</span>
-                            
-                        </p>
-                    </header>
-                    <div class="post-description">
-                        
-                        <p>作为战斗民族的俄罗斯民族，不但能在热带风暴级的灿鸿中进行正常起降，
-历来也盛产各种奇葩人物。
-最近我有看到一本描述一个科学家的如何生活的书，叫「奇特的一生」。
-让人拍案称奇。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201507/liu_bi_xie_fu.jpg" /></p>
-<p>主人公是一位名叫柳比歇夫的科学家，想必他在「回首往事时候没有因为虚度年华而悔恨」，
-因为他将自己的一生都精确的奉献到分类学、地蚤研究上面。
-他的工作投入，不是单纯激情洋溢投入，而是精确到分钟级别的投入，
-是奉献完整一生的投入。</p>
-<p>除了学术上面的成功，他的时间记录法也很牛逼，甚至让苏联科学院进行研究。怎么描述他的牛逼呢？如果他生活在今天，大致会这样写：</p>
-<blockquote>
-<p>今天我 19:00 - 19:25 看了新闻联播，感受到社会各阶级在党的领导下面获得令人振奋的成绩</p>
-<p>19:25 休息了一会，避过无聊的天气预报时间</p>
-<p>19:30 - 20:30 学习了「XXX 的讲话精神研究」</p>
-<p>附加工作：20:35 - 20:40 小解，顺便刷了一会朋友圈作为今天的娱乐放松，评论了隔壁老王老婆的出行照片</p>
-</blockquote>
-<p>看到没有，他精确的记录了自己的时间使用记录，犹如脑子里面有个精确的 GTD
-管理器，那个年代 David Allen 还没出生呢，肯定也谈不上了解 Get Things Done。苏联真是靠各类牛逼人物撑起了一战、二战时候工业大跃进和各种黑科技的崛起。</p>
-<p>简单记录时间当然不能带来效率和成果的提升，柳比歇夫明显没有纳什这种神经病天才的聪明，他能获得这样比较高的成就，必须还有真正的大招。</p>
-<p>第一招是他有坚定的奋斗目标：「创立生物自然分类法」。我们暂不管这不出名的法则是什么，能在 1918 年（他时年 28 岁，我擦，和我现在差不多大啊）就提出自己一生奋斗的目标，着实了不起。
-从书中的记录来看，28 岁的青年教师柳比歇夫，
-在日记里面描述他想要做什么事情，需要具备什么素质，
-并且在估算重要里程碑时间点。</p>
-<p>我估摸着，在战争中成长起来的人，不仅仅需要幸运，还需要勇气和坚韧意志，
-19 世纪初年，沙皇政权摇摇欲坠，布尔什维克们应该还在密谋革命造反，
-民众生活艰苦（感觉好像民国时期的中国）。
-这种时代的大环境造就了各阶级人物命运的跌宕起伏，附带效应是出产优秀的文人和思想家。
-柳比歇夫既然在这个时期成长，那也会渴望建树功勋，做点改变世界的事情。</p>
-<p>第二招是，他就去做了。</p>
-<p>「听过了很多大道理，却依然过不好这一生」，无非是缺在执行。
-柳比歇夫的时间记录法，不是简单作为一个日记本在使用，
-关键点在于回顾和计划。通过过去的记录，分析自我，总结经验，判断未来。</p>
-<p>哎哟，道理说起来都简单，做起来都难，柳比歇夫作为一个很好的例子，
-告诉我们，一个资质普通的人，决定牺牲自我，奉献到某个特定事业时候，
-可以获得的成绩，他完成了「立言」。</p>
-<p>在这个物欲横流，信息多得炸掉脑仁，各类媒体都在抢占眼珠的时代，能够不忘初心，
-去做点实际的事情，是一件不容易的事情。
-对快 30 的我来说，别说「立言」，就光「立命」，
-就已经让我困苦不堪，在这和平年代，没有家仇国恨美国梦，想要做点牛逼的事情，就得需要勇气和爱来驱动。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201507/da_sheng_gui_lai.jpeg" /></p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/07/liu-bi-xie-fu/">https://blog.alswl.com/2015/07/liu-bi-xie-fu/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>
-                        
-                    </div>
-                </section>
-                
-                <section class="post">
-                    <p class="post-meta">
                         <span class="post-author">March 12th 2015 1:32:20 PM</span>
                         
                     </p>
@@ -5351,11 +2900,11 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">技术</span>
+                            <span class="post-category post-category-c" href="#">技术</span>
                             
-                            <span class="post-category post-category-b" href="#">compile</span>
+                            <span class="post-category post-category-c" href="#">compile</span>
                             
-                            <span class="post-category post-category-b" href="#">driver</span>
+                            <span class="post-category post-category-a" href="#">driver</span>
                             
                             <span class="post-category post-category-b" href="#">gcc</span>
                             
@@ -5363,15 +2912,15 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
                             
                             <span class="post-category post-category-a" href="#">module</span>
                             
-                            <span class="post-category post-category-a" href="#">Raspberry Pi</span>
+                            <span class="post-category post-category-b" href="#">Raspberry Pi</span>
                             
-                            <span class="post-category post-category-c" href="#">内核</span>
+                            <span class="post-category post-category-d" href="#">内核</span>
                             
-                            <span class="post-category post-category-a" href="#">树莓派</span>
+                            <span class="post-category post-category-c" href="#">树莓派</span>
                             
                             <span class="post-category post-category-b" href="#">编译</span>
                             
-                            <span class="post-category post-category-c" href="#">驱动</span>
+                            <span class="post-category post-category-a" href="#">驱动</span>
                             
                         </p>
                     </header>
@@ -5451,15 +3000,15 @@ $ wget https://raw.githubusercontent.com/notro/rpi-source/master/rpi-source<br 
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-c" href="#">计算机</span>
+                            <span class="post-category post-category-a" href="#">计算机</span>
                             
                             <span class="post-category post-category-c" href="#">Android</span>
                             
-                            <span class="post-category post-category-b" href="#">CyanogenMod</span>
+                            <span class="post-category post-category-c" href="#">CyanogenMod</span>
                             
-                            <span class="post-category post-category-b" href="#">nexus</span>
+                            <span class="post-category post-category-a" href="#">nexus</span>
                             
-                            <span class="post-category post-category-c" href="#">nexus5</span>
+                            <span class="post-category post-category-a" href="#">nexus5</span>
                             
                         </p>
                     </header>
@@ -5617,7 +3166,7 @@ sudo rm -rf /Users.bak
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">新年</span>
+                            <span class="post-category post-category-b" href="#">新年</span>
                             
                         </p>
                     </header>
@@ -5661,7 +3210,7 @@ sudo rm -rf /Users.bak
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-b" href="#">音乐</span>
+                            <span class="post-category post-category-c" href="#">音乐</span>
                             
                             <span class="post-category post-category-c" href="#">维也纳新年音乐会</span>
                             
@@ -5846,7 +3395,7 @@ sudo rm -rf /Users.bak
                         <p class="post-meta">
                             <span class="post-author">Li Fanxi</span>
                             
-                            <span class="post-category post-category-a" href="#">杂</span>
+                            <span class="post-category post-category-b" href="#">杂</span>
                             
                         </p>
                     </header>
@@ -6048,19 +3597,19 @@ while (1)
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-b" href="#">计算机</span>
+                            <span class="post-category post-category-a" href="#">计算机</span>
                             
-                            <span class="post-category post-category-b" href="#">debug</span>
+                            <span class="post-category post-category-a" href="#">debug</span>
                             
-                            <span class="post-category post-category-a" href="#">exploit</span>
+                            <span class="post-category post-category-b" href="#">exploit</span>
                             
                             <span class="post-category post-category-a" href="#">notepad++</span>
                             
-                            <span class="post-category post-category-d" href="#">npp</span>
+                            <span class="post-category post-category-c" href="#">npp</span>
                             
-                            <span class="post-category post-category-d" href="#">安全</span>
+                            <span class="post-category post-category-c" href="#">安全</span>
                             
-                            <span class="post-category post-category-c" href="#">调试</span>
+                            <span class="post-category post-category-b" href="#">调试</span>
                             
                         </p>
                     </header>
@@ -6101,23 +3650,23 @@ while (1)
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-b" href="#">JSToolNpp</span>
+                            <span class="post-category post-category-c" href="#">JSToolNpp</span>
                             
-                            <span class="post-category post-category-c" href="#">javascript</span>
+                            <span class="post-category post-category-a" href="#">javascript</span>
                             
-                            <span class="post-category post-category-c" href="#">jsformat</span>
+                            <span class="post-category post-category-b" href="#">jsformat</span>
                             
-                            <span class="post-category post-category-c" href="#">JsToolNpp</span>
+                            <span class="post-category post-category-d" href="#">JsToolNpp</span>
                             
-                            <span class="post-category post-category-b" href="#">notepad++</span>
+                            <span class="post-category post-category-a" href="#">notepad++</span>
                             
-                            <span class="post-category post-category-b" href="#">npp</span>
+                            <span class="post-category post-category-d" href="#">npp</span>
                             
-                            <span class="post-category post-category-d" href="#">plugin</span>
+                            <span class="post-category post-category-b" href="#">plugin</span>
                             
-                            <span class="post-category post-category-a" href="#">小软件</span>
+                            <span class="post-category post-category-d" href="#">小软件</span>
                             
-                            <span class="post-category post-category-b" href="#">开发</span>
+                            <span class="post-category post-category-d" href="#">开发</span>
                             
                         </p>
                     </header>
@@ -6148,17 +3697,17 @@ while (1)
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-d" href="#">计算机</span>
+                            <span class="post-category post-category-a" href="#">计算机</span>
                             
-                            <span class="post-category post-category-b" href="#">Android</span>
+                            <span class="post-category post-category-c" href="#">Android</span>
                             
                             <span class="post-category post-category-c" href="#">build</span>
                             
-                            <span class="post-category post-category-d" href="#">CyanogenMod</span>
+                            <span class="post-category post-category-c" href="#">CyanogenMod</span>
                             
-                            <span class="post-category post-category-c" href="#">Ubuntu</span>
+                            <span class="post-category post-category-a" href="#">Ubuntu</span>
                             
-                            <span class="post-category post-category-b" href="#">程序</span>
+                            <span class="post-category post-category-c" href="#">程序</span>
                             
                         </p>
                     </header>
@@ -6194,11 +3743,11 @@ while (1)
                             
                             <span class="post-category post-category-b" href="#">小软件</span>
                             
-                            <span class="post-category post-category-a" href="#">开发</span>
+                            <span class="post-category post-category-d" href="#">开发</span>
                             
-                            <span class="post-category post-category-c" href="#">程序</span>
+                            <span class="post-category post-category-b" href="#">程序</span>
                             
-                            <span class="post-category post-category-d" href="#">编程</span>
+                            <span class="post-category post-category-b" href="#">编程</span>
                             
                         </p>
                     </header>
@@ -6228,15 +3777,15 @@ Fix other bugs</p>
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-c" href="#">计算机</span>
+                            <span class="post-category post-category-a" href="#">计算机</span>
                             
-                            <span class="post-category post-category-d" href="#">fHash</span>
+                            <span class="post-category post-category-c" href="#">fHash</span>
                             
                             <span class="post-category post-category-d" href="#">kernel32</span>
                             
-                            <span class="post-category post-category-a" href="#">shell extension</span>
+                            <span class="post-category post-category-b" href="#">shell extension</span>
                             
-                            <span class="post-category post-category-d" href="#">WinDbg</span>
+                            <span class="post-category post-category-b" href="#">WinDbg</span>
                             
                         </p>
                     </header>
@@ -6317,21 +3866,21 @@ u 7c81f2b9
                             
                             <span class="post-category post-category-a" href="#">JSToolNpp</span>
                             
-                            <span class="post-category post-category-b" href="#">javascript</span>
+                            <span class="post-category post-category-c" href="#">javascript</span>
                             
-                            <span class="post-category post-category-d" href="#">jsformat</span>
+                            <span class="post-category post-category-a" href="#">jsformat</span>
                             
                             <span class="post-category post-category-b" href="#">jsmin</span>
                             
-                            <span class="post-category post-category-c" href="#">JsTool</span>
+                            <span class="post-category post-category-b" href="#">JsTool</span>
                             
                             <span class="post-category post-category-c" href="#">JsToolNpp</span>
                             
                             <span class="post-category post-category-a" href="#">notepad++</span>
                             
-                            <span class="post-category post-category-d" href="#">npp</span>
+                            <span class="post-category post-category-a" href="#">npp</span>
                             
-                            <span class="post-category post-category-c" href="#">开发</span>
+                            <span class="post-category post-category-a" href="#">开发</span>
                             
                         </p>
                     </header>
@@ -6365,13 +3914,13 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">sunjw</span>
                             
-                            <span class="post-category post-category-b" href="#">计算机</span>
+                            <span class="post-category post-category-a" href="#">计算机</span>
                             
-                            <span class="post-category post-category-c" href="#">Apple</span>
+                            <span class="post-category post-category-b" href="#">Apple</span>
                             
-                            <span class="post-category post-category-d" href="#">download</span>
+                            <span class="post-category post-category-a" href="#">download</span>
                             
-                            <span class="post-category post-category-c" href="#">keynote</span>
+                            <span class="post-category post-category-a" href="#">keynote</span>
                             
                             <span class="post-category post-category-d" href="#">wwdc</span>
                             
@@ -6398,7 +3947,7 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-a" href="#">生活记事</span>
+                            <span class="post-category post-category-c" href="#">生活记事</span>
                             
                         </p>
                     </header>
@@ -6501,9 +4050,9 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-c" href="#">胡思乱想</span>
+                            <span class="post-category post-category-d" href="#">胡思乱想</span>
                             
-                            <span class="post-category post-category-d" href="#">胡言乱语</span>
+                            <span class="post-category post-category-a" href="#">胡言乱语</span>
                             
                         </p>
                     </header>
@@ -6546,9 +4095,9 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-c" href="#">生活记事</span>
+                            <span class="post-category post-category-a" href="#">生活记事</span>
                             
-                            <span class="post-category post-category-d" href="#">feedburner</span>
+                            <span class="post-category post-category-b" href="#">feedburner</span>
                             
                             <span class="post-category post-category-d" href="#">rss</span>
                             
@@ -6579,15 +4128,15 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-c" href="#">Geek Tweak</span>
+                            <span class="post-category post-category-d" href="#">Geek Tweak</span>
                             
-                            <span class="post-category post-category-a" href="#">1Password</span>
+                            <span class="post-category post-category-b" href="#">1Password</span>
                             
                             <span class="post-category post-category-c" href="#">KeePass</span>
                             
-                            <span class="post-category post-category-a" href="#">sha1</span>
+                            <span class="post-category post-category-d" href="#">sha1</span>
                             
-                            <span class="post-category post-category-c" href="#">密码</span>
+                            <span class="post-category post-category-a" href="#">密码</span>
                             
                         </p>
                     </header>
@@ -6654,11 +4203,11 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-b" href="#">胡言乱语</span>
+                            <span class="post-category post-category-d" href="#">胡言乱语</span>
                             
-                            <span class="post-category post-category-d" href="#">傻逼</span>
+                            <span class="post-category post-category-b" href="#">傻逼</span>
                             
-                            <span class="post-category post-category-d" href="#">密码</span>
+                            <span class="post-category post-category-b" href="#">密码</span>
                             
                         </p>
                     </header>
@@ -6701,7 +4250,7 @@ u 7c81f2b9
                             
                             <span class="post-category post-category-a" href="#">Geek Tweak</span>
                             
-                            <span class="post-category post-category-a" href="#">Security</span>
+                            <span class="post-category post-category-c" href="#">Security</span>
                             
                             <span class="post-category post-category-d" href="#">密码</span>
                             
@@ -6806,7 +4355,7 @@ u 7c81f2b9
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-a" href="#">胡思乱想</span>
+                            <span class="post-category post-category-d" href="#">胡思乱想</span>
                             
                         </p>
                     </header>
@@ -8137,9 +5686,9 @@ Compiler.new.compile(prog)
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-d" href="#">胡思乱想</span>
+                            <span class="post-category post-category-b" href="#">胡思乱想</span>
                             
-                            <span class="post-category post-category-c" href="#">工作日志</span>
+                            <span class="post-category post-category-b" href="#">工作日志</span>
                             
                         </p>
                     </header>
@@ -8176,13 +5725,13 @@ Compiler.new.compile(prog)
                         <p class="post-meta">
                             <span class="post-author">Wang Congming</span>
                             
-                            <span class="post-category post-category-c" href="#">胡言乱语</span>
+                            <span class="post-category post-category-b" href="#">胡言乱语</span>
                             
-                            <span class="post-category post-category-a" href="#">用户</span>
+                            <span class="post-category post-category-d" href="#">用户</span>
                             
                             <span class="post-category post-category-d" href="#">统计</span>
                             
-                            <span class="post-category post-category-d" href="#">豆瓣</span>
+                            <span class="post-category post-category-b" href="#">豆瓣</span>
                             
                         </p>
                     </header>
@@ -8211,6 +5760,279 @@ Compiler.new.compile(prog)
 <p>05 年到 09 年，四年多，350万；</p>
 <p>然后 2010 年，一年半，4713 万，13 倍。</p>
 <p>虽然我没太关注，但似乎豆瓣近一年来没搞过什么大的营销推广；反倒是因为审查严格，很多用户自杀了帐号。13 倍的数据有点惊讶，不知道是不是我哪搞错了。</p>
+                        
+                    </div>
+                </section>
+                
+                <section class="post">
+                    <p class="post-meta">
+                        <span class="post-author">December 14th 2010 3:49:26 PM</span>
+                        
+                    </p>
+                    <header class="post-header">
+                        
+                        <img width="48" height="48" alt="Wang Congming&#x27;s avatar" class="post-avatar" src="http://wangcongming.info/wp-content/uploads/avatar.png">
+                        
+                        <h2 class="post-title"><a href="http://wangcongming.info/2010/12/saas%e7%9a%84%e9%80%9a%e7%94%a8%e6%9e%b6%e6%9e%84%ef%bc%88%e5%85%bc%e5%9b%9e%e7%ad%94%e6%88%91%e5%9c%a8%e5%81%9a%e4%bb%80%e4%b9%88%ef%bc%89/" class="post-title">SaaS 的通用架构（兼回答我在做什么）</a></h2>
+                        <p class="post-meta">
+                            <span class="post-author">Wang Congming</span>
+                            
+                            <span class="post-category post-category-a" href="#">生活记事</span>
+                            
+                            <span class="post-category post-category-c" href="#">WEB</span>
+                            
+                            <span class="post-category post-category-c" href="#">业务逻辑</span>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+                        <p>翻到以前画的几张图，拿来回答一下我最近在干什么（点击放大） ^_^  。</p>
+<p><a href="http://wangcongming.info/2010/12/saas%e7%9a%84%e9%80%9a%e7%94%a8%e6%9e%b6%e6%9e%84%ef%bc%88%e5%85%bc%e5%9b%9e%e7%ad%94%e6%88%91%e5%9c%a8%e5%81%9a%e4%bb%80%e4%b9%88%ef%bc%89/modules-overall-structure/"><img src="http://wangcongming.info/wp-content/uploads/2010/12/modules-overall-structure.png" /></a></p>
+<p><a href="http://wangcongming.info/2010/12/saas%e7%9a%84%e9%80%9a%e7%94%a8%e6%9e%b6%e6%9e%84%ef%bc%88%e5%85%bc%e5%9b%9e%e7%ad%94%e6%88%91%e5%9c%a8%e5%81%9a%e4%bb%80%e4%b9%88%ef%bc%89/user-roles-sys-capacity/"><img src="http://wangcongming.info/wp-content/uploads/2010/12/user-roles-sys-capacity.png" /></a></p>
+<p><a href="http://wangcongming.info/2010/12/saas%e7%9a%84%e9%80%9a%e7%94%a8%e6%9e%b6%e6%9e%84%ef%bc%88%e5%85%bc%e5%9b%9e%e7%ad%94%e6%88%91%e5%9c%a8%e5%81%9a%e4%bb%80%e4%b9%88%ef%bc%89/access-flow-sys-archit/"><img src="http://wangcongming.info/wp-content/uploads/2010/12/access-flow-sys-archit.png" /></a></p>
+<p>做企业的业务逻辑，用 Web 的技术方式，这就是我们现在在干的事儿～。</p>
+                        
+                    </div>
+                </section>
+                
+                <section class="post">
+                    <p class="post-meta">
+                        <span class="post-author">December 2nd 2010 3:30:56 AM</span>
+                        
+                    </p>
+                    <header class="post-header">
+                        
+                        <img width="48" height="48" alt="Wang Congming&#x27;s avatar" class="post-avatar" src="http://wangcongming.info/wp-content/uploads/avatar.png">
+                        
+                        <h2 class="post-title"><a href="http://wangcongming.info/2010/12/%e2%80%9c%e5%9b%bd%e4%ba%a7%e2%80%9d%e2%80%9c%e5%8f%8c%e6%a0%b8%e2%80%9d%e6%b5%8f%e8%a7%88%e5%99%a8%e6%98%af%e4%b8%aa%e5%a5%bd%e4%b8%9c%e8%a5%bf/" class="post-title">“国产”“双核”浏览器是个好东西</a></h2>
+                        <p class="post-meta">
+                            <span class="post-author">Wang Congming</span>
+                            
+                            <span class="post-category post-category-b" href="#">胡言乱语</span>
+                            
+                            <span class="post-category post-category-c" href="#">360</span>
+                            
+                            <span class="post-category post-category-d" href="#">Browser</span>
+                            
+                            <span class="post-category post-category-c" href="#">html5</span>
+                            
+                            <span class="post-category post-category-a" href="#">IE6</span>
+                            
+                            <span class="post-category post-category-d" href="#">WEB</span>
+                            
+                            <span class="post-category post-category-a" href="#">WebKit</span>
+                            
+                            <span class="post-category post-category-b" href="#">国产</span>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+                        <p><strong>Update: 新增了“世界之窗”浏览器的测试结果。</strong></p>
+<p>作为一名亲美不爱国人士、一名技术至上的 Geek，我大脑里的信息接收系统，向来对国产的 IT 产品自动选择性过滤。</p>
+<p>不巧的是，这一年多来我不得不时常思考 Web 产品运营的问题，“因特网探险家6”像梦魇一样折磨着我……。当你瞅着 HTML5 激动不已的时候，IE6 会让你的汽泄得瘪瘪的。。。别以为 HTML5 只是 Flash 杀手，它有着许多许多现代 Web 开发不可或缺的特性，即使 IE8 也比它的六哥强太多了！</p>
+<p>那么，我们怎么办？期待盗版 Windows XP 一夜之间消失，IE6 寿终正寝吗？恐怕只是一厢情愿吧。这个时候我想到，“国产”“双核”浏览器是唯一可能在短期内改变大局的“人物”！</p>
+<p>所谓“双核”浏览器，就是在 IE 的 Trident 内核外，再集成一个 WebKit 内核。部分网站用 Trident 内核渲染，另外一部分用 WebKit 渲染。试想，如果这些浏览器<strong>默认</strong>使用 WebKit 内核，岂非是帮助在国内市场瞬间普及了 WebKit？这是何等激动人心呐！</p>
+<p>据称，360 浏览器在国内的市场份额约达 20%。我想，新的 Web 产品已经不得不考虑对它的兼容性，也即考虑对 WebKit 的兼容性，也即使用标准技术。当新的网站大多按标准行事时，对 Trident 的需求将越来越少，越来越多的浏览器会默认使用 WebKit。这是一个正反馈。</p>
+<p>以下是我这个勇敢的小白得出的测试数据（按市场份额排序）：</p>
+<table>
+<tbody>
+<tr>
+<td>浏览器名称</td>
+<td>主流版本</td>
+<td>双核版本</td>
+<td>是否默认 WebKit</td>
+</tr>
+<tr>
+<td>360</td>
+<td>3.5</td>
+<td>4.0</td>
+<td>是</td>
+</tr>
+<tr>
+<td>搜狗</td>
+<td>2.2</td>
+<td>2.2</td>
+<td>否</td>
+</tr>
+<tr>
+<td>QQ</td>
+<td>4.8</td>
+<td>5.0 beta3</td>
+<td>否</td>
+</tr>
+<tr>
+<td>遨游</td>
+<td>2.5</td>
+<td>3.0</td>
+<td>是</td>
+</tr>
+<tr>
+<td>世界之窗</td>
+<td>3.3</td>
+<td>4.0</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>目前的情形，各浏览器（除搜狗外）的双核版本都还处于怂恿、造势阶段，都还没有成为默认的主流版本。而搜狗，虽然已经默认双核版本了，但并没有默认 WebKit。</p>
+<p>当各国产浏览器默认了双核版本，且双核版本默认了 WebKit 内核。“因特网探险家6”带给我的梦魇将有希望结束。当然，它结束的不只是我，而是这个时代 Web 开发者的痛苦。这是 360 们给自己树碑立传的机会，期待看到他们的作为。</p>
+                        
+                    </div>
+                </section>
+                
+                <section class="post">
+                    <p class="post-meta">
+                        <span class="post-author">November 29th 2010 6:40:58 PM</span>
+                        
+                    </p>
+                    <header class="post-header">
+                        
+                        <img width="48" height="48" alt="Wang Congming&#x27;s avatar" class="post-avatar" src="http://wangcongming.info/wp-content/uploads/avatar.png">
+                        
+                        <h2 class="post-title"><a href="http://wangcongming.info/2010/11/sns%e5%92%8c%e5%be%ae%e5%8d%9a%e2%80%94%e7%90%86%e5%bf%b5%e7%9b%b8%e5%85%8b%ef%bc%8c%e8%af%95%e5%9b%be%e6%8f%89%e5%90%88%e5%8f%af%e8%83%bd%e9%80%82%e5%be%97%e5%85%b6%e5%8f%8d/" class="post-title">“SNS”和“微博”——理念相克，试图揉合可能适得其反</a></h2>
+                        <p class="post-meta">
+                            <span class="post-author">Wang Congming</span>
+                            
+                            <span class="post-category post-category-a" href="#">胡言乱语</span>
+                            
+                            <span class="post-category post-category-c" href="#">facebook</span>
+                            
+                            <span class="post-category post-category-b" href="#">twitter</span>
+                            
+                            <span class="post-category post-category-b" href="#">移动互联网</span>
+                            
+                            <span class="post-category post-category-a" href="#">豆瓣</span>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+                        <p>SNS 和 Microblog 都已不是新鲜话题了，但有一个势头，SNS 想整合微博、微博想整合 SNS，我认为这不是好主意，可能会适得其反。</p>
+<p> </p>
+<p>SNS 是什么？是关系，是加好友。七大姑八大姨、同学发小、客户伙伴……总之，你认识的人都得加上。毕竟，亲戚朋友多总是好事。</p>
+<p>Microblog 是什么？是获取信息的途径。用来关注那些可能并不认识，但他们说的话使你感兴趣，能给你带来信息、思考或知识的人。</p>
+<p>于是，冲突产生了：</p>
+<ul>
+<li>SNS 应该鼓励实名化，微博随便匿名；</li>
+<li>SNS 双向确认好友关系，微博应该单向关注；</li>
+<li>SNS 鼓励多加好友、只要是认识的人；微博推荐物以类聚，不介意事先是否认识；</li>
+<li>……</li>
+</ul>
+<p> </p>
+<p>拿 Twitter 这个显而易见的例子，如果我的某个发小在上面，我可能不会 fo 他。原因很简单，经过多年的各自发展，也许我们感情仍然很好，但隔行如隔山，我们可能很难有共同话题了。他发的他们那个行业很有意思的段子，可能我会觉得索然无味。上推是为了看一些有意思、对口味的信息，所以我不 fo 他。</p>
+<p>那么，另外一个例子——豆瓣。它的社区应该是 Facebook 型的还是 Twitter 型的？设想一下，因为你在豆瓣把你的姑姑姨姨们加为了好友，某天你想买本 IT 书籍的时候，豆瓣会向你推荐某某菜谱；某天你想欣赏科幻电影的时候，它向你推荐xx韩剧；……是何感触？所以豆瓣的社区也应该是 Twitter 型的（大概一两年前，豆瓣有一个改版，似乎没经受住 Facebook 的诱惑，在原有的“关注”基础上，又增加了个加好友的功能。当时我相当讨厌，就离它远了点，后来的某个时刻，发现这个功能又被砍掉了，幸甚！）。</p>
+<p> </p>
+<p>总结起来，凡是你想从所关注的人中获取有效信息的，或者系统根据所关注的人，通过算法自动向用户推荐有价值信息的，都应该是微博型的社区。而 SNS 适合生活化的东西，我觉得。</p>
+<p> </p>
+<p>后记：刚发过一条推：</p>
+<blockquote><p>前几年，我订阅了很多互联网大佬的博客，带着崇敬的心情探头阅读这个行业。最近，我了解了一下大佬们的动向，发现他们主导的产品都关门鸟～。互联网跟体育一样，评论员当不好运动员。我还当不了评论员，努力成为一名运动员ing，嗯～！<br />
+<a href="http://twitter.com/wcm/status/8904614644551680">http://twitter.com/wcm/status/8904614644551680</a></p></blockquote>
+<p>唔，敲自己脑袋，不要评论，要运动！ @_@</p>
+                        
+                    </div>
+                </section>
+                
+                <section class="post">
+                    <p class="post-meta">
+                        <span class="post-author">November 2nd 2010 1:22:38 AM</span>
+                        
+                    </p>
+                    <header class="post-header">
+                        
+                        <img width="48" height="48" alt="Wang Congming&#x27;s avatar" class="post-avatar" src="http://wangcongming.info/wp-content/uploads/avatar.png">
+                        
+                        <h2 class="post-title"><a href="http://wangcongming.info/2010/11/%e5%b7%a5%e4%bd%9c%e6%97%a5%e5%bf%97%ef%bc%9a%e6%88%91%e4%bb%ac%e4%b8%8d%e6%98%af%e4%b8%80%e4%b8%aa%e4%ba%ba%e5%9c%a8%e6%88%98%e6%96%97/" class="post-title">工作日志：我们不是一个人在战斗</a></h2>
+                        <p class="post-meta">
+                            <span class="post-author">Wang Congming</span>
+                            
+                            <span class="post-category post-category-d" href="#">胡言乱语</span>
+                            
+                            <span class="post-category post-category-d" href="#">工作日志</span>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+                        <p>按：<br />
+这是在公司内部社区写的。本意是为同事而写，但我想，它也正好记录了我自己的认识。所以，以后若有类似不涉及公司、产品及同事隐私的日志，也会将其记录在我的个人日志里。</p>
+<p>月度总结会议提纲：</p>
+<blockquote><p>
+一、时机<br />
+1、v1.0 发布、v1.5 15 天时间、业务接踵而至；<br />
+2、团队磨合，有进步、还有陋习，不能就此停滞。</p>
+<p> </p>
+<p>二、追求卓越，拒绝平庸<br />
+1、基础并不好，自知自省，努力；<br />
+2、更新换代，有机会超越；<br />
+3、再也不是单打独斗的年代，比得是<strong>团队</strong>凝聚力、战斗力。</p>
+<p> </p>
+<p>三、We Are <strong>One</strong><br />
+0：我们不是<strong>又一个</strong>混日子的团队</p>
+<p>1：友好、尊重、相互着想<br />
+宽容、存大志，不要小心眼；<br />
+审视行为习惯，是否会无意中给他人造成伤害/误会。</p>
+<p>2：主动性、全局观、责任感<br />
+整个系统都与我有关，贡献创意、发现问题；<br />
+参与、决策，not 螺丝钉；<br />
+视野 -&gt; 思考 -&gt; 积淀 -&gt; 施展。</p>
+<p>3：自我激励、团队价值<br />
+像大海一样清洁环境，不像污染源一样毒害团队。</p>
+<p> </p>
+<p>四、We Could Be <strong>Better</strong><br />
+1：技术<br />
+兴趣、执着、好奇心，不服输、成就感、自豪感……；<br />
+<strong>内驱力</strong>，积淀技术、锻炼能力、创造自我价值。需要被监督的人是可耻的！</p>
+<p>2：效率<br />
+工作方式，自省、总结；<br />
+慵懒、分心的时候，告诉自己——时光正在无情地流逝。</p>
+<p>3：产品 &amp; 需求<br />
+技术不是玩具，它的目标是产品；<br />
+若搞错了方向，更快的速度只使南辕北辙得更远，认真对待需求；<br />
+为产品更优秀而激动，非为多一个工作任务而抵触。</p>
+<p> </p>
+<p>五、男儿心胸，志在千里<br />
+1、卓越的技术、优秀的产品；<br />
+2、可能，创造新天地；<br />
+3、上层建筑，需要物质基础，我的职责我深知；<br />
+4、价值 -&gt; 回报；not 回报 -&gt; 价值。
+</p></blockquote>
+                        
+                    </div>
+                </section>
+                
+                <section class="post">
+                    <p class="post-meta">
+                        <span class="post-author">September 10th 2010 6:30:06 AM</span>
+                        
+                    </p>
+                    <header class="post-header">
+                        
+                        <img width="48" height="48" alt="Wang Congming&#x27;s avatar" class="post-avatar" src="http://wangcongming.info/wp-content/uploads/avatar.png">
+                        
+                        <h2 class="post-title"><a href="http://wangcongming.info/2010/09/%e4%bb%b7%e5%80%bc%e7%9a%84%e8%bf%b7%e6%80%9d/" class="post-title">价值的迷思</a></h2>
+                        <p class="post-meta">
+                            <span class="post-author">Wang Congming</span>
+                            
+                            <span class="post-category post-category-c" href="#">胡思乱想</span>
+                            
+                            <span class="post-category post-category-b" href="#">价值</span>
+                            
+                            <span class="post-category post-category-d" href="#">市场</span>
+                            
+                            <span class="post-category post-category-c" href="#">用户</span>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+                        <p>实在无法把下面完整的意思，压缩到 Twitter 140 字的限制内。于是，发到 Blog 来凑数吧，呵呵～。</p>
+<blockquote><p>一直想创建一个有价值的应用，而非利用用户的无聊浪费他们的时间。</p>
+<p>比如，豆瓣的书影音，是我认可的应用之一。但我意识到，使用这样的应用，表明用户开始了价值积淀。虽不一定积淀得多丰厚，但至少已经开始了。然而，有更多更多更多的人还处于粗放阶段，积淀？完全没有意识。</p>
+<p>潜在用户只有小部分能成为实际用户；<br />
+但对用户素质有要求的应用，更只有总体中的很小部分能成为潜在用户；<br />
+价值与市场容量两全，不是件易事。</p></blockquote>
                         
                     </div>
                 </section>
