@@ -7,8 +7,321 @@
         <link>http://planet.nanjinglug.org</link>
         <atom:link href="http://planet.nanjinglug.org/rss.xml" rel="self" type="application/rss+xml"/>
         <description>寻找南京 Linux 爱好者。每月第二个周末见！</description>
-        <pubDate>Fri, 23 Jun 2017 12:32:56 +0200</pubDate>
+        <pubDate>Tue, 19 Sep 2017 10:43:45 +0200</pubDate>
         <generator>Planet.js (https://github.com/phoenixlzx/planet.js)</generator>
+        
+        <item>
+            <title>一个关于 nolock 的故事</title>
+            <link>https://blog.alswl.com/2017/09/sql-server-nolock/</link>
+            
+            <author>alswl</author>
+            
+            <guid>https://blog.alswl.com/2017/09/sql-server-nolock/</guid>
+            <pubDate>Tue, 19 Sep 2017 10:43:45 +0200</pubDate>
+            <description>
+                
+                 加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolo
+                
+            </description>
+            
+            <content:encoded><![CDATA[<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/sql-server.png" /></p>
+<p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里，
+同时伴随进行的还有 .net 系统迁移到 Java 系统。
+在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中，
+几乎所有的 SQL 中都会使用一个关键字：<code>nolock</code>。
+这让我很困惑，<code>nolock</code> 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？</p>
+
+<p>我找了一个范例如下：</p>
+<div><pre><span></span><span>SELECT</span> <span>[</span><span>id</span><span>]</span> 
+<span>FROM</span>   <span>[</span><span>dbo</span><span>].[</span><span>foos</span><span>]</span> <span>WITH</span><span>(</span><span>nolock</span><span>)</span> 
+<span>WHERE</span>  <span>aField</span> <span>=</span> <span>42</span> 
+       <span>AND</span> <span>bField</span> <span>=</span> <span>1</span> 
+</pre></div>
+<p>作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server
+迁移到 MySQL，我们编码中还需要使用 <code>nolock</code> 么？
+MySQL 里面对应的写法是什么？」。
+我并没有 SQL Server 的生产环境使用经验，一时间无法回答。
+于是课后做相关知识学习，这里就是这次学习的一点成果。</p>
+<p>这个问题将被拆解成三个小问题进行回答：</p>
+<ul>
+<li><code>nolock</code> 是什么？</li>
+<li>为什么会需要在每个 Query 语句使用 <code>nolock</code>？</li>
+<li>MySQL 的对应写法是什么？</li>
+</ul>
+<p>让我们一个一个来看。</p>
+<h2>第一个问题：nolock 是什么？</h2>
+<p><code>nolock</code> 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。
+Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。
+在语法上，Hints 以 <code>WITH</code> 开头。除了 <code>WITH(nolock)</code>，
+还有 <code>TABLOCK</code> / <code>INDEX</code> / <code>ROWLOCK</code> 等常见的 Hints。</p>
+<p>让我们仔细看看 MSDN 文档上的解释：</p>
+<blockquote>
+<p><code>nolock</code> 的作用等同于 <code>READUNCOMMITTED</code></p>
+</blockquote>
+<p><code>READUNCOMMITTED</code> 这是一种 RDBMS 隔离级别。
+使用 <code>nolock</code> 这个关键词，可以将当前查询语句隔离级别调整为 <code>READ UNCOMMITTED</code>。</p>
+<p>计算机基础好的同学，应该对 <code>READUNCOMMITTED</code> 这个关键词还有印象。
+而基础不扎实的同学，也许只是觉得这个关键词眼熟，但是讲不清楚这是什么。
+如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。
+其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。</p>
+<h3>隔离级别</h3>
+<p>SQL 92 定义了四个隔离级别
+（<a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels">Isolation (database systems) - Wikipedia</a>），
+其隔离程度由高到低是：</p>
+<ul>
+<li>可序列化（Serializable）</li>
+<li>可重复读（Repeatable reads）</li>
+<li>提交读（Read committed）</li>
+<li>未提交读（Read uncommitted）</li>
+</ul>
+<p>单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：</p>
+<ul>
+<li>隔离级别解决什么问题？</li>
+<li>为什么存在多种隔离级别？</li>
+<li>我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？</li>
+</ul>
+<p>首先是「隔离级别解决什么问题？」，
+用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。</p>
+<p>这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能，
+多种隔离级别就是是为了取得两者的平衡。</p>
+<p>接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」
+这其实是一个需求和性能逐步平衡的过程，</p>
+<p>我们逐层递进，将隔离级别由低到高逐层面临进行分析。</p>
+<h4>Read Uncommitted</h4>
+<p>Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
+如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/read-uncommitted.png" /></p>
+<p>如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。
+如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。</p>
+<p>「读到了其他事务修改了但是未提交的数据」即是<strong>脏读</strong>。</p>
+<h3>Read Committed</h3>
+<p>想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁，
+其他事务需要读取数据时候，需要等待这把写锁释放。</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/read-committed-1.png" /></p>
+<p>如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁，
+那么 Transaction 2 想要读取 A，就必须等待这把锁释放。
+这样就避免当前事务读取其他事务的未提交数据。</p>
+<p>但是除了脏读，一致性的要求还需要「可重复读」，即
+「在一个事务内，多次读取的特定数据都必须是一致的
+（即便在这过程中该数据被其他事务修改）」。</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/read-committed-2.png" /></p>
+<p>上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A，
+然后 Transaction 1 对数据 A 更新到 A'，那么当 Tranction 2 再次读取 A 时候，
+它本来期望读到 A，但是却读到了 A'，这和它的预期不相符了。
+解决这个问题，就需要提升隔离级别到「Repeatable Read」。</p>
+<h3>Repeatable Read</h3>
+<p>这个名字非常容易理解，即保障在一个事务内重复读取时，
+始终能够读取到相同的内容。来看图：</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/repeatable-read.png" /></p>
+<p>如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock，
+这把锁会阻止 Transaction 1 将 A 更新为 A'，Transaction 1 要么选择等待，
+要么就选择结束。</p>
+<p>当我们将隔离级别升到这里是，似乎已经完美无缺了。
+不管是写入还是读取，我们都可以保证数据的一致性不被破坏。
+但是其实还有漏洞：新增数据的一致性！</p>
+<p>上述的三个隔离级别，都是对特定的一行数据进行加锁，
+那假如将要更新的数据还没有写入数据库，如何进行加锁呢？
+比如自增表的新键，或者现有数据内的空缺 Key？</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/repeatable-read-2.png" /></p>
+<p>如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1
+在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候，
+会发现查询到的 Range 和上次已经不一样了，多了一个 newA。</p>
+<p>这就是最高隔离级别才能解决的「幻影读」：
+当两个完全相同的查询语句执行得到不同的结果集，
+这常常在范围查询中出现。</p>
+<h3>Serializable</h3>
+<p>从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。
+任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件，
+还需要将 WHERE 条件相关的范围全部加锁。</p>
+<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/serializable.png" /></p>
+<p>如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
+此时其他事务无法操作其中的数据，只能等待或者放弃。</p>
+<h3>DB 的默认隔离级别</h3>
+<p>现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」
+根据 <a href="https://msdn.microsoft.com/en-us/library/ms175909.aspx">Customizing Transaction Isolation Level</a>
+这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。</p>
+<p>MySQL InnoDB 的默认隔离级别可以在 <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html">MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels</a>
+查询到，是 Read-Repeatable。</p>
+<p>隔离级别并没有最好之说，越高隔离级别会导致性能降低。
+隔离级别的设定需要考虑业务场景。</p>
+<h2>第二个问题：为什么要使用 nolock？</h2>
+<p>我们已经知道 <code>nolock</code> 的作用是动态调整隔离级别。
+那为什么在 SQL Server 的 Query 操作中，需要启用 <code>nolock</code> 呢？
+我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。</p>
+<p>此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？
+我们的数据库，已经到了需要禁用锁的程度来进行优化了么？」
+我于是自己去探索，想知道为何广泛使用 <code>nolock</code> 会成为一个「最佳实践」？</p>
+<p>由于时代久远，我只能追述到一些相关信息，比如
+<a href="https://blogs.msdn.microsoft.com/sqlcat/2013/09/16/top-10-sql-server-integration-services-best-practices/">Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team</a>
+中提到 「Use the NOLOCK or TABLOCK hints to remove locking overhead.」
+但这个是针对于 SSIS 查询器，并不是针对业务内部使用。
+反而能找到一大堆的文档，在反对使用 <code>nolock</code> 这个关键字。</p>
+<p>继续追查下去，还从蛛丝马迹中寻找到一个使用 <code>nolock</code> 的理由，
+SQL Server 默认是 Read Committed，
+更新操作会产生排它锁，会 block 这个资源的查询操作，
+已插入但未提交的数据主键也会产生一个共享锁，
+而此时则会 block 这张表的全表查询和 Insert 操作。
+为了避免 Insert 被 Block，就会推荐使用 <code>nolock</code>。</p>
+<p>为了验证这是原因，我做一些 <code>nolock</code> 测试。</p>
+<h3>nolock 测试</h3>
+<p>检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：</p>
+<div><pre><span></span><span>SELECT</span> <span>CASE</span> <span>transaction_isolation_level</span>
+       <span>WHEN</span> <span>0</span>
+         <span>THEN</span> <span>'Unspecified'</span>
+       <span>WHEN</span> <span>1</span>
+         <span>THEN</span> <span>'ReadUncommitted'</span>
+       <span>WHEN</span> <span>2</span>
+         <span>THEN</span> <span>'ReadCommitted'</span>
+       <span>WHEN</span> <span>3</span>
+         <span>THEN</span> <span>'Repeatable'</span>
+       <span>WHEN</span> <span>4</span>
+         <span>THEN</span> <span>'Serializable'</span>
+       <span>WHEN</span> <span>5</span>
+         <span>THEN</span> <span>'Snapshot'</span> <span>END</span> <span>AS</span> <span>TRANSACTION_ISOLATION_LEVEL</span>
+<span>FROM</span> <span>sys</span><span>.</span><span>dm_exec_sessions</span>
+<span>WHERE</span> <span>session_id</span> <span>=</span> <span>@@</span><span>SPID</span>
+
+<span>-- ReadCommitted</span>
+</pre></div>
+<p>创建表，初始化数据：</p>
+<div><pre><span></span><span>CREATE</span> <span>TABLE</span> <span>foos</span> <span>(</span>
+  <span>id</span>    <span>BIGINT</span>    <span>NOT</span> <span>NULL</span><span>,</span>
+  <span>value</span> <span>NCHAR</span><span>(</span><span>10</span><span>)</span> <span>NULL</span><span>,</span>
+  <span>CONSTRAINT</span> <span>pk</span> <span>PRIMARY</span> <span>KEY</span> <span>clustered</span> <span>(</span><span>id</span><span>)</span>
+<span>);</span>
+<span>INSERT</span> <span>INTO</span> <span>foos</span> <span>(</span><span>id</span><span>,</span> <span>value</span><span>)</span> <span>VALUES</span> <span>(</span><span>1</span><span>,</span> <span>'1'</span><span>),</span> <span>(</span><span>2</span><span>,</span> <span>'2'</span><span>);</span>
+</pre></div>
+<p>在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：</p>
+<div><pre><span></span><span>BEGIN</span> <span>TRANSACTION</span><span>;</span>
+<span>INSERT</span> <span>INTO</span> <span>foos</span> <span>(</span><span>id</span><span>,</span> <span>value</span><span>)</span> <span>VALUES</span> <span>(</span><span>3</span><span>,</span> <span>'3'</span><span>);</span>
+</pre></div>
+<p>开启一个新的 Session，发起全表查询和新增 PK 查询操作：</p>
+<div><pre><span></span><span>SELECT</span> <span>*</span> <span>FROM</span> <span>foos</span><span>;</span>
+<span>SELECT</span> <span>*</span> <span>FROM</span> <span>foos</span> <span>WHERE</span> <span>id</span> <span>=</span> <span>4</span><span>;</span>
+</pre></div>
+<p>不出所料，此时查询果然会被 Block 住。</p>
+<h3>MVCC</h3>
+<p>并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。
+SQL Server 在 2015 后，引入了 MVCC（多版本控制）。
+如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。
+那么 MVCC 引入是否可以解决 Insert 数据的锁问题？
+同样，我做了以下测试：</p>
+<p>查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：</p>
+<div><pre><span></span><span>SELECT</span> <span>name</span><span>,</span> <span>snapshot_isolation_state</span> <span>FROM</span> <span>sys</span><span>.</span><span>databases</span><span>;</span>
+</pre></div>
+<p>使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：</p>
+<div><pre><span></span><span>ALTER</span> <span>DATABASE</span> <span>HJ_Test3D</span> <span>SET</span> <span>ALLOW_SNAPSHOT_ISOLATION</span> <span>ON</span><span>;</span>
+</pre></div>
+<p>接着重复上面里面的 Insert 试验，依然被 Block 住。
+看来 MVCC 并不能解决 Insert 锁的问题。</p>
+<h3>SQL Server 2005 之后还需要使用 nolock 么？</h3>
+<p>从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在，
+会导致 <code>SELECT ALL</code> 以及 <code>SELECT</code> 新插入数据的相关信息被锁住。
+在这两种情景下面是需要使用 <code>nolock</code> 的。</p>
+<p>除此之外，有这么几类场景可以使用 <code>nolock</code>：</p>
+<ul>
+<li>在 SSIS 查询器中进行数据分析，不需要精准数据</li>
+<li>历史数据进行查询，没有数据更新操作，也不会产生脏数据</li>
+</ul>
+<p>我们需要思考一下，性能和数据一致性上的权衡上，
+我们是否愿意放弃数据一致性而为了提高一丝丝性能？
+以及我们有多少场景，会频繁使用 <code>SELECT ALL</code> 操作而没有查询条件？</p>
+<p>微软官方在 2015 的特性列表里面，明确地指出 <code>nolock</code> 特性未来会在某个版本被废除：</p>
+<blockquote>
+<p>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</p>
+</blockquote>
+<p>而改为推荐：</p>
+<blockquote>
+<p>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</p>
+</blockquote>
+<p>事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。
+那在这种模式下，产生相关的问题的几率也就更小了。
+如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、
+Snapshot 导出、流式分析等技术。</p>
+<h2>第三个问题：MySQL 的对应写法是什么？</h2>
+<p>终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC，
+并且支持 <code>innodb_autoinc_lock_mode</code> <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-auto-increment-handling.html">AUTO_INCREMENT Handling in InnoDB</a>。
+这样可以避免 Insert 操作锁住全局 Select 操作。
+只有在同时 Insert 时候，才会被 Block 住。</p>
+<p><code>innodb_autoinc_lock_mode</code> 支持几种模式：</p>
+<ul>
+<li>innodb_autoinc_lock_mode = 0 (“traditional” lock mode)<ul>
+<li>涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁</li>
+</ul>
+</li>
+<li>innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)<ul>
+<li>可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值</li>
+<li>对于插入行数不确定的插入语句，仍加表锁</li>
+<li>这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续</li>
+</ul>
+</li>
+<li>innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)<ul>
+<li>同一时刻多条 SQL 语句产生交错的 auto-increment 值</li>
+</ul>
+</li>
+</ul>
+<p>这里也做了相应的测试。首先检查数据库隔离级别和 <code>innodb_autoinc_lock_mode</code> 模式：</p>
+<div><pre><span></span><span>SELECT</span> <span>@@</span><span>global</span><span>.</span><span>tx_isolation</span><span>,</span> <span>@@</span><span>session</span><span>.</span><span>tx_isolation</span><span>,</span> <span>@@</span><span>tx_isolation</span><span>;</span>
+<span>SHOW</span> <span>variables</span> <span>LIKE</span> <span>'innodb_autoinc_lock_mode'</span><span>;</span>
+</pre></div>
+<p>检查后发现都是 Repeatable Read，<code>innodb_autoinc_lock_mode</code> 模式是 1。
+然后创建测试表：</p>
+<div><pre><span></span><span>CREATE</span> <span>TABLE</span> <span>`</span><span>foos</span><span>`</span> <span>(</span>
+  <span>`</span><span>id</span><span>`</span> <span>int</span><span>(</span><span>11</span><span>)</span> <span>unsigned</span> <span>NOT</span> <span>NULL</span> <span>AUTO_INCREMENT</span><span>,</span>
+  <span>`</span><span>name</span><span>`</span> <span>varchar</span><span>(</span><span>20</span><span>)</span> <span>DEFAULT</span> <span>NULL</span><span>,</span>
+  <span>PRIMARY</span> <span>KEY</span> <span>(</span><span>`</span><span>id</span><span>`</span><span>)</span>
+<span>)</span> <span>ENGINE</span><span>=</span><span>InnoDB</span> <span>AUTO_INCREMENT</span><span>=</span><span>18</span> <span>DEFAULT</span> <span>CHARSET</span><span>=</span><span>utf8</span><span>;</span>
+</pre></div>
+<p>在 Transaction 1 中 Insert 数据：</p>
+<div><pre><span></span><span>START</span> <span>TRANSACTION</span><span>;</span>
+<span>INSERT</span> <span>INTO</span> <span>foos</span> <span>(</span><span>name</span><span>)</span> <span>VALUES</span> <span>(</span><span>&quot;a&quot;</span><span>);</span>
+</pre></div>
+<p>在 Transaction 2 中 Select 数据，可以正常查询：</p>
+<div><pre><span></span><span>SELECT</span> <span>*</span> <span>FROM</span>   <span>foos</span><span>;</span>
+</pre></div>
+<p>在 Transaction 2 中 Insert 数据，会被 Block 住：</p>
+<div><pre><span></span><span>START</span> <span>TRANSACTION</span><span>;</span>
+<span>INSERT</span> <span>INTO</span> <span>foos</span> <span>(</span><span>name</span><span>)</span> <span>VALUES</span> <span>(</span><span>&quot;a&quot;</span><span>);</span>
+</pre></div>
+<p>这个测试可以证明 MySQL 可以在 <code>innodb_autoinc_lock_mode</code>=1 下，
+Insert 同时 Query 不会被 Block，
+但是在另外一个事务中 Insert 会被 Block。
+结论是，由于 <code>innodb_autoinc_lock_mode</code> 的存在，MySQL 中可以不需要使用 <code>nolock</code>
+关键词进行查询。</p>
+<h2>回顾一下</h2>
+<p>本文着重去回答这么几个问题：</p>
+<ul>
+<li>为什么要用 <code>noloc</code>？</li>
+<li>为什么要改变隔离级别？</li>
+<li>为什么 MySQL 不需要做类似的事情？</li>
+</ul>
+<p>虽然只凑足了三个 「为什么」 的排比，
+但是聪明的读者仍然会发现，我是使用了著名的
+<a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E4%B8%AA%E4%B8%BA%E4%BB%80%E4%B9%88">五个为什么</a>
+方法思考问题。
+通过使用这个方法，我们最后不但打破了老旧的最佳实践，还了解了本质原理，
+并找到了新的最佳实践。</p>
+<p>希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神，
+这样才能让每个困难成为我们成长的垫脚石。</p>
+<h2>相关资料</h2>
+<ul>
+<li><a href="https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2">事务隔离 - 维基百科，自由的百科全书</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table">Table Hints (Transact-SQL) | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server">Snapshot Isolation in SQL Server | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql">sys.databases (Transact-SQL) | Microsoft Docs</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html">MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning</a></li>
+</ul>
+<hr />
+<div>
+<div>
+   原文链接: <a href="https://blog.alswl.com/2017/09/sql-server-nolock/">https://blog.alswl.com/2017/09/sql-server-nolock/</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
+   3a1ff193cee606bd1e2ea554a16353ee
+</div>
+</div>]]></content:encoded>
+            
+        </item>
         
         <item>
             <title>由 rc_mksid  引起 pppd 奔溃的一个 bug</title>
@@ -4826,72 +5139,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 <div>
 <div>
    原文链接: <a href="https://blog.alswl.com/2015/07/redis-migration/">https://blog.alswl.com/2015/07/redis-migration/</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>]]></content:encoded>
-            
-        </item>
-        
-        <item>
-            <title>带理想的执行者 - 柳比歇夫的一生</title>
-            <link>https://blog.alswl.com/2015/07/liu-bi-xie-fu/</link>
-            
-            <author>alswl</author>
-            
-            <guid>https://blog.alswl.com/2015/07/liu-bi-xie-fu/</guid>
-            <pubDate>Sun, 12 Jul 2015 11:29:19 +0200</pubDate>
-            <description>
-                
-                作为战斗民族的俄罗斯民族，不但能在热带风暴级的灿鸿中进行正常起降， 历来也盛产各种奇葩人物。 最近我有看到一本描述一个科学家的如何生活的书，叫「奇特的一生」。 让人拍案称奇。  主人公是一位名叫柳比歇夫的科学家，想必他在「回首往事时候没有因为虚度年华而悔恨」， 因为他将自己的一
-                
-            </description>
-            
-            <content:encoded><![CDATA[<p>作为战斗民族的俄罗斯民族，不但能在热带风暴级的灿鸿中进行正常起降，
-历来也盛产各种奇葩人物。
-最近我有看到一本描述一个科学家的如何生活的书，叫「奇特的一生」。
-让人拍案称奇。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201507/liu_bi_xie_fu.jpg" /></p>
-<p>主人公是一位名叫柳比歇夫的科学家，想必他在「回首往事时候没有因为虚度年华而悔恨」，
-因为他将自己的一生都精确的奉献到分类学、地蚤研究上面。
-他的工作投入，不是单纯激情洋溢投入，而是精确到分钟级别的投入，
-是奉献完整一生的投入。</p>
-<p>除了学术上面的成功，他的时间记录法也很牛逼，甚至让苏联科学院进行研究。怎么描述他的牛逼呢？如果他生活在今天，大致会这样写：</p>
-<blockquote>
-<p>今天我 19:00 - 19:25 看了新闻联播，感受到社会各阶级在党的领导下面获得令人振奋的成绩</p>
-<p>19:25 休息了一会，避过无聊的天气预报时间</p>
-<p>19:30 - 20:30 学习了「XXX 的讲话精神研究」</p>
-<p>附加工作：20:35 - 20:40 小解，顺便刷了一会朋友圈作为今天的娱乐放松，评论了隔壁老王老婆的出行照片</p>
-</blockquote>
-<p>看到没有，他精确的记录了自己的时间使用记录，犹如脑子里面有个精确的 GTD
-管理器，那个年代 David Allen 还没出生呢，肯定也谈不上了解 Get Things Done。苏联真是靠各类牛逼人物撑起了一战、二战时候工业大跃进和各种黑科技的崛起。</p>
-<p>简单记录时间当然不能带来效率和成果的提升，柳比歇夫明显没有纳什这种神经病天才的聪明，他能获得这样比较高的成就，必须还有真正的大招。</p>
-<p>第一招是他有坚定的奋斗目标：「创立生物自然分类法」。我们暂不管这不出名的法则是什么，能在 1918 年（他时年 28 岁，我擦，和我现在差不多大啊）就提出自己一生奋斗的目标，着实了不起。
-从书中的记录来看，28 岁的青年教师柳比歇夫，
-在日记里面描述他想要做什么事情，需要具备什么素质，
-并且在估算重要里程碑时间点。</p>
-<p>我估摸着，在战争中成长起来的人，不仅仅需要幸运，还需要勇气和坚韧意志，
-19 世纪初年，沙皇政权摇摇欲坠，布尔什维克们应该还在密谋革命造反，
-民众生活艰苦（感觉好像民国时期的中国）。
-这种时代的大环境造就了各阶级人物命运的跌宕起伏，附带效应是出产优秀的文人和思想家。
-柳比歇夫既然在这个时期成长，那也会渴望建树功勋，做点改变世界的事情。</p>
-<p>第二招是，他就去做了。</p>
-<p>「听过了很多大道理，却依然过不好这一生」，无非是缺在执行。
-柳比歇夫的时间记录法，不是简单作为一个日记本在使用，
-关键点在于回顾和计划。通过过去的记录，分析自我，总结经验，判断未来。</p>
-<p>哎哟，道理说起来都简单，做起来都难，柳比歇夫作为一个很好的例子，
-告诉我们，一个资质普通的人，决定牺牲自我，奉献到某个特定事业时候，
-可以获得的成绩，他完成了「立言」。</p>
-<p>在这个物欲横流，信息多得炸掉脑仁，各类媒体都在抢占眼珠的时代，能够不忘初心，
-去做点实际的事情，是一件不容易的事情。
-对快 30 的我来说，别说「立言」，就光「立命」，
-就已经让我困苦不堪，在这和平年代，没有家仇国恨美国梦，想要做点牛逼的事情，就得需要勇气和爱来驱动。</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201507/da_sheng_gui_lai.jpeg" /></p>
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2015/07/liu-bi-xie-fu/">https://blog.alswl.com/2015/07/liu-bi-xie-fu/</a><br />
    欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
    <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
    3a1ff193cee606bd1e2ea554a16353ee
