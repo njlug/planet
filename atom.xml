@@ -4,7 +4,7 @@
     <subtitle>建一个友好的 Linux 本地社区</subtitle>
     <link href="http://planet.nanjinglug.org/atom.xml" rel="self" type="application/atom+xml" />
     <link href="http://planet.nanjinglug.org"/>
-    <updated>2017-09-19T10:43:45+02:00</updated>
+    <updated>2017-09-27T06:07:44+02:00</updated>
     <id>http://planet.nanjinglug.org</id>
     
     <author>
@@ -13,6 +13,721 @@
     </author>
     
     <generator uri="https://github.com/phoenixlzx/planet.js">Planet.js</generator>
+    
+    <entry>
+        <title>Stack Overflow 的 HTTPS 化：漫漫长路的终点</title>
+        <link href="https://blog.alswl.com/2017/09/https-on-stack-overflow/"/>
+        <id>https://blog.alswl.com/2017/09/https-on-stack-overflow/</id>
+        
+        <author>
+            <name>罗晟, alswl</name>
+        </author>
+        
+        <published>2017-09-27T06:07:44+02:00</published>
+        <updated>2017-09-27T06:07:44+02:00</updated>
+        
+        <content type="html"><![CDATA[<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/stack-overflow.jpg" /></p>
+<ul>
+<li>原文作者：Nick Craver</li>
+<li>翻译作者：<a href="https://twitter.com/luosheng">罗晟 @luosheng</a> &amp; <a href="https://twitter.com/alswl">狄敬超 @alswl</a></li>
+<li>原文地址：<a href="https://nickcraver.com/blog/2017/05/22/https-on-stack-overflow/">Nick Craver - HTTPS on Stack Overflow: The End of a Long Road</a></li>
+<li>本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。</li>
+<li>本文首发在「沪江技术学院」公众号</li>
+</ul>
+<hr />
+<p>今天，我们默认在 <a href="https://stackoverflow.com/">Stack Overflow</a> 上部署了 HTTPS。目前所有的流量都将跳转到 <code>https://</code> 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;A 网站上都默认启用了。</p>
+<p><a href="https://meta.stackoverflow.com/q/345012/13249">在过去的两个月里</a>，我们在 Stack Exchange 全网维持发布 HTTPS。Stack Overflow 是最后，也是迄今最大的的一个站点。这对我们来说是一个巨大里程碑，但决不意味着是终点。<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#next-steps">后文会提到</a>，我们仍有很多需要做的事情。但现在我们总算能看得见终点了，耶！</p>
+<p>友情提示：这篇文章讲述的是一个漫长的旅程。非常漫长。你可能已经注意到你的滚动条现在非常小。我们遇到的问题并不是只在 Stack Exchange/Overflow 才有，但这些问题的组合还挺罕见。我在文章中会讲到我们的一些尝试、折腾、错误、成功，也会包括一些开源项目——希望这些细节对你们有所帮助。由于它们的关系错综复杂，我难以用时间顺序来组织这篇文章，所以我会将文章拆解成架构、应用层、错误等几个主题。</p>
+
+<p>首先，我们要提一下为什么我们的处境相对独特：</p>
+<ul>
+<li>我们有几百个域名（<a href="https://stackexchange.com/sites">大量站点</a>及服务）<ul>
+<li>大量二级域名（<a href="https://stackoverflow.com/">stackoverflow.com</a>、<a href="https://stackexchange.com/">stackexchange.com</a>、<a href="https://askubuntu.com/">askubuntu.com</a>等）</li>
+<li>大量四级域名（如 <a href="http://meta.gaming.stackexchange.com/">meta.gaming.stackexchange.com</a>）</li>
+</ul>
+</li>
+<li>我们允许用户提交、嵌入内容（比如帖子中的图片和 YouTube 视频）</li>
+<li>我们仅有一个数据中心（造成单源的延时）</li>
+<li>我们有广告（及广告网络）</li>
+<li>我们用 websockets，任何时刻的活跃数都不少于 50 万个（连接数问题）</li>
+<li>我们会被 DDoSed 攻击（代理问题）</li>
+<li>我们有不少站点及应用还是通过 HTTP API 通信的（代理问题）</li>
+<li>我们热衷于性能（<em>好像</em>有点太过了）</li>
+</ul>
+<p>由于这篇文章实在太长，我在这里先列出链接：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#the-beginning">开篇</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#quick-specs">懒人包</a></li>
+<li>基础设施<ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#certificates">证书</a><ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#certificates-child-metas-metastackexchangecom">Meta 子域（meta.*.stackexcange.com）</a></li>
+</ul>
+</li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#performance-http2">性能：HTTP/2</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#haproxy-serving-up-https">HAProxy：支持 HTTPS</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#cdnproxy-countering-latency-with-cloudflare--fastly">CDN/代理层：通过 Cloudflar 和 Fastly 优化延迟</a><ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#preparing-for-a-proxy-client-timings">优化代理层的准备：客户端性能测试</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#cloudflare">CloudFlare</a><ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#cloudflare-railgun">Railgun</a></li>
+</ul>
+</li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#fastly">Fastly</a></li>
+</ul>
+</li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#global-dns">全局 DNS</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#testing">测试</a></li>
+</ul>
+</li>
+<li>应用层/代码<ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#preparing-the-applications">应用层准备</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#global-login">全局登录</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#local-https-development">本地 HTTPS 开发</a></li>
+<li>混合内容<ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mixed-content-from-you">来自你们</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mixed-content-from-us">来自我们</a></li>
+</ul>
+</li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#redirects-301s">跳转（301）</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#websockets">Websockets</a></li>
+</ul>
+</li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#unknowns">未知</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mistakes">错误</a><ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mistakes-protocol-relative-urls">相对协议 URL</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mistakes-apis-and-internal">API 及 .internal</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mistakes-301-caching">301 缓存</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#mistakes-help-center-snafu">帮助中心的小插曲</a></li>
+</ul>
+</li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#open-source">开源</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#next-steps">下一步</a><ul>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#hsts-preloading">HSTS 预加载</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#chat">聊天</a></li>
+<li><a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#today">今天</a></li>
+</ul>
+</li>
+</ul>
+<h3>开篇</h3>
+<p>我们<a href="https://nickcraver.com/blog/2013/04/23/stackoverflow-com-the-road-to-ssl/">早在 2013</a> 年就开始考虑在 Stack Overflow 上部署 HTTPS 了。是的，现在是 2017 年。所以，<strong>究竟是什么拖了我们四年？</strong>这个问题的答案放在任何一个 IT 项目上都适用：依赖和优先级。老实说，Stack Overflow 在信息安全性上的要求并不像别家那么高。我们不是银行，也不是医院，我们也不涉及信用卡支付，<a href="https://archive.org/details/stackexchange">甚至于我们每个季度都会通过 HTTP 和 BT 种子的方式发布我们大部分的数据库</a>。这意味着，从安全的角度来看，这件事情的紧急程度不像它在其他领域里那么高。而从依赖上来说，我们的复杂度比别人要高，在部署 HTTPS 时会在几大领域里踩坑，这些问题的组合是比较特殊的。后文中会看到，有一些域名的问题还是一直存在的。</p>
+<p>容易踩坑的几个领域包括：</p>
+<ul>
+<li>用户内容（用户可以上传图片或者指定 URL）</li>
+<li>广告网络（合同及支持）</li>
+<li>单数据中心托管（延迟）</li>
+<li>不同层级下的<a href="https://stackexchange.com/sites"><strong>几百个</strong>域名</a>（证书）</li>
+</ul>
+<p>那我们究竟是为什么需要 HTTPS 呢？因为数据并不是唯一需要安全性的东西。我们的用户中有操作员、开发者、还有各个级别的公司员工。我们希望他们到我们站点的通信是安全的。我们希望每一个用户的浏览历史是安全的。某些用户暗地里喜欢 monad 却又害怕被人发现。同时，Google 会<a href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">提升 HTTPS 站点的搜索排名</a>（虽然我们不知道能提升多少）。</p>
+<p>哦，还有<strong>性能</strong>。我们热爱性能。我热爱性能。你热爱性能。我的狗热爱性能。让我给你一个性能的拥抱。很好。谢谢。你闻起来很香。</p>
+<h3>懒人包</h3>
+<p>很多人喜欢情人包，所以我们来一场快速问答（我们喜欢问答！）：</p>
+<ul>
+<li>问：你们支持什么协议？<ul>
+<li>答：TLS 1.0、1.1、1.2（注意：<a href="https://www.fastly.com/blog/phase-two-our-tls-10-and-11-deprecation-plan">Fastly 准备放弃 TLS 1.0 和 1.1</a>)。我们马上也会支持 TLS 1.3。</li>
+</ul>
+</li>
+<li>问：你们支持 SSL v2 或者 v3 吗？<ul>
+<li>答：不支持。<a href="http://disablessl3.com/">这些协议不安全</a>。大家都应该尽早禁用。</li>
+</ul>
+</li>
+<li>问：你们支持哪些加密套件？<ul>
+<li>答：CDN 上，我们用的是 <a href="https://www.ssllabs.com/ssltest/analyze.html?d=meta.stackexchange.com&amp;s=151.101.129.69#suitesHeading">Fastly 的默认套件</a>；</li>
+<li>答：我们自己的负载均衡器上用的是 <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility">Mozilla 的现代兼容性套件</a>。</li>
+</ul>
+</li>
+<li>问：Fastly 回源走的是 HTTPS 吗？<ul>
+<li>答：是。如果到 CDN 的请求是 HTTPS，回源的请求也是 HTTPS。</li>
+</ul>
+</li>
+<li>问：你们支持前向安全性吗？<ul>
+<li>答：是。</li>
+</ul>
+</li>
+<li>问：你们支持 <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a> 吗？<ul>
+<li>答：支持。我们正在 Q&amp;A 站点中逐步支持。一旦完成的话我们就会将其移至节点上。</li>
+</ul>
+</li>
+<li>问：你们支持 HPKP 吗？<ul>
+<li>答：不支持，应该也不会支持。</li>
+</ul>
+</li>
+<li>问：你们支持 SNI 吗？<ul>
+<li>答：不支持。出于 HTTP/2 性能考虑，我们使用是一个合并的通配符证书（详见后文）。</li>
+</ul>
+</li>
+<li>问：你们的证书是哪来的？<ul>
+<li>答：我们用的是 <a href="https://www.digicert.com/">DigiCert</a>，他们很棒。</li>
+</ul>
+</li>
+<li>问：你们支持 IE 6 吗？<ul>
+<li>答：这次之后终于不再支持了。IE 6 默认不支持 TLS（尽管你可以启用 1.0 的支持），而我们则不支持 SSL。当我们 301 跳转就绪的时候大部分 IE 6 用户就不能访问 Stack Overflow 了。一旦我们弃用 TLS 1.0，所有 IE 6 用户都不行了。</li>
+</ul>
+</li>
+<li>问：你们负载均衡器用的什么？<ul>
+<li>答：<a href="https://www.haproxy.org/">HAProxy</a>（内部使用的是 <a href="https://www.openssl.org/">OpenSSL</a>）。</li>
+</ul>
+</li>
+<li>问：使用 HTTPS 的动机是什么？<ul>
+<li>答：有人一直攻击我们的管员员路由，如 <a href="https://stackoverflow.com/admin.php">stackoverflow.com/admin.php</a>。</li>
+</ul>
+</li>
+</ul>
+<h3>证书</h3>
+<p>让我们先聊聊证书，因为这是最容易被误解的部分。不少朋友跟我说，他安装了 HTTPS 证书，因此他们已经完成 HTTPS 准备了。呵呵，麻烦你看一眼右侧那个小小的滚动条，这篇文章才刚刚开始，你觉得真的这么简单么？<a href="https://en.wikipedia.org/wiki/Scientific_wild-ass_guess">我有这个必要告诉你们一点人生的经验</a> ：没这么容易的。</p>
+<p>一个最常见的问题是：「为何不直接用 <a href="https://letsencrypt.org/">Let’s Encrypt</a>？」</p>
+<p>答案是：这个方案不适合我们。 Let’s Encrypt 的确是一个伟大的产品，我希望他们能够长期服务于大家。当你只有一个或少数几个域名时，它是非常出色的选择。但是很可惜，我们 Stack Exchange 有<a href="https://stackexchange.com/sites">数百个站点</a>，而 Let’s Encrypt 并<a href="https://letsencrypt.org/docs/faq/">不支持通配域名配置</a>。这导致 Let’s Encrypt 无法满足我们的需求。要这么做，我们就不得不在每上一个新的 Q&amp;A 站点的时候都部署一个（或两个）证书。这样会增加我们部署的复杂性，并且我们要么放弃不支持 SNI 的客户端（大约占 2% 的流量）要么提供超多的 IP——而我们目前没这么多的 IP。</p>
+<p>我们之所以想控制证书，还有另外一个原因是我们想在本地负载均衡器以及 CDN / 代理提供商那边使用完成相同的证书。如果不做到这个，我们无法顺畅地做从代理那里做失效备援（failover）。支持 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning">HTTP 公钥固定（HPKP）</a>的客户端会报认证失败。虽然我们仍在评估是否使用 HPKP，但是如果有一天要用的话我们得提前做好准备。</p>
+<p>很多朋友在看见我们的主证书时候会吓得目瞪口呆，因为它包含了我们的主域名和通配符子域名。它看上去长成这样：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-MainCertificate.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-MainCertificate.png" /></a></p>
+<p>为什么这么做？老实说，是我们让 <a href="https://www.digicert.com/">DigiCert</a> 替我们做的。这么做会导致每次发生变化的时候都需要手动合并证书，了　我们为什么要忍受这么麻烦的事呢？首先，我们期望能够尽可能让更多用户使用我们产品。这里面包括了那些还不支持 SNI 的用户（比如在我们项目启动的时候 Android 2.3 势头正猛）。另外，也包括 HTTP/2 与一些现实问题——我们过会儿会谈到这一块。</p>
+<p>Meta 子域（meta.*.<a href="http://stackexcange.com/">stackexcange.com</a>）</p>
+<p>Stack Exchage 的一个设计理念是，针对每个 Q&amp;A 站点，我们都有一个地方供讨论。我们称之为 <a href="https://stackoverflow.blog/2010/04/29/do-trilogy-sites-need-a-third-place/">“second place”</a>。比如 <code>meta.gaming.stackexchange.com</code> 用来讨论 <code>gaming.stackexchange.com</code>。这个有什么特别之处呢？好吧，并没有，除了域名：这是一个 4 级域名。</p>
+<p>我之前已经说过<a href="https://nickcraver.com/blog/2013/04/23/stackoverflow-com-the-road-to-ssl/">这个问题</a>，但后来怎么样了呢？具体来说，现在面临的问题是 <code>*.stackexchange.com</code> 包含 <code>gaming.stackexchange.com</code>（及几百个其它站点），但它<strong>并不包含</strong> <code>meta.gaming.stackexchange.com</code>。<a href="https://tools.ietf.org/html/rfc6125#section-6.4.3">RFC 6125 （第 6.4.3 节）</a> 写道：</p>
+<blockquote>
+<p>客户端 <strong>不应该</strong> 尝试匹配一个通配符在中间的域名（比如，不要匹配 <code>bar.*.example.net</code>）</p>
+</blockquote>
+<p>这意味着我们无法使用 <code>meta.*.stackexchange.com</code>，那怎么办呢？</p>
+<ul>
+<li>方案一：部署 <a href="https://www.digicert.com/subject-alternative-name.htm">SAN 证书（多域名证书）</a><ul>
+<li>我们需要准备 3 个证书和 3 个 IP（每张证书支持域名上限是 100），并且会把新站上线复杂化（虽然这个机制已经改了）</li>
+<li>我们要在 CDN/代理层上部署三个自定义证书</li>
+<li>我们要给 <code>meta.*</code> 这种形式的域名配置额外的 DNS 词条<ul>
+<li>根据 DNS 规则，我们必须给每个这样的站点配置一条 DNS，无法批量配置，从而提高了新站上线和维护代理的成本</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>方案二：将所有域名迁移到 <code>*.meta.stackexchange.com</code><ul>
+<li>我们会有一次痛苦的迁移过程，但这是一次性的，并且未来维护证书成本较低</li>
+<li>我们需要部署一个全局登录系统（<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#global-login">详情见此</a>）</li>
+<li>这个方案仍然不解决 HSTS 预加载下面的 <code>includeSubDomains</code> 问题（<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#hsts-reloading">详情见此</a>）</li>
+</ul>
+</li>
+<li>方案三：啥都不做，放弃<ul>
+<li>这个方案最简单，然而这是假方案</li>
+</ul>
+</li>
+</ul>
+<p>我们部署了 <a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#global-login">全局登录系统</a>，然后将子 meta 域名用 301 重定向到新地址，比如 <a href="https://gaming.meta.stackexchange.com">gaming.meta.stackexchange.com</a>。做完这个之后我们才意识到，因为这些域名<em>曾经</em>存在过，所以对于 HSTS 预加载来说是个很大的问题。这件事情还在进行中，我会在<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#hsts-preloading">文章最后面</a>讨论这个问题。这类问题对于 <code>meta.pt.stackoverflow.com</code> 等站点也存在，不过还好我们只有四个非英语版本的 Stack Overflow，所以问题没有被扩大。</p>
+<p>对了，这个方案本身还存在<em>另一个</em>问题。由于将 cookies 移动到顶级目录，然后依赖于子域名对其的继承，我们必须调整一些其他域名。比如，在我们新系统中，我们使用 SendGrid 来发送邮件（进行中）。我们从 <code>stackoverflow.email</code> 这个域名发邮件，邮件内容里的链接域名是 <code>sg-links.stackoverflow.email</code>（使用 <a href="https://en.wikipedia.org/wiki/CNAME_record">CNAME</a> 管理)，这样你的浏览器就不会将敏感的 cookie 发出去。如果这个域名是 <code>links.stackoverflow.com</code>，那么你的浏览器会将你在这个域名下的 cookie 发送出去。 我们有不少虽然使用我们的域名，但并不属于我们自己的服务。这些子域名都需要从我们受信的域名下移走，否则我们就会把你们的 cookie 发给非我们自有的服务器上。如果因为这种错误而导致 cookie 数据泄露，这将是件很丢人的事情。</p>
+<p>我们有试过通过代理的方式来访问我们的 Hubspot CRM 网站，在传输过程中可以将 cookies 移除掉。但是很不幸 Hubspot 使用 <a href="https://www.akamai.com/">Akamai</a>，它会判定我们的 HAProxy 实例是机器人，并将其封掉。头三次的时候还挺有意思的……当然这也说明这个方式真的不管用。我们后来再也没试过了。</p>
+<p>你是否好奇为什么 Stack Overflow 的博客地址是  <a href="https://stackoverflow.blog/">https://stackoverflow.blog/</a>？没错，这也是出于安全目的。我们把博客搭在一个外部服务上，这样市场部门和其他团队能够更便利地使用。正因为这样，我们不能把它放在有 cookie 的域名下面。</p>
+<p>上面的方案会牵涉到子域名，引出 <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a> <a href="https://hstspreload.org/">预加载</a> 和 <code>includeSubDomains</code> 命令问题，我们一会来谈这块内容。</p>
+<h3>性能：HTTP/2</h3>
+<p>很久之前，大家都认为 HTTPS 更慢。在那时候也确实是这样。但是时代在变化，我们说 HTTPS 的时候不再是单纯的 HTTPS，而是基于 HTTPS 的 HTTP/2。虽然 <a href="https://http2.github.io/faq/#does-http2-require-encryption">HTTP/2 不要求加密</a>，但<em>事实上</em>却是加密的。主流浏览器都要求 HTTP/2 提供加密连接来启用其大部分特性。你可以来说 spec 或者规定上不是这么说的，但浏览器才是你要面对的现实。我诚挚地期望这个协议直接改名叫做 HTTPS/2，这样也能给大家省点时间。各浏览器厂商，你们听见了吗？</p>
+<p>HTTP/2 有很多功能上的增强，特别是在用户请求之前可以主动推送资源这点。这里我就不展开了，<a href="https://hpbn.co/http2/">Ilya Grigorik 已经写了一篇非常不错的文章</a>。我这里简单罗列一下主要优点：</p>
+<ul>
+<li><a href="https://hpbn.co/http2/#request-and-response-multiplexing">请求/响应多路复用</a></li>
+<li><a href="https://hpbn.co/http2/#server-push">服务端推送</a></li>
+<li><a href="https://hpbn.co/http2/#header-compression">Header 压缩</a></li>
+<li><a href="https://hpbn.co/http2/#stream-prioritization">网络流优先级</a></li>
+<li><a href="https://hpbn.co/http2/#one-connection-per-origin">更少的连接</a></li>
+</ul>
+<p>咦？怎么没提到证书呢？</p>
+<p>一个很少人知道的特性是，<a href="https://hpbn.co/optimizing-application-delivery/#eliminate-domain-sharding">你可以推送内容到不同的域名</a>，只要满足以下的条件：</p>
+<ol>
+<li>这两个域名需要解析到同一个 IP 上</li>
+<li>这两个域名需要使用同一张 TLS 证书（看到没！）</li>
+</ol>
+<p>让我们看一下我们当前 DNS 配置：</p>
+<div><pre><span></span>λ dig stackoverflow.com +noall +answer
+; &lt;&lt;&gt;&gt; DiG 9.10.2-P3 &lt;&lt;&gt;&gt; stackoverflow.com +noall +answer
+;; global options: +cmd
+stackoverflow.com.      201     IN      A       151.101.1.69
+stackoverflow.com.      201     IN      A       151.101.65.69
+stackoverflow.com.      201     IN      A       151.101.129.69
+stackoverflow.com.      201     IN      A       151.101.193.69
+
+λ dig cdn.sstatic.net +noall +answer
+; &lt;&lt;&gt;&gt; DiG 9.10.2-P3 &lt;&lt;&gt;&gt; cdn.sstatic.net +noall +answer
+;; global options: +cmd
+cdn.sstatic.net.        724     IN      A       151.101.193.69
+cdn.sstatic.net.        724     IN      A       151.101.1.69
+cdn.sstatic.net.        724     IN      A       151.101.65.69
+cdn.sstatic.net.        724     IN      A       151.101.129.69
+</pre></div>
+<p>嘿，这些 IP 都是一致的，并且他们也拥有相同的证书！这意味着你可以直接使用 HTTP/2 的服务器推送功能，而无需影响 HTTP/1.1 用户。 HTTP/2 有推送的同时，HTTP/1.1 也有了<a href="https://blog.stackpath.com/glossary/domain-sharding/">域名共享</a>（通过 <code>sstatic.net</code>）。我们暂未部署服务器推送功能，但一切都尽在掌握之中。</p>
+<p>HTTPS 是我们实现性能目标的一个手段。可以这么说，我们的主要目标是性能，而非站点安全性。我们想要安全性，但光是安全性不足以让我们花那么多精力来在全网部署 HTTPS。当我们把所有因素都考虑在一起的时候，我们可以评估出要完成这件事情需要付出的巨大的时间和精力。在 2013 年，HTTP/2 还没有扮演那么重要的角色。而现在形势变了，对其的支持也多了，最终这成为了我们花时间调研 HTTPS 的催化剂。</p>
+<p>值得注意的是 HTTP/2 标准在我们项目进展时还在持续发生变化。它从 <a href="https://en.wikipedia.org/wiki/SPDY">SPDY</a> 演化为 <a href="https://en.wikipedia.org/wiki/HTTP/2">HTTP/2</a>，从 <a href="https://tools.ietf.org/id/draft-agl-tls-nextprotoneg-03.html">NPN</a> 演化为 <a href="https://en.wikipedia.org/wiki/Application-Layer_Protocol_Negotiation">ALPN</a>。我们这里不会过多涉及到这部分细节，因为我们并没有为其做太多贡献。我们观望并从中获准，但整个互联网却在推进其向前发展。如果你感兴趣，可以看看 <a href="https://blog.cloudflare.com/introducing-http2/">Cloudflare 是怎么讲述其演变的</a>。</p>
+<h3>HAProxy：支持 HTTPS</h3>
+<p>我们最早在 2013 年开始在 HAProxy 中使用 HTTPS。为什么是 <a href="https://www.haproxy.org/">HAProxy</a> 呢？这是历史原因，我们已经在使用它了，而它在 2013 年 的 <a href="https://www.haproxy.org/news.html">1.5 开发版</a>中支持了 HTTPS，并在 2014 年发布了正式版。曾经有段时间，我们把 Nginx 放置在 HAProxy 之前（<a href="https://nickcraver.com/blog/2013/04/23/stackoverflow-com-the-road-to-ssl/">详情看这里</a>）。但是简单些总是更好，我们总是想着要避免在链路、部署和其他问题上的复杂问题。</p>
+<p>我不会探讨太多细节，因为也没什么好说的。HAProxy 在 1.5 之后使用 OpenSSL 支持 HTTPS，配置文件也是清晰易懂的。我们的配置方式如下：</p>
+<ul>
+<li>跑在 4 个进程上<ul>
+<li>1 个用来做 HTTP/前端处理</li>
+<li>2-4 个用来处理 HTTPS 通讯</li>
+</ul>
+</li>
+<li>HTTPS 前端使用 <a href="https://unix.stackexchange.com/a/206395/400">socket 抽象命名空间</a>来连接至 HTTP 后端，这样可以极大减少资源消耗</li>
+<li>每一个前端或者每一「层」都监听了 :433 端口（我们有主、二级、websockets 及开发环境）</li>
+<li>当请求进来的时候，我们在请求头上加入一些数据（也会移除掉一些你们发送过来的），再将其转发给 web 层</li>
+<li>我们使用  <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility">Mozilla 提供的加密套件</a>。注意，这和我们 CDN 用的不是同样的套件。</li>
+</ul>
+<p>HAProxy 比较简单，这是我们使用一个 SSL 证书来支持 :433 端口的第一步。事后看来，这也只是一小步。</p>
+<p>这里是上面描述情况下的架构图，我们马上来说前面的那块云是怎么回事：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-Layout.svg"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-Layout.svg" /></a></p>
+<h3>CDN/代理层：通过 Cloudflare 和 Fastly 优化延迟</h3>
+<p>我对 Stack Overflow <a href="https://nickcraver.com/blog/2016/02/17/stack-overflow-the-architecture-2016-edition/">架构</a><a href="https://stackexchange.com/performance">的效率</a>一直很自豪。我们很厉害吧？仅用一个数据中心和几个服务器就撑起了一个大型网站。不过这次不一样了。尽管效率这件事情很好，但是在延迟上就成了个问题。我们不需要那么多服务器，我们也不需要多地扩展（不过我们有一个灾备节点）。这一次，这就成为了问题。由于光速，我们（暂时）无法解决延迟这个基础性问题。我们听说有人已经在处理这个问题了，不过他们造的时间机器好像有点问题。</p>
+<p>让我们用数字来理解延迟。赤道长度是 40000 公里（光绕地球一圈的最坏情况）。<a href="https://en.wikipedia.org/wiki/Speed_of_light">光速</a>在真空中是 299,792,458 米/秒。很多人用这个数字，但光纤并不是真空的。实际上光纤有 <a href="https://physics.stackexchange.com/q/80043/653">30-31% 损耗</a>，所以我们的这个数字是：(40,075,000 m) / (299,792,458 m/s * .70) = 0.191s，也就是说最坏情况下绕地球一圈是 191ms，对吧？不对。这假设的是一条理想路径，而实际上两个网络节点的之间几乎不可能是直线。中间还有路由器、交换机、缓存、处理器队列等各种各样的延迟。累加起来的延迟相当可观。</p>
+<p>这些和 Stack Overflow 有什么关系呢？云主机的优势出来了。如果你用一家云供应商，你访问到的就是相对较近的服务器。但对我们来说不是这样，你离服务部署在纽约或丹佛（主备模式）越远，延迟就越高。而使用 HTTPS，在协商连接的时候需要一个额外的往返。这还是最好的情况（<a href="https://blog.cloudflare.com/introducing-0-rtt/">使用 0-RTT 优化 TLS 1.3</a>）。<a href="https://twitter.com/igrigorik">Ilya Grigorik</a> 的 <a href="https://istlsfastyet.com/">这个总结</a> 讲的很好。</p>
+<p>来说 <a href="https://www.cloudflare.com/">Cloudflare</a> 和 <a href="https://www.fastly.com/">Fastly</a>。HTTPS 并不是闭门造车的一个项目，你看下去就会知道，我们还有好几个项目在并行。在搭建一个靠近用户的 HTTPS 终端（以降低往返时间）时，我们主要考虑的是：</p>
+<ul>
+<li>终端 HTTPS 支持</li>
+<li>DDoS 防护</li>
+<li>CDN 功能</li>
+<li>与直连等同或更优的性能</li>
+</ul>
+<h3>优化代理层的准备：客户端性能测试</h3>
+<p>开始正式启用终端链路加速之前，我们需要有性能测试报告。我们在浏览器搭好了一整套覆盖全链路性能数据的测试。 浏览器里可以通过 JavaScript 从 <a href="https://www.w3.org/TR/navigation-timing/"><code>window.performance</code></a> 取性能耗时。打开你浏览器的审查器，你可以亲手试一下。我们希望这个过程透明，所以从第一天开始就把详细信息<a href="https://teststackoverflow.com/">放在了 teststackoverflow.com</a> 上。这上面并没有敏感信息，只有一些由页面<em>直接</em>载入的 URI 和资源，以及它们的耗时。每一张记录下来的页面大概长这样：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png" /></a></p>
+<p>我们目前对 5% 的流量做性能监控。这个过程没有那么复杂，但是我们需要做的事情包括：
+1. 把耗时转成 JSON
+2. 页面加载后上传性能测试数据
+3. 将性能测试上传给我们后台服务器
+4. 在 SQL Server 中使用 <a href="http://www.nikoport.com/columnstore/">clustered columnstore</a> 存储数据
+5. 使用 <a href="https://bosun.org/">Bosun</a> (具体是 <a href="https://github.com/bretcope/BosunReporter.NET">BosunReporter.NET</a>) 汇集数据</p>
+<p>最终的结果是我们有了一份来自于全球<em>真实</em>用户的很好的实时汇总。这些数据可供我们分析、监控、报警，以及用于评估变化。它大概长这样：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-ClientTimings.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-ClientTimings.png" /></a></p>
+<p>幸好，我们有持续的流量来获取数据以供我们决策使用，目前的量级是 50 亿，并且还在增长中。这些数据概览如下：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png" /></a></p>
+<p>OK，我们已经把基础工作准备好了，是时候来测试 CDN/代理层供应商了。</p>
+<h3>Cloudflare</h3>
+<p>我们评估了很多 CDN/DDoS 防护层供应商。最终选择了 <a href="https://www.cloudflare.com/">Cloudflare</a>，主要是考虑到他们的基础设施、快速响应、还有他们承诺的 <a href="https://www.cloudflare.com/website-optimization/railgun/">Railgun</a>。那么我们如何测试使用了 Cloudfalre 之后用户的真实效果？是否需要部署服务来获取用户数据？答案是不需要！</p>
+<p>Stack Overflow 的数据量非常大：月 PV 过十亿。记得我们上面讲的客户端耗时纪录吗？我们每天都有几百万的访问了，所以不是直接可以问他们吗？我们是可以这么做，只需要在页面中嵌入 <code>&lt;iframe&gt;</code> 就行了。Cloudflare 已经是我们 <a href="https://cdn.sstatic.net/">cdn.sstatic.net</a>（我们共用的无 cookie 的静态内容域）的托管商了。但是这是通过一条<a href="https://en.wikipedia.org/wiki/CNAME_record"><code>CNAME</code> DNS 纪录</a>来做的，我们把 DNS 指向他们的 DNS。所以要用 Cloudflare 来当代理服务的话，我们需要他们指向我们的 DNS。所以我们先需要测试他们 DNS 的性能。</p>
+<p>实际上，要测试性能我们需要把二级域名给他们，而不是 <code>something.stackoverflow.com</code>，因为这样可能会有不一致的<a href="https://wiki.gandi.net/en/glossary/glue-record">胶水记录</a>而导致多次查询。明确一下，<a href="https://en.wikipedia.org/wiki/Top-level_domain">一级域名 (TLDs)</a>指的是 <code>.com</code>, <code>.net</code>, <code>.org</code>, <code>.dance</code>, <code>.duck</code>, <code>.fail</code>, <code>.gripe</code>, <code>.here</code>, <code>.horse</code>, <code>.ing</code>, <code>.kim</code>, <code>.lol</code>, <code>.ninja</code>, <code>.pink</code>, <code>.red</code>, <code>.vodka</code>. 和 <code>.wtf</code>。 注意，<a href="https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains">这些域名尾缀都是</a>，我可没开玩笑。 <a href="https://en.wikipedia.org/wiki/Second-level_domain">二级域名 (SLDs)</a> 就多了一级，比如 <code>stackoverflow.com</code>, <code>superuser.com</code> 等等。我们需要测的就是这些域名的行为及表现。因此，我们就有了 <code>teststackoverflow.com</code>，通过这个新域名，我们在全球范围内测试 DNS 性能。对一部分比例的用户，通过嵌一个 <code>&lt;iframe&gt;</code>（在测试中开关），我们可以轻松地获取用户访问 DNS 的相关数据。</p>
+<p>注意，测试过程最少需要 24 小时。在各个时区，互联网的表现会随着用户作息或者 Netflix 的使用情况等发生变化。所以要测试一个国家，需要完整的一天数据。最好是在工作日（而不要半天落在周六）。我们知道会有各种意外情况。互联网的性能并不是稳定的，我们要通过数据来证明这一点。</p>
+<p>我们最初的假设是，多增加了的一个节点会带来额外的延时，我们会因此损失一部分页面加载性能。但是 DNS 性能上的增加其实弥补了这一块。比起我们只有一个数据中心来说，Cloudflare 的 DNS 服务器部署在离用户更近的地方，这一块性能要好得多得多。我希望我们能有空来放出这一块的数据，只不过这一块需要很多处理（以及托管），而我现在也没有足够多的时间。</p>
+<p>接下来，我们开始将 <code>teststackoverflow.com</code> 放在 Cloudflare 的代理上做链路加速，同样也是放在 <code>&lt;iframe&gt;</code> 中。我们发现美国和加拿大的服务由于多余的节点而变慢，但是世界其他地方都是持平或者更好。这满足我们的期望。我们开始使用 Cloudflare 的网络对接我们的服务。期间发生了一些 DDos 的攻击，不过这是另外的事了。那么，为什么我们接受在美国和加拿大地区慢一点呢？因为每个页面加载需要的时间仅为 200-300ms，哪怕慢一点也还是飞快。当时我们认为 <a href="https://www.cloudflare.com/website-optimization/railgun/">Railgun</a> 可以将这些损耗弥补回来。</p>
+<p>这些测试完成之后，我们为了预防 DDos 工作，做了一些其他工作。我们接入了额外的 ISP 服务商以供我们的 CDN/代理层对接。毕竟如果能绕过攻击的话，我们没必要在代理层做防护。现在每个机房都有 4 个 ISP 服务商（译者注：相当于电信、联通、移动、教育网），两组路由器，他们之间使用 <a href="https://en.wikipedia.org/wiki/Border_Gateway_Protocol">BGP</a>协议。我们还额外添置了两组负载均衡器专门用于处理 CDN/代理层的流量。</p>
+<p>Cloudflare: Railgun</p>
+<p>与此配套，我们启用了两组 <a href="https://www.cloudflare.com/website-optimization/railgun/">Railgun</a>。Railgun 的原理是在 Cloudflare 那边，使用 <a href="https://memcached.org/">memcached</a> 匹配 URL 进行缓存数据。当 Railgun 启用的时候，每个页面（有一个大小阈值）都会被缓存下来。那么在下一次请求时候，如果在这个 URL 在 Cloudflare 节点上和我们这里都缓存的话，我们仍然会问 web 服务器最新的数据。但是我们不需要传输完整的数据，只需要把传输和上次请求的差异数据传给 Cloudflure。他们把这个差异运用于他们的缓存上，然后再发回给客户端。这时候， <a href="https://en.wikipedia.org/wiki/Gzip">gzip 压缩</a> 的操作也从 Stack Overflow 的 9 台 Web Server 转移到了一个 Railgun 服务上，这台服务器得是 CPU 密集型的——我指出这点是因为，这项服务需要评估、购买，并且部署在我们这边。</p>
+<p>举个例子，想象一下，两个用户打开同一个问题的页面。从浏览效果来看，他们的页面技术上长得<em>几乎</em>一样，仅仅有细微的差别。如果我们大部分的传输内容只是一个 diff 的话，这将是一个巨大的性能提升。</p>
+<p>总而言之，Railgun 通过减少大量数据传输的方式提高性能。当它顺利工作的时候确实是这样。除此之外，还有一个额外的优点：请求不会重置连接。由于 <a href="https://en.wikipedia.org/wiki/TCP_congestion_control#Slow_start">TCP 慢启动</a>，当连接环境较为复杂时候，可能导致连接被限流。而 Railgun 始终以固定的连接数连接到 Cloudflare 的终端，对用户请求采用了多路复用，从而其不会受慢启动影响。小的 diff 也减少了慢启动的开销。</p>
+<p>很可惜，我们由于种种原因我们在使用 Railgun 过程中一直遇到问题。据我所知，我们拥有当时最大的 Railgun 部署规模，这把 Railgun 逼到了极限。尽管我们花了一年追踪各种问题，最终还是不得不放弃了。这种状况不仅没有给我们省钱，还耗费了更多的精力。现在几年过去了。如果你正在评估使用 Railgun，你最好看最新的版本，他们一直在做<a href="https://www.cloudflare.com/docs/railgun/changelog.html">优化</a>。我也建议你自己做决定是否使用 Railgun。</p>
+<h3>Fastly</h3>
+<p>我们最近才迁到 <a href="https://www.fastly.com/">Fastly</a>，因为我们在讲 CDN/代理层，我也会顺带一提。由于很多技术工作在 Cloudflare 那边已经完成，所以迁移本身并没有什么值得说的。大家会更感兴趣的是：为什么迁移？毕竟 Cloudflare 在各方面是不错的：丰富的数据中心、稳定的带宽价格、包含 DNS 服务。答案是：它不再是我们最佳的选择了。Flastly 提供了一些我们更为看中的特性：灵活的终端节点控制能力、配置快速分发、自动配置分发。并不是说 Cloudflare 不行，只是它不再适合 Stack Overflow 了。</p>
+<p>事实胜于雄辩：如果我不认可 Cloudflare，我的私人博客不可能选择它，嘿，就是这个博客，你现在正在阅读的。</p>
+<p>Fastly 吸引我们的主要功能是提供了 <a href="https://en.wikipedia.org/wiki/Varnish_(software)">Varnish</a> 和 <a href="https://docs.fastly.com/guides/vcl/">VCL</a>。这提供了高度的终端可定制性。有些功能吧，Cloudfalre 无法快速提供（因为他们是通用化的，会影响所有用户），在 Fastly 我们可以自己做。这是这两家架构上的差异，这种「代码级别高可配置」对于我们很适用。同时，我们也很喜欢他们在沟通、基础设施的开放性。</p>
+<p>我来展示一个 VCL 好用在哪里的例子。最近我们遇到 .NET 4.6.2 的一个<a href="https://github.com/Microsoft/dotnet/issues/330">超恶心 bug</a>，它会导致 max-age 有超过 2000 年的缓存时间。快速解决方法是在终端节点上有需要的时候去覆盖掉这个头部，当我写这篇文章的时候，这个 VCL 配置是这样的：</p>
+<div><pre><span></span><span>sub</span> <span>vcl_fetch</span> <span>{</span>
+  <span>if</span> <span>(beresp.http.Cache-Control)</span> <span>{</span>
+      <span>if</span> <span>(req.url.path</span> <span>~</span> <span>&quot;^/users/flair/&quot;)</span> <span>{</span>
+          <span>set</span> <span>beresp.http.Cache-Control</span> <span>=</span> <span>&quot;public,</span> <span>max-age=180&quot;</span><span>;</span>
+      <span>}</span> <span>else</span> <span>{</span>
+          <span>set</span> <span>beresp.http.Cache-Control</span> <span>=</span> <span>&quot;private&quot;</span><span>;</span>
+      <span>}</span>
+  <span>}</span>
+</pre></div>
+<p>这将给用户能力展示页 3 分钟的缓存时间（数据量还好），其余页面都不设置。这是一个为解决紧急时间的非常便于部署的全局性解决方案。 我们很开心现在有能力在终端做一些事情。我们的 <a href="https://twitter.com/alioth">Jason Harvey</a> 负责 VCL 配置，并写了一些自动化推送的功能。我们基于一个 Go 的开源库 <a href="https://github.com/alienth/fastlyctl">fastlyctl</a> 做了开发。</p>
+<p>另一个 Fastly 的特点是可以使用我们自己的证书，Cloudflare 虽然也有这个服务，但是费用太高。如我上文提到的，我们现在已经具备使用 HTTP/2 推送的能力。但是，Fastly 就不支持 DNS，这个在 Cloudflare 那里是支持的。现在我们需要自己解决 DNS 的问题了。可能最有意思的就是这些来回的折腾吧？</p>
+<h3>全局 DNS</h3>
+<p>当我们从 Cloudflare 迁移到 Fastly 时候，我们必须评估并部署一个新的 DNS 供应商。这里有篇 <a href="https://twitter.com/thefarseeker">Mark Henderson</a> 写的 <a href="http://blog.serverfault.com/2017/01/09/surviving-the-next-dns-attack/">文章</a> 。鉴于此，我们必须管理：</p>
+<ul>
+<li>我们自己的 DNS 服务器（备用）</li>
+<li><a href="http://name.com/">Name.com</a> 的服务器（为了那些不需要 HTTPS 的跳转服务）</li>
+<li>Cloudflare DNS</li>
+<li>Route 53 DNS</li>
+<li>Google DNS</li>
+<li>Azure DNS</li>
+<li>其他一些（测试时候使用）</li>
+</ul>
+<p>这个本身就是另一个项目了。为了高效管理，我们开发了 <a href="http://blog.serverfault.com/2017/04/11/introducing-dnscontrol-dns-as-code-has-arrived/">DNSControl</a>。这现在已经是<a href="https://stackexchange.github.io/dnscontrol/">开源项目了</a>，<a href="https://github.com/StackExchange/dnscontrol">托管在 GiHub</a> 上，使用 <a href="https://golang.org/">Go</a> 语言编写。 简而言之，每当我们推送 JavaScript 的配置到 git，它都会马上在全球范围里面部署好 DNS 配置。这里有一个简单的例子，我们拿 <a href="https://askubuntu.com/">askubuntu.com</a> 做示范：</p>
+<div><pre><span></span>D('askubuntu.com', REG_NAMECOM,
+    DnsProvider(R53,2),
+    DnsProvider(GOOGLECLOUD,2),
+    SPF,
+    TXT('@', 'google-site-verification=PgJFv7ljJQmUa7wupnJgoim3Lx22fbQzyhES7-Q9cv8'), // webmasters
+    A('@', ADDRESS24, FASTLY_ON),
+    CNAME('www', '@'),
+    CNAME('chat', 'chat.stackexchange.com.'),
+    A('meta', ADDRESS24, FASTLY_ON),
+END)
+</pre></div>
+<p>太棒了，接下来我们就可以使用客户端响应测试工具来测试啦！<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#preparing-for-a-proxy-client-timings">上面提到的工具</a>可以实时告诉我们真实部署情况，而不是模拟数据。但是我们还需要测试所有部分都正常。</p>
+<h3>测试</h3>
+<p>客户端响应测试的追踪可以方便我们做性能测试，但这个并不适合用来做配置测试。客户端响应测试非常适合展现结果，但是配置有时候并没有界面，所以我们开发了 <a href="https://godoc.org/github.com/StackExchange/httpunit">httpUnit</a> （后来知道<a href="http://httpunit.sourceforge.net/">这个项目重名了</a> ）。这也是一个使用 Go 语言的<a href="https://github.com/StackExchange/httpunit">开源项目</a>。以 <code>teststackoverflow.com</code> 举例，使用的配置如下：</p>
+<div><pre><span></span><span>[[plan]]</span>
+    <span>label</span> <span>=</span> <span>&quot;teststackoverflow_com&quot;</span>
+<span>    url = &quot;http://teststackoverflow.com&quot;</span>
+<span>    ips = [&quot;28i&quot;]</span>
+<span>    text = &quot;&lt;title&gt;Test Stack Overflow Domain&lt;/title&gt;&quot;</span>
+<span>    tags = [&quot;so&quot;]</span>
+<span>[[plan]]</span>
+    <span>label</span> <span>=</span> <span>&quot;tls_teststackoverflow_com&quot;</span>
+<span>    url = &quot;https://teststackoverflow.com&quot;</span>
+<span>    ips = [&quot;28&quot;]</span>
+<span>    text = &quot;&lt;title&gt;Test Stack Overflow Domain&lt;/title&gt;&quot;</span>
+<span>    tags = [&quot;so&quot;]</span>
+</pre></div>
+<p>每次我们更新一下防火墙、证书、绑定、跳转时都有必要测一下。我们必须保证我们的修改不会影响用户访问（先在预发布环境进行部署）。 httpUnit 就是我们来做集成测试的工具。</p>
+<p>我们还有一个开发的内部工具（由亲爱的 <a href="https://twitter.com/yesthattom">Tom Limoncelli</a> 开发），用来管理我们负载均衡上面的 <a href="https://en.wikipedia.org/wiki/Virtual_IP_address">VIP 地址</a> 。我们先在一个备用负载均衡上面测试完成，然后将所有流量切过去，让之前的主负载均衡保持一个稳定状态。如果期间发生任何问题，我们可以轻易回滚。如果一切顺利，我们就把这个变更应用到那台负载均衡上。这个工具叫做 <code>keepctl</code>（keepalived control 的简称），时间允许的话很快就会整理开源出来。</p>
+<h3>应用层准备</h3>
+<p>上面提到的只是架构方面的工作。这通常是由 <a href="http://stackoverflow.com/company/team#Engineering">Stack Overflow 的几名网站可靠性工程师</a>组成的团队完成的。而应用层也有很多需要完成的工作。这个列表会很长，先让我拿点咖啡和零食再慢慢说。</p>
+<p>很重要的一点是，<a href="https://nickcraver.com/blog/2016/02/17/stack-overflow-the-architecture-2016-edition/">Stack Overflow 与 Stack Exchange 的架构</a> Q&amp;A 采用了<a href="https://en.wikipedia.org/wiki/Multitenancy">多租户技术</a>。这意味着如果你访问 <code>stackoverflow.com</code> 或者 <code>superuser.com</code> 又或者 <code>bicycles.stackexchange.com</code>，你返回到的其实是同一台服务器上的同一个 <code>w3wp.exe</code> 进程。我们通过浏览器发送的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host"><code>Host</code> 请求头</a>来改变请求的上下文。为了更好地理解我们下文中提到的一些概念，你需要知道我们代码中的 <code>Current.Site</code> 其实指的是 <em>请求</em> 中的站点。<code>Current.Site.Url()</code> 和 <code>Current.Site.Paths.FaviconUrl</code> 也是基于同样的概念。</p>
+<p>换一句话说：我们的 Q&amp;A 全站都是跑在同一个服务器上的同一个进程，而用户对此没有感知。我们在九台服务器上每一台跑一个进程，只是为了发布版本和冗余的问题。</p>
+<p>全局登录</p>
+<p>整个项目中有一些看起来可以独立出来（事实上也是），不过也同属于整个大 HTTPS 迁移中的一部分。登录就是其中一个项目。我首先来说说这个，因为这比别它变化都要早上线。</p>
+<p>在 Stack Overflow（及 Stack Exchange）的头五六年里，你登录的是一个个的独立网站。比如，<code>stackoverflow.com</code>、<code>stackexchange.com</code> 以及 <code>gaming.stackexchange.com</code> 都有它们自己的 cookies。值得注意的是：<code>meta.gaming.stackexchange.com</code> 的登录 cookie 是从 <code>gaming.stackexchange.com</code> 带过来的。这些是我们上面讨论证书时提到的 meta 站点。他们的登录信息是相关联的，你只能通过父站点登录。在技术上说并没有什么特别的，但考虑到用户体验就很糟糕了。你必须一个一个站登录。我们用「全局认证」的方法来<a href="https://stackoverflow.blog/2010/09/11/global-network-auto-login/">「修复」了这个问题</a>，方法是在页面上放一个 <code>&lt;iframe&gt;</code>，内面访问一下 <code>stackauth.com</code>。如果用户在别处登录过的话，它也会在这个站点上登录，至少会去试试。这个体验还行，但是会有弹出框问你是否点击重载以登录，这样就又不是太好。我们可以做得更好的。对了，你也可以去问问 <a href="https://twitter.com/kevinmontrose">Kevin Montrose</a> 关于移动 Safari 的匿名模式，你会震惊的。</p>
+<p>于是我们有了「通用登录」。为什么用「通用」这个名字？因为我们已经用过「全局」了。我们就是如此单纯。所幸 cookies 也很单纯的东西。父域名里的 cookie（如 <code>stackexchange.com</code>）在你的浏览器里被带到所有子域名里去（如 <code>gaming.stackexchange.com</code>）。如果我们只二级域名的话，其实我们的域名并不多：</p>
+<ul>
+<li><a href="https://askubuntu.com/">askubuntu.com</a></li>
+<li><a href="https://mathoverflow.net/">mathoverflow.net</a></li>
+<li><a href="https://serverfault.com/">serverfault.com</a></li>
+<li><a href="https://stackapps.com/">stackapps.com</a></li>
+<li><a href="https://stackexchange.com/">stackexchange.com</a></li>
+<li><a href="https://stackoverflow.com/">stackoverflow.com</a></li>
+<li><a href="https://superuser.com/">superuser.com</a></li>
+</ul>
+<p>是的，我们有一些域名是跳转到上面的列表中的，比如 <a href="http://askdifferent.com/">askdifferent.com</a>。但是这些只是跳转而已，它们没有 cookies 也无需登录。</p>
+<p>这里有很多细节的后端工作我没有提（归功于 <a href="https://twitter.com/superdalgas">Geoff Dalgas</a> 和 <a href="https://twitter.com/aalear">Adam Lear</a>），但大体思路就是，当你登录的时候，我们把这些域名都写入一个 cookie。我们是通过第三方的 cookie 和<a href="https://en.wikipedia.org/wiki/Cryptographic_nonce">随机数</a>来做的。当你登录其中任意一个网站的时候，我们在页面上都会放 6 个 <code>&lt;img&gt;</code> 标签来往其它域名写入 cookie，本质上就完成了登录工作。这并不能在 <em>所有情况</em> 下都适用（尤其是移动 Safari 简直是要命了），但和之前比起来那是好得多了。</p>
+<p>客户端的代码不复杂，基本上长这样：</p>
+<div><pre><span></span><span>$</span><span>.</span><span>post</span><span>(</span><span>'/users/login/universal/request'</span><span>,</span> <span>function</span> <span>(</span><span>data</span><span>,</span> <span>text</span><span>,</span> <span>req</span><span>)</span> <span>{</span>
+    <span>$</span><span>.</span><span>each</span><span>(</span><span>data</span><span>,</span> <span>function</span> <span>(</span><span>arrayId</span><span>,</span> <span>group</span><span>)</span> <span>{</span>
+        <span>var</span> <span>url</span> <span>=</span> <span>'//'</span> <span>+</span> <span>group</span><span>.</span><span>Host</span> <span>+</span> <span>'/users/login/universal.gif?authToken='</span> <span>+</span> 
+            <span>encodeURIComponent</span><span>(</span><span>group</span><span>.</span><span>Token</span><span>)</span> <span>+</span> <span>'&amp;nonce='</span> <span>+</span> <span>encodeURIComponent</span><span>(</span><span>group</span><span>.</span><span>Nonce</span><span>);</span>
+        <span>$</span><span>(</span><span>function</span> <span>(</span> <span>)</span> <span>{</span> <span>$</span><span>(</span><span>'#footer'</span><span>).</span><span>append</span><span>(</span><span>'&lt;img style=&quot;display:none&quot; src=&quot;'</span> <span>+</span> <span>url</span> <span>+</span> <span>'&quot;&gt;&lt;/img&gt;'</span><span>);</span> <span>});</span>
+    <span>});</span>
+<span>},</span> <span>'json'</span><span>);</span>
+</pre></div>
+<p>但是要做到这点，我们必须上升到账号级别的认证（之前是用户级别）、改变读取 cookie 的方式、改变这些 meta 站的登录工作方式，同时还要将这一新的变动整合到其它应用中。比如说，Careers（现在拆成了 Talent 和 Jobs）用的是另一份代码库。我们需要让这些应用读取相应的 cookies，然后通过 API 调用 Q&amp;A 应用来获取账户。我们部署了一个 NuGet 库来减少重复代码。底线是：你在一个地方登录，就在所有域名都登录。不弹框，不重载页面。</p>
+<p>技术的层面上看，我们不用再关心 <code>*.*.stackexchange.com</code> 是什么了，只要它们是 <code>stackexchange.com</code> 下就行。这看起来和 HTTPS 没有关系，但这让我们可以把 <code>meta.gaming.stackexchange.com</code> 变成 <code>gaming.meta.stackexchange.com</code> 而不影响用户。</p>
+<p>本地 HTTPS 开发</p>
+<p>要想做得更好的话，本地环境应该尽量与开发和生产环境保持一致。幸好我们用的是 IIS，这件事情还简单的。我们使用一个工具来设置开发者环境，这个工具的名字叫「本地开发设置」——单纯吧？它可以安装工具（Visual Studio、git、SSMS 等）、服务（SQL Server、Redis、Elasticsearch）、仓库、数据库、网站以及一些其它东西。做好了基本的工具设置之后，我们要做的只是添加 SSL/TLS 证书。主要的思路如下：</p>
+<div><pre><span></span>Websites = @(
+    @{
+        Directory = &quot;StackOverflow&quot;;
+        Site = &quot;local.mse.com&quot;;
+        Aliases = &quot;discuss.local.area51.lse.com&quot;, &quot;local.sstatic.net&quot;;
+        Databases = &quot;Sites.Database&quot;, &quot;Local.StackExchange.Meta&quot;, &quot;Local.Area51&quot;, &quot;Local.Area51.Meta&quot;;
+        Certificate = $true;
+    },
+    @{
+        Directory = &quot;StackExchange.Website&quot;;
+        Site = &quot;local.lse.com&quot;;
+        Databases = &quot;Sites.Database&quot;, &quot;Local.StackExchange&quot;, &quot;Local.StackExchange.Meta&quot;, &quot;Local.Area51.Meta&quot;;
+        Certificate = $true;
+    }
+)
+</pre></div>
+<p>我把使用到的代码<a href="https://gist.github.com/NickCraver/6b5e75c153d60d0df5b0970d52412d4e">放在了一个 gist 上：<code>Register-Websites.psm1</code></a>。我们通过 host 头来设置网站（通过别名添加），如果直连的话就给它一个证书（嗯，现在应该把这个行为默认改为 <code>$true</code> 了），然后允许 AppPool 账号来访问数据库，于是我们本地也在使用 <code>https://</code> 开发了。嗯，我知道我们应该把这个设置过程开源出来，不过我们仍需去掉一些专有的业务。会有这么一天的。</p>
+<p><strong>为什么这件事情很重要？</strong> 在此之前，我们从 <code>/content</code> 加载静态内容，而不是从另一个域名。这很方便，但也隐藏了类似于<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">跨域请求（CORS）</a>的问题。在同一个域名下用同一个协议能正常加载的资源，换到开发或者生产环境下就有可能出错。<a href="https://blog.codinghorror.com/the-works-on-my-machine-certification-program/">「在我这里是好的。」</a></p>
+<p>当我们使用和生产环境中同样协议以及同样架构的 CDN 还有域名设置时，我们就可以在开发机器上找出并修复更多的问题。比如，你是否知道，从 <code>https://</code> 跳转到 <code>http://</code> 时，<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec15.html#sec15.1.3">浏览器是不会发送 referer</a> 的？这是一个安全上的问题，referer 头中可能带有以明文传输的敏感信息。</p>
+<p>「Nick 你就扯吧，我们能拿到从 Google 拿到 referer 啊！」确实。但是这是因为他们<em>主动选择这一行为</em>。如果你看一下 Google 的搜索页面，你可以看到这样的 <code>&lt;meta&gt;</code> 指令：</p>
+<div><pre><span></span>&lt;meta content=&quot;origin&quot; id=&quot;mref&quot; name=&quot;referrer&quot;&gt;
+</pre></div>
+<p>这也就是为什么你可以取到 referer。</p>
+<p>好的，我们已经设置好了，现在该做些什么呢？</p>
+<h3>混合内容：来自于你们</h3>
+<p>混合内容是个筐，什么都能往里装。我们这些年下来积累了哪些混合内容呢？不幸的是，有很多。这个列表里我们必须处理的用户提交内容：</p>
+<ul>
+<li><code>http://</code> 图片，出现在<a href="https://stackoverflow.com/questions">问题</a>、答案、<a href="https://stackoverflow.com/tags">标签</a>、wiki 等内容中使用</li>
+<li><code>http://</code> 头像</li>
+<li><code>http://</code> 头像，出现在聊天中（站点侧边栏）</li>
+<li><code>http://</code> 图片，出现于个人资料页的「关于我」部分</li>
+<li><code>http://</code> 图片，出现于<a href="https://stackoverflow.com/help">帮助中心的文章中</a></li>
+<li><code>http://</code> YouTube 视频（有些站点启用了，比如 <a href="https://gaming.stackexchange.com/">gaming.stackexchange.com</a>）</li>
+<li><code>http://</code> 图片，出现于<a href="https://stackoverflow.com/help/privileges">特权描述中</a></li>
+<li><code>http://</code> 图片，出现于<a href="http://stackoverflow.com/users/story/13249">开发者故事中</a></li>
+<li><code>http://</code> 图片，出现于<a href="https://stackoverflow.com/jobs">工作描述中</a></li>
+<li><code>http://</code> 图片，出现于<a href="https://stackoverflow.com/jobs/companies">公司页面中</a></li>
+<li><code>http://</code> 源地址，出现在<a href="https://meta.stackoverflow.com/q/269753/13249"> JavaScript 代码中</a>.</li>
+</ul>
+<p>上面的每一个都带有自己独有的问题，我仅仅会覆盖一下值得一提的部分。注意：我谈论的每一个解决方案都必须扩展到我们这个架构下的几百个站点和数据库上。</p>
+<p>在上面的所有情况中（除了代码片段），要消除混合内容的第一步工作就是：你必须先消除<em>新</em>的混合内容。否则，这个清理过程将会无穷无尽。要做到这一点，<a href="https://meta.stackexchange.com/q/291947/135201">我们开始全网强制仅允许内嵌 <code>https://</code> 图片</a>。一旦这个完成之后，我们就可以开始清理了。</p>
+<p>对于问题、答案以及其他帖子形式中，我们需要具体问题具体分析。我们先来搞定 90% 以上的情况：<code>stack.imgur.com</code>。在我来之前 Stack Overflow 就已经有自己托管的 Imgur 实例了。你在编辑器中上传的图片就会传到那里去。绝大部分的帖子都是用的这种方法，而他们几年前就为我们添加了 HTTPS 支持。所以这个就是一个很直接的查找替换（我们称为帖子 markdown 重处理）。</p>
+<p>然后我们通过通过 <a href="https://www.elastic.co/">Elasticsearch</a> 对所有内容的索引来找出所有剩下的文件。我说的我们其实指的是 <a href="https://twitter.com/m0sa">Samo</a>。他在这里处理了大量的混合内容工作。当我们看到大部分的域名其实已经支持 HTTPS 了之后，我们决定：</p>
+<ol>
+<li>对于每个 <code>&lt;img&gt;</code> 的源地址都尝试替换成 <code>https://</code>。如果能正常工作则替换帖子中的链接</li>
+<li>如果源地址不支持 <code>https://</code>，将其转一个链接</li>
+</ol>
+<p>当然，并没有那么顺利。我们发现用于匹配 URL 的正则表达式其实已经坏了好几年了，并且没有人发现……所以我们修复了正则，重新做了索引。</p>
+<p>有人问我们：「为什么不做个代理呢？」呃，从法律和道德上来说，代理对我们的内容来说是个灰色地带。比如，我们 <a href="https://photo.stackexchange.com/">photo.stackexchange.com</a> 上的摄像师会明确声明不用 Imgur 以保留他们的权利。我们充分理解。如果我们开始代理并缓存<em>全图</em>，这在法律上有点问题。我们后来发现在几百万张内嵌图片中，只有几千张即不支持 <code>https://</code> 也没有 404 失效的。这个比例（低于 1%）不足于让我们去搭一个代理。</p>
+<p>我们确实<em>研究过</em>搭一个代理相关的问题。费用有多少？需要多少存储？我们的带宽足够吗？我们有了一个大体上的估算，当然有点答案也不是很确定。比如我们是否要用 Fastly，还是直接走运营商？哪一种比较快？哪一种比较便宜？哪一种可以扩展？这个足够写另一篇博客了，如果你有具体问题的话可以在评论里提出，我会尽力回答。</p>
+<p>所幸，在这个过程中，为了解决几个问题，<a href="https://twitter.com/balpha">balpha</a> 更改了用 HTML5 嵌入 YouTube 的方式。我们也就顺便强制了一下 YouTube 的 <code>https://</code> 嵌入。</p>
+<p>剩下的几个内容领域的事情差不多：先阻止新的混合内容进来，再替换掉老的。这需要我们在下面几个领域进行更改：</p>
+<ul>
+<li>帖子</li>
+<li>个人资料</li>
+<li>开发故事</li>
+<li>帮助中心</li>
+<li>职场</li>
+<li>公司业务</li>
+</ul>
+<p>声明：JavaScript 片段的问题仍然没有解决。这个有点难度的原因是：</p>
+<ol>
+<li>资源有可能不以 <code>https://</code> 的方式存在（比如一个库）</li>
+<li>由于这个是 JavaScript，你可以自己构建出任意的 URL。这里我们就无力检查了。<ul>
+<li>如果你有更好的方式来处理这个问题，<strong>请告诉我们</strong>。我们在可用性与安全性上不可兼得。</li>
+</ul>
+</li>
+</ol>
+<h3>混合内容：来自我们</h3>
+<p>并不是处理完用户提交的内容就解决问题了。我们自己还是有不少 <code>http://</code> 的地方需要处理。这些更改本身没什么特别的，但是这至少能解答「为什么花了那么长时间？」这个问题：</p>
+<ul>
+<li>广告服务（Calculon）</li>
+<li>广告服务（Adzerk）</li>
+<li>标签赞助商</li>
+<li>JavaScript 假定</li>
+<li>Area 51（这代码库也太老了）</li>
+<li>分析跟踪器（Quantcast, GA）</li>
+<li>每个站点引用的 JavaScript（社区插件）</li>
+<li><code>/jobs</code> 下的所有东西（这其实是个代理）</li>
+<li>用户能力</li>
+<li>……还有代码中所有出现 <code>http://</code> 的地方</li>
+</ul>
+<p>JavaScript 和链接比较令人痛苦，所以我在这里稍微提一下。</p>
+<p>JavaScript 是一个不少人遗忘的角落，但这显然不能被无视。我们不少地方将主机域名传递给 JavaScript 时假定它是 <code>http://</code> ，同时也有不少地方写死了 meta 站里的 <code>meta.</code> 前缀。很多，真的很多，救命。还好现在已经不这样了，我们现在用服务器渲染出一个站点，然后在页面顶部放入相应的选择：</p>
+<div><pre><span></span><span>StackExchange</span><span>.</span><span>init</span><span>({</span>
+  <span>&quot;locale&quot;</span><span>:</span><span>&quot;en&quot;</span><span>,</span>
+  <span>&quot;stackAuthUrl&quot;</span><span>:</span><span>&quot;https://stackauth.com&quot;</span><span>,</span>
+  <span>&quot;site&quot;</span><span>:</span><span>{</span>
+    <span>&quot;name&quot;</span><span>:</span><span>&quot;Stack Overflow&quot;</span>
+    <span>&quot;childUrl&quot;</span><span>:</span><span>&quot;https://meta.stackoverflow.com&quot;</span><span>,</span>
+    <span>&quot;protocol&quot;</span><span>:</span><span>&quot;http&quot;</span>
+  <span>},</span>
+  <span>&quot;user&quot;</span><span>:</span><span>{</span>
+    <span>&quot;gravatar&quot;</span><span>:</span><span>&quot;&lt;div class=\&quot;gravatar-wrapper-32\&quot;&gt;&lt;img src=\&quot;https://i.stack.imgur.com/nGCYr.jpg\&quot;&gt;&lt;/div&gt;&quot;</span><span>,</span>
+    <span>&quot;profileUrl&quot;</span><span>:</span><span>&quot;https://stackoverflow.com/users/13249/nick-craver&quot;</span>
+  <span>}</span>
+<span>});</span>
+</pre></div>
+<p>这几年来我们在代码里也用到了很多静态链接。比如，在页尾，在页脚，在帮助区域……到处都是。对每一个来说，解决方式都不复杂：把它们改成 <code>&lt;site&gt;.Url(&quot;/path&quot;)</code> 的形式就好了。不过要找出这些链接有点意思，因为你不能直接搜 <code>&quot;http://&quot;</code>。感谢 W3C 的丰功伟绩：</p>
+<div><pre><span></span>&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot;...
+</pre></div>
+<p>是的，这些是标识符，是不能改的。所以我希望 Visual Studio 在查找文件框中增加一个「排除文件类型」的选项。Visual Studio 你听见了吗？VS Code 前段时间就加了这个功能。我这要求不过分。</p>
+<p>这件事情很枯燥，就是在代码中找出一千个链接然后替换而已（包括注释、许可链接等）。但这就是人生，我们必须要做。把这些链接改成 <code>.Url()</code> 的形式之后，一旦站点支持 HTTPS 的时候，我们就可以让链接动态切换过去。比如我们得等到 <code>meta.*.stackexchange.com</code> 搬迁完成之后再进行切换。插播一下我们数据中心的密码是「煎饼馃子」拼音全称，应该没有人会读到这里吧，所以在这里存密码很安全。当站点迁完之后，<code>.Url()</code> 仍会正常工作，然后用 <code>.Url()</code> 来渲染默认为 HTTPS 的站点也会继续工作。这将静态链接变成了动态。</p>
+<p>另一件重要的事情：这让我们的开发和本地环境都能正常工作，而不仅仅是链到生产环境上。这件事情虽然枯燥，但还是值得去做的。对了，因为我们的规范网址（canonical）也通过 <code>.Url()</code> 来做了，所以一旦用户开始用上 HTTPS，Google 也可以感知到。</p>
+<p>一旦一个站点迁到 HTTPS 之后，我们会让爬虫来更新站点链接。我们把这个叫修正「Google 果汁」，同时这也可以让用户不再碰到 301。</p>
+<h3>跳转（301）</h3>
+<p>当你把站点移动到 HTTPS 之后，为了和 Google 配合，你有两件重要的事情要做：</p>
+<ul>
+<li>更新规范网址，比如 <code>&lt;link rel=&quot;canonical&quot; href=&quot;https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454&quot; /&gt;</code></li>
+<li>把 <code>http://</code> 链接通过 301 跳转至 <code>https://</code></li>
+</ul>
+<p>这个不复杂，也不是浩大的工程，但这非常<em>非常</em>重要。Stack Overflow 大部分的流量都是从 Google 搜索结果中过来的，所以我们得保证这个不产生负面影响。这个是我们的生计，如果我们因此丢了流量那我真是要失业了。还记得那些 <code>.internal</code> 的 API 调用吗？对，我们同样不能把<em>所有东西</em>都进行跳转。所以我们在处理跳转的时候需要一定的逻辑（比如我们也不能跳转 <code>POST</code> 请求，因为浏览器处理得不好），当然这个处理还是比较直接的。这里是实际上用到的代码：</p>
+<div><pre><span></span><span>public</span> <span>static</span> <span>void</span> <span>PerformHttpsRedirects</span><span>()</span>
+<span>{</span>
+    <span>var</span> <span>https</span> <span>=</span> <span>Settings</span><span>.</span><span>HTTPS</span><span>;</span>
+    <span>// If we're on HTTPS, never redirect back</span>
+    <span>if</span> <span>(</span><span>Request</span><span>.</span><span>IsSecureConnection</span><span>)</span> <span>return</span><span>;</span>
+
+    <span>// Not HTTPS-by-default? Abort.</span>
+    <span>if</span> <span>(</span><span>!</span><span>https</span><span>.</span><span>IsDefault</span><span>)</span> <span>return</span><span>;</span>
+    <span>// Not supposed to redirect anyone yet? Abort.</span>
+    <span>if</span> <span>(</span><span>https</span><span>.</span><span>RedirectFor</span> <span>==</span> <span>SiteSettings</span><span>.</span><span>RedirectAudience</span><span>.</span><span>NoOne</span><span>)</span> <span>return</span><span>;</span>
+    <span>// Don't redirect .internal or any other direct connection</span>
+    <span>// ...as this would break direct HOSTS to webserver as well</span>
+    <span>if</span> <span>(</span><span>RequestIPIsInternal</span><span>())</span> <span>return</span><span>;</span>
+
+    <span>// Only redirect GET/HEAD during the transition - we'll 301 and HSTS everything in Fastly later</span>
+    <span>if</span> <span>(</span><span>string</span><span>.</span><span>Equals</span><span>(</span><span>Request</span><span>.</span><span>HttpMethod</span><span>,</span> <span>&quot;GET&quot;</span><span>,</span> <span>StringComparison</span><span>.</span><span>InvariantCultureIgnoreCase</span><span>)</span>
+        <span>||</span> <span>string</span><span>.</span><span>Equals</span><span>(</span><span>Request</span><span>.</span><span>HttpMethod</span><span>,</span> <span>&quot;HEAD&quot;</span><span>,</span> <span>StringComparison</span><span>.</span><span>InvariantCultureIgnoreCase</span><span>))</span>
+    <span>{</span>
+        <span>// Only redirect if we're redirecting everyone, or a crawler (if we're a crawler)</span>
+        <span>if</span> <span>(</span><span>https</span><span>.</span><span>RedirectFor</span> <span>==</span> <span>SiteSettings</span><span>.</span><span>RedirectAudience</span><span>.</span><span>Everyone</span>
+            <span>||</span> <span>(</span><span>https</span><span>.</span><span>RedirectFor</span> <span>==</span> <span>SiteSettings</span><span>.</span><span>RedirectAudience</span><span>.</span><span>Crawlers</span> <span>&amp;&amp;</span> <span>Current</span><span>.</span><span>IsSearchEngine</span><span>))</span>
+        <span>{</span>
+            <span>var</span> <span>resp</span> <span>=</span> <span>Context</span><span>.</span><span>InnerHttpContext</span><span>.</span><span>Response</span><span>;</span>
+            <span>// 301 when we're really sure (302 is the default)</span>
+            <span>if</span> <span>(</span><span>https</span><span>.</span><span>RedirectVia301</span><span>)</span>
+            <span>{</span>
+                <span>resp</span><span>.</span><span>RedirectPermanent</span><span>(</span><span>Site</span><span>.</span><span>Url</span><span>(</span><span>Request</span><span>.</span><span>Url</span><span>.</span><span>PathAndQuery</span><span>),</span> <span>false</span><span>);</span>
+            <span>}</span>
+            <span>else</span>
+            <span>{</span>
+                <span>resp</span><span>.</span><span>Redirect</span><span>(</span><span>Site</span><span>.</span><span>Url</span><span>(</span><span>Request</span><span>.</span><span>Url</span><span>.</span><span>PathAndQuery</span><span>),</span> <span>false</span><span>);</span>
+            <span>}</span>
+            <span>Context</span><span>.</span><span>InnerHttpContext</span><span>.</span><span>ApplicationInstance</span><span>.</span><span>CompleteRequest</span><span>();</span>
+        <span>}</span>
+    <span>}</span>
+<span>}</span>
+</pre></div>
+<p>注意我们并不是默认就跳 301（有一个 <code>.RedirectVia301</code> 设置)，因为我们做一些会产生永久影响的事情之前必须仔细测试。我们会<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#hsts-preloading">晚一点</a>来讨论 <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a> 以及后续影响。</p>
+<h3>Websockets</h3>
+<p>这一块会过得快一点。Websocket 不难，从某种角度来说，这是我们做过的最简单的事情。我们用 websockets 来处理实时的用户影响力变化、收件箱通知、新问的问题、新增加的答案等等。这也就说基本上每开一个 Stack Overflow 的页面，我们都会有一个对应的 websocket 连接连到我们的负载均衡器上。</p>
+<p>所以怎么改呢？其实很简单：安装一个证书，监听 <code>:443</code> 端口，然后用 <code>wss://qa.sockets.stackexchange.com</code> 来代替 <code>ws://</code> 。后者其实早就做完了（我们用了一个专有的证书，但是这不重要）。从 <code>ws://</code> 到 <code>wss://</code> 只是配置一下的问题。一开始我们还用 <code>ws://</code> 作为 <code>wss://</code> 的备份方案，不过后来就变成<em>仅用</em> <code>wss://</code> 了。这么做有两个原因：</p>
+<ol>
+<li>不用的话在 <code>https://</code> 下面会有混合内容警告</li>
+<li>可以支持更多用户。因为很多老的代理不能很好地处理 websockets。如果使用加密流量，大多数代理就只是透传而不会弄乱流量。对移动用户来说尤其是这样。</li>
+</ol>
+<p>最大的问题就是：「我们能处理了这个负载吗？」我们全网处理了不少并发 websocket，在我写这估的时候我们有超过 600000 个<strong>并发</strong>的连接。这个是我们 HAProxy 的仪表盘在 <a href="https://github.com/opserver/Opserver">Opserver</a> 中的界面：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-Websockets.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-Websockets.png" /></a></p>
+<p>不管是在终端、抽象命名空间套接字还是前端来说都有很多连接。由于启用了 <a href="https://tools.ietf.org/html/rfc5077">TLS 会话恢复</a>，HAProxy 本身的负载也很重。要让用户下一次重新连接更快，第一次协商之后用户会拿到一个令牌，下一次会把这个令牌发送过来。如果我们的内存足够并且没有超时，我们会恢复上次的会话而不是再开一个。这个操作可以节省 CPU，对用户来说有性能提升，但会用到到更多内存。这个多因 key 大小而异（2048，4096 或是更多？）我们现在用的是 4096 位的 key。在开了 600000 个 websocket 的情况下，我们只用掉了负载均衡器 64GB 内存里的 19GB。这里面 12GB 是 HAProxy 在用，大多数为 TLS 会话缓存。所以结果来说还不错，如果<em>我们不得不买内存的话</em>，这也会是整个 HTTPS 迁移中最便宜的东西。</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-WebsocketMemory.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-WebsocketMemory.png" /></a></p>
+<h3>未知</h3>
+<p>我猜现在可能是我们来谈论一些未知问题的时候。有些问题是在我们尝试之前无法真正知道的：</p>
+<ul>
+<li>Google Analytics 里的流量表现怎么样？（我们会失去 referer 吗？）</li>
+<li>Google Webmasters 的转换是否平滑？（301 生效吗？规范域名呢？要多长时间？）</li>
+<li>Google 搜索分析会怎么工作（我们会在搜索分析中看到 <code>https://</code> 吗？）</li>
+<li>我们搜索排名会下降吗？（最恐怖的）</li>
+</ul>
+<p>有很多人都谈过他们转化成 <code>https://</code> 的心得，但对我们却有点不一样。我们不是一个站点。我们是多个域名下的多个站点。我们不知道 Google 会怎么对待我们的网络。它会知道 <code>stackoverflow.com</code> 和 <code>superuser.com</code> 有关联吗？不知道。我们也不能指望 Google 来告诉我们这些。</p>
+<p>所以我们就做测试。在我们<a href="https://meta.stackexchange.com/q/292058/135201">全网发布</a> 中，我们测试了几个域名：</p>
+<ul>
+<li><a href="https://meta.stackexchange.com/">meta.stackexchange.com</a></li>
+<li><a href="https://security.stackexchange.com/">security.stackexchange.com</a></li>
+<li><a href="https://superuser.com/">superuser.com</a></li>
+</ul>
+<p>对，这些是 Samo 和我会了仔细讨论出来的结果，花了有三分钟那么久吧。Meta 是因为这是我们最重要的反馈网站。Security 站上有很多专家可能会注意到相关的问题，特别是 HTTPS 方面。最后一个，Super User，我们需要知道搜索对我们内容的影响。比起 meta 和 security 来说法，Super User 的流量要大得多。最重要的是，它有<em>来自 Google</em> 的原生流量。</p>
+<p>我们一直在观察并评估搜索的影响，所以 Super User 上了之后其他网站过了很久才跟上。到目前为止我们能说的是：基本上没影响。搜索、结果、点击还有排名的周变化都在正常范围内。我们公司<em>依赖</em>于这个流量，这对我们真的很重要。所幸，没有什么值得我们担心的点，我们可以继续发布。</p>
+<h3>错误</h3>
+<p>如果不提到我们搞砸的部分，这篇文章就还不够好。错误永远是个选择。让我们来总结一下这一路让我们后悔的事情：</p>
+<h4>错误：相对协议 URL</h4>
+<p>如果你的一个资源有一个 URL 的话，一般来说你会看到一些 <code>http://example.com</code> 或者 <code>https://example.com</code> 之类的东西，包括我们图片的路径等等。另一个选项就是你可以使用 <code>//example.com</code>。这被称为<a href="https://en.wikipedia.org/wiki/Wikipedia:Protocol-relative_URL">相对协议 URL</a>。我们很早之前就在图片、JavaScript、CSS 等中这么用了（我们自有的资源，不是指用户提交）。几年后，我们发现这不是一个好主意，至少对我们来说不是。相对协议链接中的「相对」是<em>对于页面而言</em>。当你在 <code>http://stackoverflow.com</code> 时，<code>//example.com</code> 指的是 <code>http://example.com</code>；如果你在 <code>https://stackoverflow.com</code> 时，就和 <code>https://example.com</code> 等同。那么这个有什么问题呢？</p>
+<p>问题在于，图片 URL 不仅是用在页面中，它们还用在邮件、API 还有移动应用中。当我们理了一下路径结构然后在到处都使用图片路径时我们发现不对了。虽然这个变化极大降低了代码冗余，并且简化了很多东西，结果却是我们在邮件中使用了相对 URL。绝大多数邮件客户端都不能处理相对协议 URL 的图片。因为它们不知道是什么协议。Email 不是 <code>http://</code> 也不是 <code>https://</code>。只有你在浏览器里查看邮件，有可能是预期的效果。</p>
+<p>那该怎么办？我们把所有的地方都换成了 <code>https://</code>。我把我们所有的路径代码统一到两个变量上：CDN 根路径，和对应特定站点的文件夹。例如 Stack Overflow 的样式表在 <a href="https://cdn.sstatic.net/Sites/stackoverflow/all.css"><code>https://cdn.sstatic.net/Sites/stackoverflow/all.css</code></a> 上（当然我们有缓存中断器），换成本地就是 <code>https://local.sstatic.net/Sites/stackoverflow/all.css</code>。你能看出其中的共同点。通过拼接路径，逻辑简单了不少。则　通过强制 <code>https://</code>，用户还可以在整站切换之前就享受 HTTP/2 的好处，因为所有静态资源都已经就位。都用 <code>https://</code> 也表示我们可以在页面、邮件、移动还有 API 上使用<strong>同一个</strong>属性。这种统一也意味着我们有一个固定的地方来处理所有路径——我们到处都有缓存中断器。</p>
+<p>注意：如果你像我们一样中断缓存，比如 <code>https://cdn.sstatic.net/Sites/stackoverflow/all.css?v=070eac3e8cf4</code>，请不要用构建号。我们的缓存中断使用的是文件的<a href="https://en.wikipedia.org/wiki/Checksum">校验值</a>，也就是说只有当文件真正变化的时候你才会下载一个新的文件。用构建号的话可能会稍微简单点，但同时也会对你的费用还有性能有所损伤。</p>
+<p>能做这个当然很好，可我们为什么不从一开始就做呢？因为 HTTPS 在那个时候性能还不行。用户通过 <code>https://</code> 访问会比 <code>http://</code>慢很多。举一个大一点的例子：我们上个月在 <code>sstatic.net</code> 上收到了四百万个请求，总共有 94TB。如果 HTTPS 性能不好的话，这里累积下来的延迟就很可观了。不过因为我们上了 HTTP/2，以及设置好 CDN/代理层，性能的问题已经好很多了。对于用户来说更快了，对我们来说则更简单，何乐不为呢！</p>
+<h4>错误：API 及 .internal</h4>
+<p>当我们把代理架起来开始测试的时候发现了什么？我们忘了一件很重要的事，准确地说，我忘了一件很重要的事。我们在内部 API 里大量地使用了 HTTP。当然这个是正常工作的，只是它们变得更慢、更复杂、也更容易出问题了。</p>
+<p>比方说一个内部 API 需要访问 <code>stackoverflow.com/some-internal-route</code>，之前，节点是这些：</p>
+<ul>
+<li>原始 app</li>
+<li>网关/防火墙（暴露给公网）</li>
+<li>本地负载均衡器</li>
+<li>目标 web 服务器</li>
+</ul>
+<p>这是因为我们是可以解析 <code>stackoverflow.com</code> 的，解析出来的 IP 就是我们的负载均衡器。当有代理的情况下，为了让用户能访问到最近的节点，他们访问到的是不同的 IP 和目标点。他们的 DNS 解析出来的 IP 是 CDN/代理层 (Fastly)。糟了，这意识着我们现在的路径是这样的：</p>
+<ul>
+<li>原始 app</li>
+<li>网关/防火墙（暴露给公网）</li>
+<li>我们的外部路由器</li>
+<li>运营商（多节点）</li>
+<li>代理（Cloudflare/Fastly）</li>
+<li>运营商（到我们的代理路）</li>
+<li>我们的外部路由器</li>
+<li>本地负载均衡器</li>
+<li>目标 web 服务器</li>
+</ul>
+<p>嗯，这个看起来更糟了。为了实现一个从 A 调用一下 B，我们多了很多不必要的依赖，同时性能也下降了。我不是说我们的代理很慢，只是原本只需要 1ms 就可以连到我们数据中心……好吧，我们的代理很慢。</p>
+<p>我们内部讨论了多次如何用最简单的方法解决这个问题。我们可以把请求改成 <code>internal.stackoverflow.com</code>，但是这会产生可观的修改（也许也会产生冲突）。我们也创建一个 DNS 来专门解析内部地址（但这样会产生通配符继承的问题）。我们也可以在内部把 <code>stackoverflow.com</code> 解析成不同的地址（这被称为<a href="https://en.wikipedia.org/wiki/Split-horizon_DNS">水平分割 DNS</a>），但是这一来不好调试，二来在多数据中心的场景下不知道该到哪一个。</p>
+<p>最终，我们在所有暴露给外部 DNS 的域名后面都加了一个 <code>.internal</code> 后续。比如，在我们的网络中，<code>stackoverflow.com.internal</code> 会解析到我们的负载均衡器后面（DMZ）的一个内部子网内。我们这么做有几个原因：</p>
+<ul>
+<li>我们可以在内部的 DNS 服务器里覆盖且包含一个顶级域名服务器（活动目录）</li>
+<li>当请求从 HAProxy 传到 web 应用中时，我们可以把 <code>.internal</code> 从 <code>Host</code> 头中移除（应用层无感知）</li>
+<li>如果我们需要内部到 DMZ 的 SSL，我们可以用一个类似的通配符组合</li>
+<li>客户端 API 的代码很简单（如果在域名列表中就加一个 <code>.internal</code>）</li>
+</ul>
+<p>我们客户端的 API 代码是大部分是由 <a href="https://twitter.com/marcgravell">Marc Gravell</a> 写的一个 <code>StackExchange.Network</code> 的 NuGet 库。对于每一个要访问的 URL，我们都用静态的方法调用（所以也就只有通用的获取方法那几个地方）。如果存在的话就会返回一个「内部化」URL，否则保持不变。这意味着一次简单的 NuGet 更新就可以把这个逻辑变化部署到所有应用上。这个调用挺简单的：</p>
+<p># uri = SubstituteInternalUrl(uri);</p>
+<p>这里是 <code>stackoverflow.com</code> DNS 行为的一个例子：</p>
+<ul>
+<li>Fastly：151.101.193.69, 151.101.129.69, 151.101.65.69, 151.101.1.69</li>
+<li>直连（外部路由）：198.252.206.16</li>
+<li>内部：10.7.3.16</li>
+</ul>
+<p>记得我们之前提到的 <a href="https://github.com/StackExchange/dnscontrol">dnscontrol</a> 吗？我们可以用这个快速同步。归功于 JavaScript 的配置/定义，我们可以简单地共享、简化代码。我们匹配所有所有子网和所有数据中心中的所有 IP 的最后一个字节，所以用几个变量，所有 AD 和外部的 DNS 条目都对齐了。这也意味着我们的 HAProxy 配置更简单了，基本上就是这样：</p>
+<div><pre><span></span>stacklb::external::frontend_normal { 't1_http-in':
+  section_name    =&gt; 'http-in',
+  maxconn         =&gt; <span>$t1_http_in_maxconn</span>,
+  inputs          =&gt; {
+    &quot;<span>${</span><span>external_ip_base</span><span>}</span>.16:80&quot;  =&gt; [ 'name stackexchange' ],
+    &quot;<span>${</span><span>external_ip_base</span><span>}</span>.17:80&quot;  =&gt; [ 'name careers' ],
+    &quot;<span>${</span><span>external_ip_base</span><span>}</span>.18:80&quot;  =&gt; [ 'name openid' ],
+    &quot;<span>${</span><span>external_ip_base</span><span>}</span>.24:80&quot;  =&gt; [ 'name misc' ],
+</pre></div>
+<p>综上，API 路径更快了，也更可靠了：</p>
+<ul>
+<li>原始 app</li>
+<li>本地负载均衡器（DMZ）</li>
+<li>目标 web 服务器</li>
+</ul>
+<p>我们解决了几个问题，还剩下几百个等着我们。</p>
+<h4>错误：301 缓存</h4>
+<p>在从 <code>http://</code> 301 跳到 <code>https://</code> 时有一点我们没有意识的是，Fastly 缓存了我们的返回值。在 Fastly 中，<a href="https://docs.fastly.com/guides/vcl/manipulating-the-cache-key">默认的缓存键</a>并不考虑协议。我个人不同意这个行为，因为在源站默认启用 301 跳转会导致无限循环。这个问题是这样造成的：</p>
+<ol>
+<li>用户访问 <code>http://</code> 上的一个网络</li>
+<li>通过 301 跳转到了 <code>https://</code></li>
+<li>Fastly 缓存了这个跳转</li>
+<li>任意一个用户（包括 #1 中的那个）以 <code>https://</code> 访问同一个页面</li>
+<li>Fastly 返回一个跳至 <code>https://</code> 的 301，尽量你已经在这个页面上了</li>
+</ol>
+<p>这就是为什么我们会有无限循环。要解决这个问题，我们得关掉 301，清掉 Fastly 缓存，然后开始调查。Fastly <a href="https://docs.fastly.com/guides/vcl/manipulating-the-cache-key#purging-adjustments-when-making-additions-to-cache-keys">建议我们在 vary 中加入 <code>Fastly-SSL</code></a>，像这样：</p>
+<div><pre><span></span>sub vcl_fetch {
+  set beresp.http.Vary = if(beresp.http.Vary, beresp.http.Vary &quot;,&quot;, &quot;&quot;) &quot;Fastly-SSL&quot;;
+</pre></div>
+<p>在我看来，这应该是默认行为。</p>
+<p>错误：帮助中心的小插曲</p>
+<p>记得我们必须修复的帮助文档吗？帮助文档都是按语言区分，只有极少数是按站点来分，所以本来它们是可以共享的。为了不产生大量重复代码及存储结构，我们做了一点小小的处理。我们把实际上的帖子对象（和问题、答案一样）存在了 <code>meta.stackexchange.com</code> 或者是这篇帖子关联的站点中。我们把生成的 <code>HelpPost</code> 存在中心的 <code>Sites</code> 数据库里，其实也就是生成的 HTML。在处理混合内容的时候，我们也处理了单个站里的帖子，简单吧！</p>
+<p>当原始的帖子修复后，我们只需要为每个站点去再生成 HTML 然后填充回去就行了。但是这个时候我犯了个错误。回填的时候拿的是<em>当前站点</em>（调用回填的那个站点），而不是原始站。这导致 <code>meta.stackexchange.com</code> 里的 12345 帖子被 <code>stackoverflow.com</code> 里的 12345 帖子所替代。有的时候是答案、有的时候是问题，有的时候有一个 tag wiki。这也导致了一些<a href="https://meta.stackoverflow.com/q/345280/13249">很有意思的帮助文档</a>。这里有一些<a href="https://meta.stackoverflow.com/a/345282/13249">相应的后果</a>。</p>
+<p>我只能说，还好修复的过程挺简单的：</p>
+<p><a href="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-HelpCommit.png"><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/HTTPS-HelpCommit.png" /></a></p>
+<p>再一次将数据填充回去就能修复了。不过怎么说，这个当时算是在公共场合闹了个笑话。抱歉。</p>
+<h3>开源</h3>
+<p>这里有我们在这个过程中产出的项目，帮助我们改进了 HTTPS 部署的工作，希望有一天这些能拯救世界吧：</p>
+<ul>
+<li><a href="https://github.com/StackExchange/blackbox">BlackBox</a> （在版本控制中安全存储私密信息）作者 <a href="https://twitter.com/yesthattom">Tom Limoncelli</a></li>
+<li><a href="https://github.com/StackExchange/capnproto-net">capnproto-net</a>（不再支持 —— .NET 版本的 <a href="https://capnproto.org/">Cap’n Proto</a>）作者 <a href="https://twitter.com/marcgravell">Marc Gravell</a></li>
+<li><a href="https://github.com/StackExchange/dnscontrol">DNSControl</a>（控制多个 DNS 提供商）作者 <a href="https://twitter.com/captncraig">Craig Peterson</a> and <a href="https://twitter.com/yesthattom">Tom Limoncelli</a></li>
+<li><a href="https://github.com/StackExchange/httpunit">httpUnit</a> （网站集成测试） 作者 <a href="https://twitter.com/mjibson">Matt Jibson</a> and <a href="https://twitter.com/yesthattom">Tom Limoncelli</a></li>
+<li><a href="https://github.com/opserver/Opserver">Opserver</a> （支持 Cloudflare DNS） 作者 <a href="https://twitter.com/Nick_Craver">Nick Craver</a></li>
+<li><a href="https://github.com/alienth/fastlyctl">fastlyctl</a>（Go 语言的 Fastly API 调用）作者 <a href="https://twitter.com/alioth">Jason Harvey</a></li>
+<li><a href="https://github.com/alienth/fastly-ratelimit">fastly-ratelimit</a>（基于 Fastly syslog 流量的限流方案）作者 <a href="https://twitter.com/alioth/">Jason Harvey</a></li>
+</ul>
+<h3>下一步</h3>
+<p>我们的工作并没有做完。接下去还有一此要做的：</p>
+<ul>
+<li>我们要修复我们聊天域名下的混合内容，如 <a href="https://chat.stackoverflow.com/">chat.stackoverflow.com</a>，这里有用户嵌入的图片等</li>
+<li>如果可能的话，我们把所有适用的域名加进 <a href="https://hstspreload.org/">Chrome HSTS 预加载列表</a></li>
+<li>我们要评估 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning">HPKP</a> 以及我们是否想部署（这个很危险，目前我们倾向于不部署）</li>
+<li>我们需要把聊天移到 <code>https://</code></li>
+<li>我们需要把所有的 cookies 迁移成安全模式</li>
+<li>我们在等能支持 HTTP/2 的 HAProxy 1.8（大概在九月出来）</li>
+<li>我们需要利用 HTTP/2 的推送（我会在六月与 Fastly 讨论这件事情——他们还现在不支持跨域名推送）</li>
+<li>我们需要把 301 行为从 CDN/代理移出以达到更好的性能（需要按站点发布）</li>
+</ul>
+<p>HSTS 预加载</p>
+<p><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a> 指的是「HTTP 严格传输安全」。OWASP 在<a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">这里</a>有一篇很好的总结。这个概念其实很简单：</p>
+<ul>
+<li>当你访问 <code>https://</code> 页面的时候，我们给你发一个这样的头部：<code>Strict-Transport-Security: max-age=31536000</code></li>
+<li>在这个时间内（秒），你的浏览器只会通过 <code>https://</code> 访问这个域名</li>
+</ul>
+<p>哪怕你是点击一个 <code>http://</code> 的链接，你的浏览器也会<em>直接</em>跳到 <code>https://</code>。哪怕你有可能已经设置了一个 <code>http://</code> 的跳转，但你的浏览器不会访问，它会直接访问 SSL/TLS。这也避免了用户访问不安全的 <code>http://</code> 而遭到劫持。比如它可以把你劫持到一个 <code>https://stack&lt;长得很像o但实际是个圈的unicode&gt;verflow.com</code> 上，那个站点甚至有可能部好了 SSL/TLS 证书。只有不访问这个站点才是安全的。</p>
+<p>但这需要我们至少访问一次站点，然后才能有这个头部，对吧？对。所以我们有 <a href="https://hstspreload.org/">HSTS 预加载</a>，这是一个域名列表，随着所有主流浏览器分发且由它们预加载。也就是说它们在第一次访问的时候就会跳到 <code>https://</code> 去，所以<strong>永远不会</strong>有任何 <code>http://</code> 通信。</p>
+<p>很赞吧！所以要怎么才能上这个列表呢？这里是要求：</p>
+<ol>
+<li>要有一个有效的证书</li>
+<li>如果你监听 80 端口的话，HTTP 应该跳到同一个主机的 HTTPS 上</li>
+<li>所有子域名都要支持 HTTPS</li>
+<li>特别是如果有 DNS 纪录的话，www 子域名要支持 HTTPS</li>
+<li>主域名的 HSTS 头必要满足如下条件：</li>
+<li>max-aget 至少得是十八周（10886400 秒）</li>
+<li>必须有 includeSubDomains 指令</li>
+<li>必须指定 preload 指令</li>
+<li>如果你要跳转到 HTTPS 站点上，跳转也必须有 HSTS 头部（而不仅仅是跳过去的那个页面）</li>
+</ol>
+<p>这听起来还行吧？我们所有的活跃域名都支持 HTTPS 并且有有效的证书了。不对，我们还有一个问题。记得我们有一个 <code>meta.gaming.stackexchange.com</code> 吧，虽然它跳到 <code>gaming.meta.stackexchange.com</code>，但这个跳转本身并没有有效证书。</p>
+<p>以 meta 为例，如果我们在 HSTS 头里加入 <code>includeSubDomains</code> 指令，那么网上所有指向旧域名的链接都会踩坑。它们本该跳到一个 <code>http:///</code> 站点上（现在是这样的），一旦改了就会变成一个非法证书错误。昨天我们看了一下流量日志，每天仍有 8 万次访问的是通过 301 跳到 meta 子域上的。这里有很多是爬虫，但还是有不少人为的流量是从博客或者收藏夹过来的……而有些爬虫真的很蠢，从来不根据 301 来更新他们的信息。嗯，你还在看这篇文章？我自己写着写着都已经睡着 3 次了。</p>
+<p>我们该怎么办呢？我们是否要启用 SAN 证书，加入几百个域名，然后调整我们的基础架构使得 301 跳转也严格遵守 HTTPS 呢？如果要通过 Fastly 来做的话就会提升我们的成本（需要更多 IP、证书等等）。<a href="https://letsencrypt.org/">Let’s Encrypt</a> <em>倒是</em>真的能帮上点忙。获取证书的成本比较低，如果你不考虑设置及维护的人力成本的话（因为我们由于<a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/#certificates">上文所述</a>内容并没有在使用它).</p>
+<p>还有一块是上古遗留问题：我们内部的域名是 <code>ds.stackexchange.com</code>。为什么是 <code>ds.</code>？我不确定。我猜可能是我们不知道怎么拼 data center 这个词。这意味着 <code>includeSubDomains</code> 会自动包含<em>所有内部终端</em>。虽然我们大部分都已经上了 <code>https://</code> ，但是如果什么都走 HTTPS 会导致一些问题，也会带来一定延时。不是说我们不想在内部也用 <code>https://</code>，只不过这是一个整体的项目（大部分是证书分发和维护，还有多级证书），我们不想增加耦合。那为什么不改一下内部域名呢？主要还是时间问题，这一动迁需要大量的时间和协调。</p>
+<p>目前，我们将 HSTS 的 <code>max-age</code> 设为两年，并且<strong>不包括</strong> <code>includeSubDomains</code>。除非迫不得以，我不会从代码里移除这个设定，因为它太危险了。一旦我们把所有 Q&amp;A 站点的 HSTS 时间都设置好之后，我们会和 Google 聊一下是不是能在不加 <code>includeSubDomains</code> 的情况下把我们加进 HSTS 列表中，至少我们会试试看。你可以看到，虽然很罕见，但<a href="https://chromium.googlesource.com/chromium/src/net/+/master/http/transport_security_state_static.json">目前的这份列表中</a>还是出现了这种情况的。希望从加强 Stack Overflow 安全性的角度，他们能同意这一点。</p>
+<p>聊天</p>
+<p>为了尽快启用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies"><code>安全</code> cookie</a>（仅在 HTTPS 下发送），我们会将聊天（<a href="https://chat.stackoverflow.com/">chat.stackoverflow.com</a>、[<a href="http://chat.stackexchange.com/">chat.stackexchange.com</a>及 <a href="https://chat.meta.stackexchange.com/">chat.meta.stackexchange.com</a>）跳转至 <code>https://</code>。 正如我们的通用登录所做的那样，聊天会依赖于二级域名下的 cookie。如果 cookie 仅在 <code>https://</code> 下发送，你就只能在 <code>https://</code> 下登录。</p>
+<p>这一块有待斟酌，但其实在有混合内容的情况下将聊天迁至 <code>https://</code> 是一件好事。我们的网络更加安全了，而我们也可以处理实时聊天中的混合内容。希望这个能在接下去的一两周之内实施，这在我的计划之中。</p>
+<p>今天</p>
+<p>不管怎么说，这就是我们今天到达的地步，也是我们过去四年中一直在做的事情。确实有很多更高优先级的事情阻挡了 HTTPS 的脚步——这也远远不是我们唯一在做的事情。但这就是生活。做这件事情的人们还在很多你们看不见的地方努力着，而涉及到的人也远不止我所提到的这些。在这篇文章中我只提到了一些花了我们很多时间的、比较复杂的话题（否则就会太长了），但是这一路上不管是 Stack Overflow 内部还是外部都有很多人帮助过我们。</p>
+<p>我知道你们会有很多的疑问、顾虑、报怨、建议等等。我们非常欢迎这些内容。本周我们会关注底下的评论、我们的 meta 站、Reddit、Hacker News 以及 Twitter，并尽可能地回答/帮助你们。感谢阅读，能全文读下的来真是太棒了。（比心）</p>
+<hr />
+<div>
+<div>
+   原文链接: <a href="https://blog.alswl.com/2017/09/https-on-stack-overflow/">https://blog.alswl.com/2017/09/https-on-stack-overflow/</a><br />
+   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
+   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
+   3a1ff193cee606bd1e2ea554a16353ee
+</div>
+</div>]]></content>
+        
+        <summary type="html">
+            
+              原文作者：Nick Craver 翻译作者：罗晟 @luosheng &amp;amp; 狄敬超 @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授
+            
+        </summary>
+        
+        <category term="译文"/>
+        
+        <category term="HTTPS"/>
+        
+    </entry>
     
     <entry>
         <title>一个关于 nolock 的故事</title>
@@ -332,268 +1047,6 @@ Insert 同时 Query 不会被 Block，
         <category term="SQL Server"/>
         
         <category term="MySQL"/>
-        
-    </entry>
-    
-    <entry>
-        <title></title>
-        <link href="https://blog.alswl.com/2017/09//"/>
-        <id>https://blog.alswl.com/2017/09//</id>
-        
-        <author>
-            <name>alswl</name>
-        </author>
-        
-        <published>2017-09-07T18:00:00+02:00</published>
-        <updated>2017-09-07T18:00:00+02:00</updated>
-        
-        <content type="html"><![CDATA[<div>
-<ul>
-<li><a href="https://blog.alswl.com/2017/09//#第一个问题nolock-是什么">第一个问题：nolock 是什么？</a><ul>
-<li><a href="https://blog.alswl.com/2017/09//#隔离级别">隔离级别</a><ul>
-<li><a href="https://blog.alswl.com/2017/09//#read-uncommitted">Read Uncommitted</a></li>
-</ul></li>
-<li><a href="https://blog.alswl.com/2017/09//#read-committed">Read Committed</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#repeatable-read">Repeatable Read</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#serializable">Serializable</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#db-的默认隔离级别">DB 的默认隔离级别</a></li>
-</ul></li>
-<li><a href="https://blog.alswl.com/2017/09//#第二个问题为什么要使用-nolock">第二个问题：为什么要使用 nolock？</a><ul>
-<li><a href="https://blog.alswl.com/2017/09//#nolock-测试">nolock 测试</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#mvcc">MVCC</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#sql-server-2005-之后还需要使用-nolock-么">SQL Server 2005 之后还需要使用 nolock 么？</a></li>
-</ul></li>
-<li><a href="https://blog.alswl.com/2017/09//#第三个问题mysql-的对应写法是什么">第三个问题：MySQL 的对应写法是什么？</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#回顾一下">回顾一下</a></li>
-<li><a href="https://blog.alswl.com/2017/09//#相关资料">相关资料</a></li>
-</ul>
-</div>
-<p>Title: 一个关于 nolock 的故事 Author: alswl Slug: sql-server-nolock Date: 2017-09-19 16:43:45 Tags: SQL Server, MySQL Category: Coding</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/sql-server.png" />
-<p>sql-server.png</p>
-</div>
-<p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：<code>nolock</code>。 这让我很困惑，<code>nolock</code> 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？</p>
-
-<p>我找了一个范例如下：</p>
-<div><pre><code><span>SELECT</span> [<span>id</span>] 
-<span>FROM</span>   [dbo].[foos] <span>WITH</span>(nolock) 
-<span>WHERE</span>  aField = <span>42</span> 
-       <span>AND</span> bField = <span>1</span> </code></pre></div>
-<p>作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 <code>nolock</code> 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。</p>
-<p>这个问题将被拆解成三个小问题进行回答：</p>
-<ul>
-<li><code>nolock</code> 是什么？</li>
-<li>为什么会需要在每个 Query 语句使用 <code>nolock</code>？</li>
-<li>MySQL 的对应写法是什么？</li>
-</ul>
-<p>让我们一个一个来看。</p>
-<h2>第一个问题：nolock 是什么？</h2>
-<p><code>nolock</code> 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 <code>WITH</code> 开头。除了 <code>WITH(nolock)</code>， 还有 <code>TABLOCK</code> / <code>INDEX</code> / <code>ROWLOCK</code> 等常见的 Hints。</p>
-<p>让我们仔细看看 MSDN 文档上的解释：</p>
-<blockquote>
-<p><code>nolock</code> 的作用等同于 <code>READUNCOMMITTED</code></p>
-</blockquote>
-<p><code>READUNCOMMITTED</code> 这是一种 RDBMS 隔离级别。 使用 <code>nolock</code> 这个关键词，可以将当前查询语句隔离级别调整为 <code>READ UNCOMMITTED</code>。</p>
-<p>计算机基础好的同学，应该对 <code>READUNCOMMITTED</code> 这个关键词还有印象。 而基础不扎实的同学，也许只是觉得这个关键词眼熟，但是讲不清楚这是什么。 如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。 其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。</p>
-<h3>隔离级别</h3>
-<p>SQL 92 定义了四个隔离级别 （<a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels">Isolation (database systems) - Wikipedia</a>）， 其隔离程度由高到低是：</p>
-<ul>
-<li>可序列化（Serializable）</li>
-<li>可重复读（Repeatable reads）</li>
-<li>提交读（Read committed）</li>
-<li>未提交读（Read uncommitted）</li>
-</ul>
-<p>单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：</p>
-<ul>
-<li>隔离级别解决什么问题？</li>
-<li>为什么存在多种隔离级别？</li>
-<li>我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？</li>
-</ul>
-<p>首先是「隔离级别解决什么问题？」， 用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。</p>
-<p>这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能， 多种隔离级别就是是为了取得两者的平衡。</p>
-<p>接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」 这其实是一个需求和性能逐步平衡的过程，</p>
-<p>我们逐层递进，将隔离级别由低到高逐层面临进行分析。</p>
-<h4>Read Uncommitted</h4>
-<p>Read Uncommitted 这个隔离级别是最低粒度的隔离级别， 如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/read-uncommitted.png" />
-<p>read-uncommitted.png</p>
-</div>
-<p>如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。 如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。</p>
-<p>「读到了其他事务修改了但是未提交的数据」即是<strong>脏读</strong>。</p>
-<h3>Read Committed</h3>
-<p>想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁， 其他事务需要读取数据时候，需要等待这把写锁释放。</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/read-committed-1.png" />
-<p>read-committed-1.png</p>
-</div>
-<p>如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁， 那么 Transaction 2 想要读取 A，就必须等待这把锁释放。 这样就避免当前事务读取其他事务的未提交数据。</p>
-<p>但是除了脏读，一致性的要求还需要「可重复读」，即 「在一个事务内，多次读取的特定数据都必须是一致的 （即便在这过程中该数据被其他事务修改）」。</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/read-committed-2.png" />
-<p>read-committed-2.png</p>
-</div>
-<p>上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A， 然后 Transaction 1 对数据 A 更新到 A’，那么当 Tranction 2 再次读取 A 时候， 它本来期望读到 A，但是却读到了 A’，这和它的预期不相符了。 解决这个问题，就需要提升隔离级别到「Repeatable Read」。</p>
-<h3>Repeatable Read</h3>
-<p>这个名字非常容易理解，即保障在一个事务内重复读取时， 始终能够读取到相同的内容。来看图：</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/repeatable-read.png" />
-<p>repeatable-read.png</p>
-</div>
-<p>如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock， 这把锁会阻止 Transaction 1 将 A 更新为 A’，Transaction 1 要么选择等待， 要么就选择结束。</p>
-<p>当我们将隔离级别升到这里是，似乎已经完美无缺了。 不管是写入还是读取，我们都可以保证数据的一致性不被破坏。 但是其实还有漏洞：新增数据的一致性！</p>
-<p>上述的三个隔离级别，都是对特定的一行数据进行加锁， 那假如将要更新的数据还没有写入数据库，如何进行加锁呢？ 比如自增表的新键，或者现有数据内的空缺 Key？</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/repeatable-read-2.png" />
-<p>repeatable-read-2.png</p>
-</div>
-<p>如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1 在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候， 会发现查询到的 Range 和上次已经不一样了，多了一个 newA。</p>
-<p>这就是最高隔离级别才能解决的「幻影读」： 当两个完全相同的查询语句执行得到不同的结果集， 这常常在范围查询中出现。</p>
-<h3>Serializable</h3>
-<p>从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。 任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件， 还需要将 WHERE 条件相关的范围全部加锁。</p>
-<div>
-<img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201709/serializable.png" />
-<p>serializable.png</p>
-</div>
-<p>如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁， 此时其他事务无法操作其中的数据，只能等待或者放弃。</p>
-<h3>DB 的默认隔离级别</h3>
-<p>现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」 根据 <a href="https://msdn.microsoft.com/en-us/library/ms175909.aspx">Customizing Transaction Isolation Level</a> 这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。</p>
-<p>MySQL InnoDB 的默认隔离级别可以在 <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html">MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels</a> 查询到，是 Read-Repeatable。</p>
-<p>隔离级别并没有最好之说，越高隔离级别会导致性能降低。 隔离级别的设定需要考虑业务场景。</p>
-<h2>第二个问题：为什么要使用 nolock？</h2>
-<p>我们已经知道 <code>nolock</code> 的作用是动态调整隔离级别。 那为什么在 SQL Server 的 Query 操作中，需要启用 <code>nolock</code> 呢？ 我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。</p>
-<p>此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？ 我们的数据库，已经到了需要禁用锁的程度来进行优化了么？」 我于是自己去探索，想知道为何广泛使用 <code>nolock</code> 会成为一个「最佳实践」？</p>
-<p>由于时代久远，我只能追述到一些相关信息，比如 <a href="https://blogs.msdn.microsoft.com/sqlcat/2013/09/16/top-10-sql-server-integration-services-best-practices/">Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team</a> 中提到 「Use the NOLOCK or TABLOCK hints to remove locking overhead.」 但这个是针对于 SSIS 查询器，并不是针对业务内部使用。 反而能找到一大堆的文档，在反对使用 <code>nolock</code> 这个关键字。</p>
-<p>继续追查下去，还从蛛丝马迹中寻找到一个使用 <code>nolock</code> 的理由， SQL Server 默认是 Read Committed， 更新操作会产生排它锁，会 block 这个资源的查询操作， 已插入但未提交的数据主键也会产生一个共享锁， 而此时则会 block 这张表的全表查询和 Insert 操作。 为了避免 Insert 被 Block，就会推荐使用 <code>nolock</code>。</p>
-<p>为了验证这是原因，我做一些 <code>nolock</code> 测试。</p>
-<h3>nolock 测试</h3>
-<p>检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：</p>
-<div><pre><code><span>SELECT</span> <span>CASE</span> transaction_isolation_level
-       <span>WHEN</span> <span>0</span>
-         <span>THEN</span> <span>'Unspecified'</span>
-       <span>WHEN</span> <span>1</span>
-         <span>THEN</span> <span>'ReadUncommitted'</span>
-       <span>WHEN</span> <span>2</span>
-         <span>THEN</span> <span>'ReadCommitted'</span>
-       <span>WHEN</span> <span>3</span>
-         <span>THEN</span> <span>'Repeatable'</span>
-       <span>WHEN</span> <span>4</span>
-         <span>THEN</span> <span>'Serializable'</span>
-       <span>WHEN</span> <span>5</span>
-         <span>THEN</span> <span>'Snapshot'</span> <span>END</span> <span>AS</span> TRANSACTION_ISOLATION_LEVEL
-<span>FROM</span> sys.dm_exec_sessions
-<span>WHERE</span> session_id = @@SPID
-
-<span>-- ReadCommitted</span></code></pre></div>
-<p>创建表，初始化数据：</p>
-<div><pre><code><span>CREATE</span> <span>TABLE</span> foos (
-  <span>id</span>    BIGINT    <span>NOT</span> <span>NULL</span>,
-  <span>value</span> <span>NCHAR</span>(<span>10</span>) <span>NULL</span>,
-  <span>CONSTRAINT</span> pk <span>PRIMARY</span> <span>KEY</span> clustered (<span>id</span>)
-);
-<span>INSERT</span> <span>INTO</span> foos (<span>id</span>, <span>value</span>) <span>VALUES</span> (<span>1</span>, <span>'1'</span>), (<span>2</span>, <span>'2'</span>);</code></pre></div>
-<p>在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：</p>
-<div><pre><code><span>BEGIN</span> <span>TRANSACTION</span>;
-<span>INSERT</span> <span>INTO</span> foos (<span>id</span>, <span>value</span>) <span>VALUES</span> (<span>3</span>, <span>'3'</span>);</code></pre></div>
-<p>开启一个新的 Session，发起全表查询和新增 PK 查询操作：</p>
-<div><pre><code><span>SELECT</span> * <span>FROM</span> foos;
-<span>SELECT</span> * <span>FROM</span> foos <span>WHERE</span> <span>id</span> = <span>4</span>;</code></pre></div>
-<p>不出所料，此时查询果然会被 Block 住。</p>
-<h3>MVCC</h3>
-<p>并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。 SQL Server 在 2015 后，引入了 MVCC（多版本控制）。 如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。 那么 MVCC 引入是否可以解决 Insert 数据的锁问题？ 同样，我做了以下测试：</p>
-<p>查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：</p>
-<div><pre><code><span>SELECT</span> name, snapshot_isolation_state <span>FROM</span> sys.databases;</code></pre></div>
-<p>使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：</p>
-<div><pre><code><span>ALTER</span> <span>DATABASE</span> HJ_Test3D <span>SET</span> ALLOW_SNAPSHOT_ISOLATION <span>ON</span>;</code></pre></div>
-<p>接着重复上面里面的 Insert 试验，依然被 Block 住。 看来 MVCC 并不能解决 Insert 锁的问题。</p>
-<h3>SQL Server 2005 之后还需要使用 nolock 么？</h3>
-<p>从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在， 会导致 <code>SELECT ALL</code> 以及 <code>SELECT</code> 新插入数据的相关信息被锁住。 在这两种情景下面是需要使用 <code>nolock</code> 的。</p>
-<p>除此之外，有这么几类场景可以使用 <code>nolock</code>：</p>
-<ul>
-<li>在 SSIS 查询器中进行数据分析，不需要精准数据</li>
-<li>历史数据进行查询，没有数据更新操作，也不会产生脏数据</li>
-</ul>
-<p>我们需要思考一下，性能和数据一致性上的权衡上， 我们是否愿意放弃数据一致性而为了提高一丝丝性能？ 以及我们有多少场景，会频繁使用 <code>SELECT ALL</code> 操作而没有查询条件？</p>
-<p>微软官方在 2015 的特性列表里面，明确地指出 <code>nolock</code> 特性未来会在某个版本被废除：</p>
-<blockquote>
-<p>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</p>
-</blockquote>
-<p>而改为推荐：</p>
-<blockquote>
-<p>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</p>
-</blockquote>
-<p>事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。 那在这种模式下，产生相关的问题的几率也就更小了。 如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、 Snapshot 导出、流式分析等技术。</p>
-<h2>第三个问题：MySQL 的对应写法是什么？</h2>
-<p>终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC， 并且支持 <code>innodb_autoinc_lock_mode</code> <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-auto-increment-handling.html">AUTO_INCREMENT Handling in InnoDB</a>。 这样可以避免 Insert 操作锁住全局 Select 操作。 只有在同时 Insert 时候，才会被 Block 住。</p>
-<p><code>innodb_autoinc_lock_mode</code> 支持几种模式：</p>
-<ul>
-<li>innodb_autoinc_lock_mode = 0 (“traditional” lock mode)
-<ul>
-<li>涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁</li>
-</ul></li>
-<li>innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)
-<ul>
-<li>可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值</li>
-<li>对于插入行数不确定的插入语句，仍加表锁</li>
-<li>这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续</li>
-</ul></li>
-<li>innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)
-<ul>
-<li>同一时刻多条 SQL 语句产生交错的 auto-increment 值</li>
-</ul></li>
-</ul>
-<p>这里也做了相应的测试。首先检查数据库隔离级别和 <code>innodb_autoinc_lock_mode</code> 模式：</p>
-<div><pre><code><span>SELECT</span> @@global.tx_isolation, @@session.tx_isolation, @@tx_isolation;
-SHOW variables <span>LIKE</span> <span>'innodb_autoinc_lock_mode'</span>;</code></pre></div>
-<p>检查后发现都是 Repeatable Read，<code>innodb_autoinc_lock_mode</code> 模式是 1。 然后创建测试表：</p>
-<div><pre><code><span>CREATE</span> <span>TABLE</span> `foos` (
-  `id` <span>int</span>(<span>11</span>) unsigned <span>NOT</span> <span>NULL</span> AUTO_INCREMENT,
-  `name` <span>varchar</span>(<span>20</span>) <span>DEFAULT</span> <span>NULL</span>,
-  <span>PRIMARY</span> <span>KEY</span> (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=<span>18</span> <span>DEFAULT</span> CHARSET=utf8;</code></pre></div>
-<p>在 Transaction 1 中 Insert 数据：</p>
-<div><pre><code><span>START</span> <span>TRANSACTION</span>;
-<span>INSERT</span> <span>INTO</span> foos (name) <span>VALUES</span> (<span>&quot;a&quot;</span>);</code></pre></div>
-<p>在 Transaction 2 中 Select 数据，可以正常查询：</p>
-<div><pre><code><span>SELECT</span> * <span>FROM</span>   foos;</code></pre></div>
-<p>在 Transaction 2 中 Insert 数据，会被 Block 住：</p>
-<div><pre><code><span>START</span> <span>TRANSACTION</span>;
-<span>INSERT</span> <span>INTO</span> foos (name) <span>VALUES</span> (<span>&quot;a&quot;</span>);</code></pre></div>
-<p>这个测试可以证明 MySQL 可以在 <code>innodb_autoinc_lock_mode</code>=1 下， Insert 同时 Query 不会被 Block， 但是在另外一个事务中 Insert 会被 Block。 结论是，由于 <code>innodb_autoinc_lock_mode</code> 的存在，MySQL 中可以不需要使用 <code>nolock</code> 关键词进行查询。</p>
-<h2>回顾一下</h2>
-<p>本文着重去回答这么几个问题：</p>
-<ul>
-<li>为什么要用 <code>noloc</code>？</li>
-<li>为什么要改变隔离级别？</li>
-<li>为什么 MySQL 不需要做类似的事情？</li>
-</ul>
-<p>虽然只凑足了三个 「为什么」 的排比， 但是聪明的读者仍然会发现，我是使用了著名的 <a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E4%B8%AA%E4%B8%BA%E4%BB%80%E4%B9%88">五个为什么</a> 方法思考问题。 通过使用这个方法，我们最后不但打破了老旧的最佳实践，还了解了本质原理， 并找到了新的最佳实践。</p>
-<p>希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神， 这样才能让每个困难成为我们成长的垫脚石。</p>
-<h2>相关资料</h2>
-<ul>
-<li><a href="https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2">事务隔离 - 维基百科，自由的百科全书</a></li>
-<li><a href="https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table">Table Hints (Transact-SQL) | Microsoft Docs</a></li>
-<li><a href="https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server">Snapshot Isolation in SQL Server | Microsoft Docs</a></li>
-<li><a href="https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql">sys.databases (Transact-SQL) | Microsoft Docs</a></li>
-<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html">MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning</a></li>
-</ul>
-
-<hr />
-<div>
-<div>
-   原文链接: <a href="https://blog.alswl.com/2017/09//">https://blog.alswl.com/2017/09//</a><br />
-   欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a><br />
-   <img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg" /><br />
-   3a1ff193cee606bd1e2ea554a16353ee
-</div>
-</div>]]></content>
-        
-        <summary type="html">
-            
-              第一个问题：nolock 是什么？ 隔离级别 Read Uncommitted  Read Committed Repeatable Read Serializable DB 的默认隔离级别  第二个问题：为什么要使用 nolock？ nolock 测试 MVCC SQL 
-            
-        </summary>
         
     </entry>
     
@@ -1131,16 +1584,16 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.
 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p>
 <p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p>
 <p>常见的检测方法（来自 <a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95">跨网站脚本 - 维基百科，自由的百科全书</a>：</p>
-<div><pre><span></span>&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-='&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-&quot;&gt;<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-<span>&lt;script&gt;</span>alert(document.cookie)<span>&lt;/script&gt;</span>
-<span>&lt;script&gt;</span>alert (vulnerable)<span>&lt;/script&gt;</span>
-%3Cscript%3Ealert('XSS')%3C/script%3E
-<span>&lt;script&gt;</span>alert('XSS')<span>&lt;/script&gt;</span>
-<span>&lt;img</span> <span>src=</span><span>&quot;javascript:alert('XSS')&quot;</span><span>&gt;</span>
-<span>&lt;img</span> <span>src=</span><span>&quot;http://xxx.com/yyy.png&quot;</span> <span>onerror=</span><span>&quot;alert('XSS')&quot;</span><span>&gt;</span>
-（这个仅限IE有效）
+<div><pre><span>&gt;&lt;</span><span>script</span><span>&gt;</span><span>alert</span><span>(</span><span>document.cookie</span><span>)</span><span>&lt;/</span><span>script</span><span>&gt;</span>
+<span>=</span><span>'&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
+<span>&quot;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
+<span>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span>
+<span>&lt;script&gt;alert (vulnerable)&lt;/script&gt;</span>
+<span>%3Cscript%3Ealert('</span><span>XSS</span><span>')%3C/script%3E</span>
+<span>&lt;script&gt;alert('</span><span>XSS</span><span>')&lt;/script&gt;</span>
+<span>&lt;img src=&quot;javascript:alert('</span><span>XSS</span><span>')&quot;&gt;</span>
+<span>&lt;img src=&quot;http://xxx.com/yyy.png&quot; onerror=&quot;alert('</span><span>XSS</span><span>')&quot;&gt;</span>
+<span>（这个仅限IE有效）</span>
 </pre></div>
 <p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
 通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
@@ -1814,12 +2267,13 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
         <published>2017-01-31T04:12:43+01:00</published>
         <updated>2017-01-31T04:12:43+01:00</updated>
         
-        <content type="html"><![CDATA[<h2>拉普拉斯之妖</h2>
+        <content type="html"><![CDATA[<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201702/clock.jpg" /></p>
+<h2>拉普拉斯之妖</h2>
 <p>未来是可以被预测的么？</p>
-<p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201702/zhu-ge-liang.jpg" /></p>
 <p>专家在预测股票趋势变化，天气预报员可以预测未来一周甚至更长时间的天气。
 如果给他们更多的信息和参数，是否可以将未来预测的更准确？
 如果精确的粒度可以达到基本粒子级别，同时给一个计算力超群的计算器，能否精确的推衍未来变化？</p>
+
 <p>这些想法在我刚接触经典力学时浮现，学习了牛顿三定律之后，异常激动。
 感觉人类可以凭借技术的进步，逐步对未来精确预测。彼时可以解决人类即将遇到的任何问题了，化问题于无形。</p>
 <p>这想法其实在 200 年前就出现了。法国伟大的数学家拉普拉斯（Laplace）在他的著作「概率论」里面，
@@ -1890,7 +2344,7 @@ IFS（Iterated Function System）是迭代函数系统，即在数学上被认�
         
         <summary type="html">
             
-            拉普拉斯之妖 未来是可以被预测的么？  专家在预测股票趋势变化，天气预报员可以预测未来一周甚至更长时间的天气。 如果给他们更多的信息和参数，是否可以将未来预测的更准确？ 如果精确的粒度可以达到基本粒子级别，同时给一个计算力超群的计算器，能否精确的推衍未来变化？ 这些想法在我刚接
+             拉普拉斯之妖 未来是可以被预测的么？ 专家在预测股票趋势变化，天气预报员可以预测未来一周甚至更长时间的天气。 如果给他们更多的信息和参数，是否可以将未来预测的更准确？ 如果精确的粒度可以达到基本粒子级别，同时给一个计算力超群的计算器，能否精确的推衍未来变化？  这些想法在我刚
             
         </summary>
         
@@ -2000,7 +2454,7 @@ TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使
 <p>通过分层，不仅仅完成了自上而下地遍历整个技术栈，也同时将不同模块的内容交给不同的责任方，
 确保任务的分割。</p>
 <p>分完模块，还要告知大家如何具体查找问题。
-这里我介绍一个通用的方法：USE<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn-1">1</a></sup>：</p>
+这里我介绍一个通用的方法：USE<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn:1">1</a></sup>：</p>
 <blockquote>
 <p>For every resource, check Utilization, Saturation, and Errors.</p>
 </blockquote>
@@ -2008,7 +2462,7 @@ TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使
 在技术设施的领域里，Resource 即是指各种类型的资源，比如 CPU、磁盘、网络、内存，
 Utilization 指的是使用率，可以简单分为百分制和非百分制。
 Saturation 是指饱和率，支持 queue 的资源，就会有这个指标。
-Error 即错误，可以从错误统计和日志得知。<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn-2">2</a></sup></p>
+Error 即错误，可以从错误统计和日志得知。<sup><a href="https://blog.alswl.com/2017/01/spring-cleaning/#fn:2">2</a></sup></p>
 <p>业务领域里面，USE 也有相对应的含义。以审核系统举例，
 对应的 USE 可以理解为「审核应用实例跑的 CPU 占用如何，任务队列是否塞满，业务日志是否有异常」。</p>
 <p>除了 USE 里面提到的指标，还有几个指标特别重要：
@@ -2047,10 +2501,10 @@ TPS 、Latency 和 Capacity。
 <hr />
 <ol>
 <li>
-<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref-1">↩</a></p>
+<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref:1">↩</a></p>
 </li>
 <li>
-<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref-2">↩</a></p>
+<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a> <a href="https://blog.alswl.com/2017/01/spring-cleaning/#fnref:2">↩</a></p>
 </li>
 </ol>
 </div>
@@ -2508,15 +2962,15 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>为了解决同一个 IP 下面多个域名的问题，我们引入了一个URL参数： <code>__domain</code>。
 当请求 IP 域名时候，必须带着这个参数，服务器会将请求域名解析出来，再分发到对应的域名。</p>
 <p>实现这个逻辑的 Nginx 核心代码：</p>
-<div><pre><span></span><span>set</span> <span>$</span><span>query_domain</span> <span>$</span><span>arg___domain</span><span>;</span>
-<span>if</span> <span>($</span><span>query_domain</span> <span>!~</span> <span>'(www|a|b)\.example\.com'</span><span>)</span> <span>{</span>
-    <span>rewrite</span> <span>^</span> <span>http</span><span>:</span><span>//</span><span>www</span><span>.</span><span>example</span><span>.</span><span>com</span><span>/</span><span>404</span><span>/</span> <span>redirect</span><span>;</span>
+<div><pre><span>set</span> <span>$</span><span>query_domain</span> <span>$</span><span>arg___domain</span><span>;</span>
+<span>if</span> <span>(</span><span>$</span><span>query_domain</span> <span>!~</span> <span>'</span><span>(</span><span>www</span><span>|</span><span>a</span><span>|</span><span>b</span><span>)</span><span>\</span><span>.</span><span>example</span><span>\</span><span>.</span><span>com</span><span>'</span><span>)</span> <span>{</span>
+    <span>rewrite</span> <span>^</span> <span>http</span><span>:</span><span>//www.example.com/404/ redirect;</span>
 <span>}</span>
 <span>set</span> <span>$</span><span>my_host</span> <span>$</span><span>query_domain</span><span>;</span>
 <span>location</span> <span>/</span> <span>{</span>
-    <span>proxy_set_header</span> <span>Host</span> <span>$my_host</span><span>;</span>
-    <span>proxy_set_header</span> <span>X-REAL-IP</span> <span>$remote_addr</span><span>;</span>
-    <span>proxy_pass</span> <span>$</span><span>scheme</span><span>:</span><span>//</span><span>127.0.0.1</span><span>;</span>
+    <span>proxy_set_header</span> <span>Host</span> <span>$</span><span>my_host</span><span>;</span>
+    <span>proxy_set_header</span> <span>X</span><span>-</span><span>REAL</span><span>-</span><span>IP</span> <span>$</span><span>remote_addr</span><span>;</span>
+    <span>proxy_pass</span> <span>$</span><span>scheme</span><span>:</span><span>//127.0.0.1;</span>
 <span>}</span>
 </pre></div>
 <p>最后一个注意事项是，记得调整 Nginx 配置的 remote_addr，否则都变成了 127.0.0.1，
@@ -3782,7 +4236,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。</p>
 <p>感谢项目贡献者：</p>
-<div><pre><span></span><span>project</span>  <span>:</span> <span>abao</span>
+<div><pre><span>project</span>  <span>:</span> <span>abao</span>
  <span>repo</span> <span>age</span> <span>:</span> <span>5</span> <span>months</span>
  <span>active</span>   <span>:</span> <span>32</span> <span>days</span>
  <span>commits</span>  <span>:</span> <span>109</span>
@@ -5059,11 +5513,11 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <p>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。</p>
 
 <p>检查日志，并没有 ERROR 信息，但是大量 WARN 报错。</p>
-<div><pre><span></span><span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>730</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>:</span> <span>dw</span><span>{</span><span>STARTED</span><span>,</span><span>8</span><span>&lt;=</span><span>50</span><span>&lt;=</span><span>50</span><span>,</span><span>i</span><span>=</span><span>0</span><span>,</span><span>q</span><span>=</span><span>1024</span><span>}</span> <span>rejected</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConne</span>
-<span>ction</span><span>$</span><span>2@62</span><span>c021c6</span>
+<div><pre><span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>730</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>:</span> <span>dw</span><span>{</span><span>STARTED</span><span>,</span><span>8</span><span>&lt;=</span><span>50</span><span>&lt;=</span><span>50</span><span>,</span><span>i</span><span>=</span><span>0</span><span>,</span><span>q</span><span>=</span><span>1024</span><span>}</span> <span>rejected</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConne</span>
+<span>ction</span><span>$</span><span>2</span><span>@</span><span>62</span><span>c021c6</span>
 <span>WARN</span>  <span>[</span><span>2015</span><span>-</span><span>12</span><span>-</span><span>09</span> <span>11</span><span>:</span><span>01</span><span>:</span><span>02</span><span>,</span><span>731</span><span>]</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>SelectorManager</span><span>:</span> <span>Could</span> <span>not</span> <span>process</span> <span>key</span> <span>for</span> <span>channel</span> <span>java</span><span>.</span><span>nio</span><span>.</span><span>channels</span><span>.</span><span>SocketChannel</span><span>[</span><span>connected</span> <span>local</span><span>=/</span><span>10.</span>
 <span>1.1.78</span><span>:</span><span>8350</span> <span>remote</span><span>=/</span><span>10.1.1.74</span><span>:</span><span>63290</span><span>]</span>
-<span>!</span> <span>java</span><span>.</span><span>util</span><span>.</span><span>concurrent</span><span>.</span><span>RejectedExecutionException</span><span>:</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>2@62</span><span>c021c6</span>
+<span>!</span> <span>java</span><span>.</span><span>util</span><span>.</span><span>concurrent</span><span>.</span><span>RejectedExecutionException</span><span>:</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>2</span><span>@</span><span>62</span><span>c021c6</span>
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>util</span><span>.</span><span>thread</span><span>.</span><span>QueuedThreadPool</span><span>.</span><span>execute</span><span>(</span><span>QueuedThreadPool</span><span>.</span><span>java</span><span>:</span><span>362</span><span>)</span> <span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>$</span><span>FillingState</span><span>.</span><span>onEnter</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>379</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
 <span>!</span> <span>at</span> <span>org</span><span>.</span><span>eclipse</span><span>.</span><span>jetty</span><span>.</span><span>io</span><span>.</span><span>AbstractConnection</span><span>.</span><span>next</span><span>(</span><span>AbstractConnection</span><span>.</span><span>java</span><span>:</span><span>273</span><span>)</span> <span>~</span><span>[</span><span>tritonis</span><span>-</span><span>shaded</span><span>.</span><span>jar</span><span>:</span><span>0.0.1</span><span>-</span><span>SNAPSHOT</span><span>]</span>
@@ -5086,7 +5540,7 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
 <p><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201602/image2015-12-9_2.png" /></p>
 <p>确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？</p>
 <p>检查了 App 的配置文件，的确配置了 <code>maxThreads</code> 为 50:</p>
-<div><pre><span></span><span>server</span><span>:</span>
+<div><pre><span>server</span><span>:</span>
   <span>gzip</span><span>:</span>
     <span>enabled</span><span>:</span> <span>false</span>
   <span>requestLog</span><span>:</span>
@@ -5102,13 +5556,13 @@ Google 的一种做法，可以很好解决这个问题。分离 TL（techlead�
       <span>port</span><span>:</span> <span>8351</span>
 </pre></div>
 <p>一般对应服务不稳定，有个简单策略，超时，那么七牛服务超时是多少？找了一下相关代码，下巴都没合上：</p>
-<div><pre><span></span># com.qiniu.http.Client
-    this.httpClient.setConnectTimeout((long)Config.CONNECT_TIMEOUT, TimeUnit.SECONDS);
-    this.httpClient.setReadTimeout((long)Config.RESPONSE_TIMEOUT, TimeUnit.SECONDS);
+<div><pre><span># com.qiniu.http.Client</span>
+    <span>this</span><span>.</span><span>httpClient</span><span>.</span><span>setConnectTimeout</span><span>((</span><span>long</span><span>)</span><span>Config</span><span>.</span><span>CONNECT_TIMEOUT</span><span>,</span> <span>TimeUnit</span><span>.</span><span>SECONDS</span><span>);</span>
+    <span>this</span><span>.</span><span>httpClient</span><span>.</span><span>setReadTimeout</span><span>((</span><span>long</span><span>)</span><span>Config</span><span>.</span><span>RESPONSE_TIMEOUT</span><span>,</span> <span>TimeUnit</span><span>.</span><span>SECONDS</span><span>);</span>
 
-# com.qiniu.common.Config
-public static int CONNECT_TIMEOUT = 10000;
-public static int RESPONSE_TIMEOUT = 30000;
+<span># com.qiniu.common.Config</span>
+<span>public</span> <span>static</span> <span>int</span> <span>CONNECT_TIMEOUT</span> <span>=</span> <span>10000</span><span>;</span>
+<span>public</span> <span>static</span> <span>int</span> <span>RESPONSE_TIMEOUT</span> <span>=</span> <span>30000</span><span>;</span>
 </pre></div>
 <p>超时时间 8h，吓得我赶紧关掉了显示器。
 赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。 </p>
@@ -5183,14 +5637,14 @@ public static int RESPONSE_TIMEOUT = 30000;
 </blockquote>
 <p>官方文档 <a href="https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html">https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a>
 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p>
-<div><pre><span></span># 格式化
-awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot;,s);s=gensub(/&gt;([^ \n&gt;]*)<span>&lt;</span>/,&quot;&gt;\n\\1\n<span>&lt;</span>&quot;,&quot;g&quot;,s);print s}' entities.xml &gt; entities.xml.format
-# 找重复主键 cat entities.xml.format G 'content&quot; class=&quot;Page' -A 2 G -E '[0-9]+' | sort | uniq -c | sort -gr L cat entities.xml.format | grep 'name=&quot;id&quot;' -A 1 -B 1 | grep -E '[0-9]+' -B 2 L
+<div><pre><span>#</span> <span>格式化</span>
+<span>awk</span> <span>'{s=s $0}END{gsub(/&gt;&lt;/,&quot;&gt;</span><span>\n</span><span>&lt;&quot;,s);s=gensub(/&gt;([^ </span><span>\n</span><span>&gt;]*)&lt;/,&quot;&gt;</span><span>\n\\</span><span>1</span><span>\n</span><span>&lt;&quot;,&quot;g&quot;,s);print s}'</span> <span>entities.xml</span> <span>&gt;</span> <span>entities.xml.format</span>
+<span>#</span> <span>找重复主键</span> <span>cat</span> <span>entities.xml.format</span> <span>G</span> <span>'content&quot; class=&quot;Page'</span> <span>-A</span> <span>2</span> <span>G</span> <span>-E</span> <span>'[0-9]+'</span> <span>|</span> <span>sort</span> <span>|</span> <span>uniq</span> <span>-c</span> <span>|</span> <span>sort</span> <span>-gr</span> <span>L</span> <span>cat</span> <span>entities.xml.format</span> <span>|</span> <span>grep</span> <span>'name=&quot;id&quot;'</span> <span>-A</span> <span>1</span> <span>-B</span> <span>1</span> <span>|</span> <span>grep</span> <span>-E</span> <span>'[0-9]+'</span> <span>-B</span> <span>2</span> <span>L</span>
 </pre></div>
 <p>操作过程中，发现有数据就一条数据（grep entities.xml），还是插入重复（13238835）。
 官方文档解释是，内置数据库的锁有时候会不灵，插入重复键。
 于是决定再试试去掉主键约束方案，大不了那个数据我就不要了。</p>
-<div><pre><span></span>ALTER TABLE BODYCONTENT DROP PRIMARY KEY;
+<div><pre><span>ALTER</span> <span>TABLE</span> <span>BODYCONTENT</span> <span>DROP</span> <span>PRIMARY</span> <span>KEY</span><span>;</span>
 </pre></div>
 <p>结果还有其他 PK 约束，我于是一条一条解开，然后……还是不行，真是作了一手的好死。</p>
 <p>结论是，这数据错误了太多，已经无法手工修复。</p>
@@ -5385,66 +5839,66 @@ awk '{s=s $0}END{gsub(/&gt;<span>&lt;</span>/,&quot;&gt;\n<span>&lt;</span>&quot
 需要手动切换一下服务器。
 于是用 HA 做了一个本地代理，调整了一些参数，让 SS 总是有快速的服务器供选择。</p>
 <p>结构：</p>
-<div><pre><span></span>+-----------------+                                                  +----------------+
-|                 |                                                  |                |
-|    Server 1     |&gt;&gt;&gt;&gt;v                                           &gt;&gt;|   Mail.app     |
-|                 |    v                                           ^ |                |
-+-----------------+    v                                           ^ +----------------+
-                       v                                           ^
-+-----------------+    v    |----------------+      +------------+ ^ +----------------+
-|                 |    v    |                |      |            | ^ |                |
-|    Server 2     |&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;|    HAProxy     |&gt;&gt;&gt;&gt;&gt;&gt;| SS-Client  |&gt;&gt;&gt;|   Browser      |
-|                 |    ^    |                |      |            | v |                |
-+-----------------+    ^    +----------------+      +------------+ v +----------------+
-                       ^                                           v   
-+-----------------+    ^                                           v +----------------+
-|                 |    ^                                           v |                |
-|    Server 3     |&gt;&gt;&gt;&gt;^                                           v&gt;|   Evernote...  |
-|                 |                                                  |                |
-+-----------------+                                                  +----------------+
+<div><pre><span>+-----------------+</span>                                                  <span>+----------------+</span>
+<span>|</span>                 <span>|</span>                                                  <span>|</span>                <span>|</span>
+<span>|</span>    <span>Server</span> <span>1</span>     <span>|&gt;&gt;&gt;&gt;</span><span>v</span>                                           <span>&gt;&gt;|</span>   <span>Mail</span><span>.</span><span>app</span>     <span>|</span>
+<span>|</span>                 <span>|</span>    <span>v</span>                                           <span>^</span> <span>|</span>                <span>|</span>
+<span>+-----------------+</span>    <span>v</span>                                           <span>^</span> <span>+----------------+</span>
+                       <span>v</span>                                           <span>^</span>
+<span>+-----------------+</span>    <span>v</span>    <span>|----------------+</span>      <span>+------------+</span> <span>^</span> <span>+----------------+</span>
+<span>|</span>                 <span>|</span>    <span>v</span>    <span>|</span>                <span>|</span>      <span>|</span>            <span>|</span> <span>^</span> <span>|</span>                <span>|</span>
+<span>|</span>    <span>Server</span> <span>2</span>     <span>|&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;|</span>    <span>HAProxy</span>     <span>|&gt;&gt;&gt;&gt;&gt;&gt;|</span> <span>SS</span><span>-</span><span>Client</span>  <span>|&gt;&gt;&gt;|</span>   <span>Browser</span>      <span>|</span>
+<span>|</span>                 <span>|</span>    <span>^</span>    <span>|</span>                <span>|</span>      <span>|</span>            <span>|</span> <span>v</span> <span>|</span>                <span>|</span>
+<span>+-----------------+</span>    <span>^</span>    <span>+----------------+</span>      <span>+------------+</span> <span>v</span> <span>+----------------+</span>
+                       <span>^</span>                                           <span>v</span>   
+<span>+-----------------+</span>    <span>^</span>                                           <span>v</span> <span>+----------------+</span>
+<span>|</span>                 <span>|</span>    <span>^</span>                                           <span>v</span> <span>|</span>                <span>|</span>
+<span>|</span>    <span>Server</span> <span>3</span>     <span>|&gt;&gt;&gt;&gt;^</span>                                           <span>v</span><span>&gt;|</span>   <span>Evernote</span><span>...</span>  <span>|</span>
+<span>|</span>                 <span>|</span>                                                  <span>|</span>                <span>|</span>
+<span>+-----------------+</span>                                                  <span>+----------------+</span>
 </pre></div>
 <p>配置：</p>
-<div><pre><span></span>global
-    ulimit-n  4096
+<div><pre><span>global</span>
+    <span>ulimit</span><span>-</span><span>n</span>  <span>4096</span>
 
 
-defaults
-    log global
-    mode    tcp
-    timeout connect 1s
-    timeout client 1s
-    timeout server 1s
+<span>defaults</span>
+    <span>log</span> <span>global</span>
+    <span>mode</span>    <span>tcp</span>
+    <span>timeout</span> <span>connect</span> <span>1</span><span>s</span>
+    <span>timeout</span> <span>client</span> <span>1</span><span>s</span>
+    <span>timeout</span> <span>server</span> <span>1</span><span>s</span>
 
 
-listen stats
-    bind 127.0.0.1:12222
-    mode http
-    stats enable
-    stats uri /
-    stats refresh 8s
+<span>listen</span> <span>stats</span>
+    <span>bind</span> <span>127.0.0.1</span><span>:</span><span>12222</span>
+    <span>mode</span> <span>http</span>
+    <span>stats</span> <span>enable</span>
+    <span>stats</span> <span>uri</span> <span>/</span>
+    <span>stats</span> <span>refresh</span> <span>8</span><span>s</span>
 
 
-listen ss
-    bind 127.0.0.1:1081
-    mode tcp
-    option tcpka
-    #balance source
-    balance roundrobin
-    log global
-    maxconn 1024
+<span>listen</span> <span>ss</span>
+    <span>bind</span> <span>127.0.0.1</span><span>:</span><span>1081</span>
+    <span>mode</span> <span>tcp</span>
+    <span>option</span> <span>tcpka</span>
+    <span>#</span><span>balance</span> <span>source</span>
+    <span>balance</span> <span>roundrobin</span>
+    <span>log</span> <span>global</span>
+    <span>maxconn</span> <span>1024</span>
 
-    timeout connect 200ms
-    timeout client 600s
-    timeout server 600s
-    timeout check 80ms  # for office / home
-    # timeout check 400ms  # for starbucks
-    retries 1
-    option redispatch
-    option tcp-check
+    <span>timeout</span> <span>connect</span> <span>200</span><span>ms</span>
+    <span>timeout</span> <span>client</span> <span>600</span><span>s</span>
+    <span>timeout</span> <span>server</span> <span>600</span><span>s</span>
+    <span>timeout</span> <span>check</span> <span>80</span><span>ms</span>  <span>#</span> <span>for</span> <span>office</span> <span>/</span> <span>home</span>
+    <span>#</span> <span>timeout</span> <span>check</span> <span>400</span><span>ms</span>  <span>#</span> <span>for</span> <span>starbucks</span>
+    <span>retries</span> <span>1</span>
+    <span>option</span> <span>redispatch</span>
+    <span>option</span> <span>tcp</span><span>-</span><span>check</span>
 
-    server s1 host1:port maxconn 20 check inter 2s rise 30 fall 6 backup
-    server s2 host2:port maxconn 20 check inter 2s rise 30 fall 6
-    server s3 host2:port maxconn 20 check inter 1s rise 60 fall 6
+    <span>server</span> <span>s1</span> <span>host1</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>2</span><span>s</span> <span>rise</span> <span>30</span> <span>fall</span> <span>6</span> <span>backup</span>
+    <span>server</span> <span>s2</span> <span>host2</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>2</span><span>s</span> <span>rise</span> <span>30</span> <span>fall</span> <span>6</span>
+    <span>server</span> <span>s3</span> <span>host2</span><span>:</span><span>port</span> <span>maxconn</span> <span>20</span> <span>check</span> <span>inter</span> <span>1</span><span>s</span> <span>rise</span> <span>60</span> <span>fall</span> <span>6</span>
 </pre></div>
 <p>挺稳定，很快速。</p>
 <p>update: 2015-12-15，添加 <code>backup</code> 项，选一台最稳定的做 backup，避免所有连接都超时。
@@ -5736,14 +6190,14 @@ May use other licenses for binary package on other distribution sites.</p>
 <p>Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.</p>
 </blockquote>
 <p>eg.:</p>
-<div><pre><span></span>TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing.
-DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing.
-INFO  [2010-04-06 06:42:35,274] com.example.dw.Thing: Doing a thing
-WARN  [2010-04-06 06:42:35,275] com.example.dw.Thing: Doing a thing
-ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
-! java.lang.RuntimeException: oh noes!
-! at com.example.dw.Thing.run(Thing.java:16)
-!
+<div><pre><span>TRACE</span> <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>271</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>Contemplating</span> <span>doing</span> <span>a</span> <span>thing</span><span>.</span>
+<span>DEBUG</span> <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>274</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>About</span> <span>to</span> <span>do</span> <span>a</span> <span>thing</span><span>.</span>
+<span>INFO</span>  <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>274</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>Doing</span> <span>a</span> <span>thing</span>
+<span>WARN</span>  <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>275</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>Doing</span> <span>a</span> <span>thing</span>
+<span>ERROR</span> <span>[</span><span>2010</span><span>-</span><span>04</span><span>-</span><span>06</span> <span>06</span><span>:</span><span>42</span><span>:</span><span>35</span><span>,</span><span>275</span><span>]</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>:</span> <span>This</span> <span>may</span> <span>get</span> <span>ugly</span><span>.</span>
+<span>!</span> <span>java</span><span>.</span><span>lang</span><span>.</span><span>RuntimeException</span><span>:</span> <span>oh</span> <span>noes</span><span>!</span>
+<span>!</span> <span>at</span> <span>com</span><span>.</span><span>example</span><span>.</span><span>dw</span><span>.</span><span>Thing</span><span>.</span><span>run</span><span>(</span><span>Thing</span><span>.</span><span>java</span><span>:</span><span>16</span><span>)</span>
+<span>!</span>
 </pre></div>
 <p>splunk 的最佳实践：</p>
 <ul>
