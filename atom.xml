@@ -4052,7 +4052,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。
 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。
 现在将这个系统的选型和运行状况拎出来，和大家分享。</p>
-<h3>确认测试范围、目标和意义</h3>
+<h2>确认测试范围、目标和意义</h2>
 <ul>
 <li>范围<ul>
 <li>后台输出的 API 级别 URL</li>
@@ -4075,7 +4075,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 </ul>
 </li>
 </ul>
-<h3>特性需求</h3>
+<h2>特性需求</h2>
 <p>选型一个系统，不是看市面上有哪些可以供选择，而是看我需要什么样特性的一款产品。
 如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。</p>
 <ul>
@@ -4093,7 +4093,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 </ul>
 </li>
 </ul>
-<h3>挑选出来的选型和评价</h3>
+<h2>挑选出来的选型和评价</h2>
 <ul>
 <li><a href="https://www.runscope.com/">API Monitoring and Testing · Runscope</a><ul>
 <li>收费</li>
@@ -4201,7 +4201,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <li>swagger</li>
 <li>讨论时候的新发现 <a href="https://github.com/svanoort/pyresttest">https://github.com/svanoort/pyresttest</a></li>
 </ul>
-<h3>搭建 demo，进行试用</h3>
+<h2>搭建 demo，进行试用</h2>
 <p>在确定选用那几款产品之后，就可以集中精力在几款候选者里面。搭建相应的环境，对他们进行实际测试。</p>
 <p>supertest：</p>
 <ul>
@@ -4236,7 +4236,7 @@ APP 无法在发起连接时候，也没有权限直接操作 socket。
 <p>在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。</p>
 <p>感谢项目贡献者：</p>
-<div><pre><span>project</span>  <span>:</span> <span>abao</span>
+<div><pre><span></span><span>project</span>  <span>:</span> <span>abao</span>
  <span>repo</span> <span>age</span> <span>:</span> <span>5</span> <span>months</span>
  <span>active</span>   <span>:</span> <span>32</span> <span>days</span>
  <span>commits</span>  <span>:</span> <span>109</span>
